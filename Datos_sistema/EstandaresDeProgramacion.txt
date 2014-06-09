@@ -1,0 +1,8 @@
+ESTANDARES
+==========
+
+1. Usar todos los acentos correspondientes.
+2. Las frases de labels se tienen que escribir asi: Descripción del Proveedor (las primeras letras en mayuscula).
+3. Los labels de las grillas deben estar todos en MAYUSCULA y sin acento.
+4. La alineacion de los valores numericos en las grillas debe ser derecha
+5. La alineacion de los valores char deben ser izquierdos

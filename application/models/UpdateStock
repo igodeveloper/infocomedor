@@ -1,0 +1,10 @@
+<?php
+
+class Application_Model_UpdateStock {
+
+    public function getRowsJoin ($where = null, $limit = null)
+    {
+        return "hola";
+    }
+
+}
