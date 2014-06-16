@@ -187,28 +187,29 @@ class Caja_CajaController extends Zend_Controller_Action
 
     public function almacenardatos($rowClass,$rowData){
      	try{
-            $
      		$service = new Application_Model_DataService('Application_Model_DbTable_Caja');
         	$db = Zend_Db_Table::getDefaultAdapter();
         	$db->beginTransaction();
-				if(isset($rowData->cod_usuario_caja) and isset($rowData->cod_caja))
-					$rowClass->setCod_usuario_caja(trim(utf8_decode($rowData->cod_usuario_caja)));
-				if(isset($rowData->fecha_hora_apertura))
-					$rowClass->setFecha_hora_apertura(trim(utf8_decode($rowData->fecha_hora_apertura)));
-				else
-					$rowClass->setFecha_hora_apertura(date('Y-m-d h:i:s'));
-				if(trim($rowData->cod_caja) <> '')
-					$rowClass->setFecha_hora_cierre(date('Y-m-d h:i:s'));
-				
-					
-				if(isset($rowData->monto_caja_apertura))
-					$rowClass->setMonto_caja_apertura(trim(utf8_decode($rowData->monto_caja_apertura)));
-				if(isset($rowData->monto_caja_cierre) and trim($rowData->cod_caja) <> '')
-					$rowClass->setMonto_caja_cierre(trim(utf8_decode($rowData->monto_caja_cierre)));
-				if(isset($rowData->monto_diferencia_arqueo))
-					$rowClass->setMonto_diferencia_arqueo(trim(utf8_decode($rowData->monto_diferencia_arqueo)));
-				if(isset($rowData->arqueo_caja))
-					$rowClass->setArqueo_caja(trim(utf8_decode($rowData->arqueo_caja)));
+                    if(isset($rowData->cod_usuario_caja) and isset($rowData->cod_caja))
+                            $rowClass->setCod_usuario_caja(trim(utf8_decode($rowData->cod_usuario_caja)));
+                    if(isset($rowData->fecha_hora_apertura))
+                            $rowClass->setFecha_hora_apertura(trim(utf8_decode($rowData->fecha_hora_apertura)));
+                    else
+                            $rowClass->setFecha_hora_apertura(date('Y-m-d h:i:s'));
+                    if(trim($rowData->cod_caja) <> '')
+                            $rowClass->setFecha_hora_cierre(date('Y-m-d h:i:s'));
+
+
+                    if(isset($rowData->monto_caja_apertura))
+                            $rowClass->setMonto_caja_apertura(trim(utf8_decode($rowData->monto_caja_apertura)));
+                    if(isset($rowData->monto_caja_cierre) and trim($rowData->cod_caja) <> '')
+                            $rowClass->setMonto_caja_cierre(trim(utf8_decode($rowData->monto_caja_cierre)));
+                    if(isset($rowData->monto_diferencia_arqueo))
+                            $rowClass->setMonto_diferencia_arqueo(trim(utf8_decode($rowData->monto_diferencia_arqueo)));
+                    if(isset($rowData->arqueo_caja))
+                            $rowClass->setArqueo_caja(trim(utf8_decode($rowData->arqueo_caja)));
+//print_r($rowClass);
+//die();
                 $result = $service->saveRow($rowClass);
 	    	$db->commit();
 	    	echo json_encode(array("result" => "EXITO"));
