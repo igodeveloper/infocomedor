@@ -1,3 +1,5 @@
+var pathname = window.location.pathname;
+var table = pathname;
 $().ready(function() {
     /*
      * Formateamos los campos de fecha
@@ -82,7 +84,7 @@ $().ready(function() {
             guardarPago(data);
         }
     });
-    $.getJSON("compra2/proveedordata", function(data) {
+    $.getJSON(table+"/proveedordata", function(data) {
         var nombreProveedor = [];
         var rucProveedor = [];
         var codProveedor = [];
@@ -377,7 +379,7 @@ function validaProveedor(data, what) {
     }
     if (dataString.value !== "") {
         $.ajax({
-            url: '/compras/compra2/validaproveedordata',
+            url: table+'/validaproveedordata',
             type: 'post',
             dataType: 'json',
             data: {
@@ -410,7 +412,7 @@ function validaProveedor(data, what) {
 }
 
 function loadAutocompleteProducto() {
-    $.getJSON("compra2/productodata", function(data) {
+    $.getJSON(table+"/productodata", function(data) {
         var descripcionProducto = [];
         var codigoProducto = [];
 
@@ -451,7 +453,7 @@ function productvalidation(data) {
     }
     if (dataString.value !== "") {
         $.ajax({
-            url: '/compras/compra2/productvalidationdata',
+            url: table+'/productvalidationdata',
             type: 'post',
             dataType: 'json',
             data: {
@@ -501,7 +503,7 @@ function enviarParametrosCompras(data) {
     var dataCompraCantItems = data.compraDetalleItem;
 
     $.ajax({
-        url: '/compras/compra2/guardar',
+        url: table+'/guardar',
         type: 'post',
         data: {"dataCompra": dataCompra, "dataCompraDetalle": dataCompraDetalle, "dataCompraCantItems": dataCompraCantItems},
         dataType: 'json',
@@ -536,7 +538,7 @@ function buscar() {
     });
 
     $.ajax({
-        url: '/compras/compra2/buscar',
+        url: table+'/buscar',
         type: 'post',
         data: {
             "dataJsonBusqueda": dataJsonBusqueda
@@ -589,7 +591,7 @@ function editarRegistro(parametros) {
     BlockProveedorData("editar");
     $("#modalEditar").show();
     $.ajax({
-        url: '/compras/compra2/modaleditar',
+        url: table+'/modaleditar',
         type: 'post',
         data: {
             "NumeroInterno": parametros.NRO_FACTURA_COMPRA
@@ -630,7 +632,7 @@ function editarRegistro(parametros) {
 function cargarPagos(facturaCompra) {
 
     $.ajax({
-        url: '/compras/compra2/modalpagos',
+        url: table+'/modalpagos',
         type: 'post',
         data: {
             "NumeroInterno": facturaCompra
@@ -877,7 +879,7 @@ function calcularSaldo(numeroFactura) {
     $('#saldoPendiente-modal-pagos').attr("value", 0);
     var saldoPendientefactura = parseInt(0);
     $.ajax({
-        url: '/compras/compra2/calculasaldo',
+        url: table+'/calculasaldo',
         type: 'post',
         data: {nroFactura: numeroFactura},
         dataType: 'json',
@@ -974,7 +976,7 @@ function guardarPago(data) {
 
     data = JSON.stringify(data);
     $.ajax({
-        url: '/compras/compra2/guardarpagos',
+        url: table+'/guardarpagos',
         type: 'post',
         data: {"data": data},
         dataType: 'json',

@@ -33,3 +33,4 @@ function preguntaUsuario(permiso){
         }
 
 }
+}

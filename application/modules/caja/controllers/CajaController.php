@@ -276,24 +276,32 @@ class Caja_CajaController extends Zend_Controller_Action
 //		$this->_helper->layout->disableLayout();
 		$this->_helper->viewRenderer->setNoRender(true);
 		$result = '';
-        $json_rowData = $this->getRequest ()->getParam ( "parametros" );
-        $rowData = json_decode($json_rowData);
-        $cod_caja = $rowData->cod_caja;
+                $json_rowData = $this->getRequest ()->getParam ( "parametros" );
+                $rowData = json_decode($json_rowData);
+                $cod_caja = $rowData->cod_caja;
 		$jsonResultado = json_encode(array("resultado" => 'cerrado'));		
 		try {
 			$db = Zend_Db_Table::getDefaultAdapter();
 			$select = $db->select()
 					->from(array('C' => 'usuario'), 
-						   array('D.cod_caja',
-								 'D.cod_usuario_caja',
-								 'D.fecha_hora_apertura',
-								 'D.monto_caja_apertura',
+						   array(								 
 								 'C.nombre_apellido',
 								 'now() as fechahoracierre'
 								 ))
-					->join(array('D' => 'caja'), 'D.cod_usuario_caja = C.cod_usuario')
-					->where("cod_caja = ".$cod_caja);	
-//die($select);					
+					->join(array('D' => 'caja'), 'D.cod_usuario_caja = C.cod_usuario',array('D.cod_caja',
+                                                                'D.cod_usuario_caja',
+								 'D.fecha_hora_apertura',
+								 'D.monto_caja_apertura',))
+                                        ->join(array('M' => 'mov_caja'), 'M.cod_caja = D.cod_caja',array('total_monto_mov' =>'SUM(M.monto_mov)'))
+                                        ->join(array('T' => 'tipo_movimiento'), 'T.cod_tipo_mov = M.cod_tipo_mov',array('T.tipo_mov'))
+					->where("D.cod_caja = ".$cod_caja)
+                                        ->group('C.nombre_apellido')
+                                        ->group('D.cod_caja')
+                                        ->group('D.cod_usuario_caja')
+                                        ->group('D.fecha_hora_apertura')
+                                        ->group('D.monto_caja_apertura')
+                                       ->group('T.tipo_mov');	
+die($select);					
 			$result = $db->fetchAll($select);			
 			foreach ($result as $arr) {
 				$jsonResultado = json_encode(array("resultado" => 'abierto',

@@ -373,7 +373,7 @@ function cargarCierreCaja(){
         },
         error: function(event, request, settings){
          //   $.unblockUI();
-        	 alert(mostrarError("OcurrioError"));
+        	 alert("OcurrioError");
         }
     });	
 }
