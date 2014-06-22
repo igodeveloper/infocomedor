@@ -36,7 +36,7 @@ $().ready(function() {
 //				return;
 		var data = obtenerJsonFormulario();
 		if(data != null){
-				enviarParametrosRegistro(data);
+                    enviarParametrosRegistro(data);
 		}
      });
     validarNumerosCampo();
@@ -59,6 +59,23 @@ function validarNumerosCampo(){
 		   }
 	   }
     });
+    $("#montocierrecaja-modal").keydown(function(event) {
+	   // Allow: backspace, delete, tab, escape, and enter
+	   if ( event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 || event.keyCode == 13 ||
+			// Allow: Ctrl+A
+		   (event.keyCode == 65 && event.ctrlKey === true) ||
+			// Allow: home, end, left, right
+		   (event.keyCode >= 35 && event.keyCode <= 39)) {
+				// let it happen, don't do anything
+				return;
+	   }
+	   else {
+		   // Ensure that it is a number and stop the keypress
+		   if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105 )) {
+			   event.preventDefault();
+		   }
+	   }
+    });    
 }
 function validarNumerosLetrasPorcentageEspacio(e) { // 1
 	var te;
@@ -158,6 +175,8 @@ function obtenerJsonFormulario() {
 		jsonObject.cod_usuario_caja = $('#codigousuariocaja-modal').attr("value");
 		jsonObject.monto_caja_apertura = $('#montoaperturacaja-modal').attr("value");	
 		jsonObject.monto_caja_cierre = $('#montocierrecaja-modal').attr("value");
+                jsonObject.monto_entrante = $('#montoentrantecaja-modal').attr("value");
+                jsonObject.monto_saliente = $('#montosalientecaja-modal').attr("value");
 		return jsonObject;
 	}
     
@@ -266,6 +285,10 @@ function buscarRegistros(){
 
 function editarRegistro(parametros){
 	limpiarFormulario();
+        if(parametros.arqueo_caja == 'S'){
+            alert("La caja ya se encuentra arqueada!!");
+            return;
+        }
 	$("#modalEditar").show();
 	$("#editar-nuevo").html("Cierre de Caja");
 	$("#codcaja-modal").attr("value",parametros.cod_caja);
@@ -285,6 +308,8 @@ function limpiarFormulario(){
 	$("#fechaaperturacaja-modal").attr("value",null);
 	$("#montoaperturacaja-modal").attr("value",null);
 	$("#montocierrecaja-modal").attr("value",null);
+        $("#montoentrantecaja-modal").attr("value",null);
+        $("#montosalientecaja-modal").attr("value",null);
 }
 
 
@@ -368,7 +393,11 @@ function cargarCierreCaja(){
 				$("#fechaaperturacaja-modal").attr("value",respuesta.fecha_hora_apertura);
 				$("#montoaperturacaja-modal").attr("value",respuesta.monto_caja_apertura);
 				$("#fechacierrecaja-modal").attr("value",respuesta.fecha_hora_cierre);
-				$('#montoaperturacaja-modal').attr("readonly", true);				
+				$('#montoaperturacaja-modal').attr("readonly", true);	
+                                $("#montoentrantecaja-modal").attr("value",respuesta.monto_entrante);
+                                $("#montosalientecaja-modal").attr("value",respuesta.monto_saliente);
+                                $('#montoentrantecaja-modal').attr("readonly", true);
+                                $('#montosalientecaja-modal').attr("readonly", true);
         	}
         },
         error: function(event, request, settings){

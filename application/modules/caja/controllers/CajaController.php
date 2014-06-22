@@ -199,7 +199,17 @@ class Caja_CajaController extends Zend_Controller_Action
                     if(trim($rowData->cod_caja) <> '')
                             $rowClass->setFecha_hora_cierre(date('Y-m-d h:i:s'));
 
-
+                    if(trim($rowData->cod_caja) <> ''){
+                        $entrada = 0;
+                        $salida  = 0;
+                        $entrada = $rowData->monto_caja_apertura +
+                                $rowData->monto_entrante;
+                        $salida = $rowData->monto_saliente; 
+                        $monto_diferencia = $entrada - $salida;
+                        $monto_diferencia_arqueo = $monto_diferencia - $rowData->monto_caja_cierre;
+                        $rowClass->setMonto_diferencia_arqueo($monto_diferencia_arqueo);
+                        $rowClass->setArqueo_caja('S');
+                    }
                     if(isset($rowData->monto_caja_apertura))
                             $rowClass->setMonto_caja_apertura(trim(utf8_decode($rowData->monto_caja_apertura)));
                     if(isset($rowData->monto_caja_cierre) and trim($rowData->cod_caja) <> '')
@@ -301,16 +311,24 @@ class Caja_CajaController extends Zend_Controller_Action
                                         ->group('D.fecha_hora_apertura')
                                         ->group('D.monto_caja_apertura')
                                        ->group('T.tipo_mov');   
-die($select);                   
+//die($select);                   
             $result = $db->fetchAll($select);           
+            $monto_entrante = 0;
+            $monto_saliente = 0;
             foreach ($result as $arr) {
+                if($arr['tipo_mov'] == 'R')
+                    $monto_saliente = $arr['total_monto_mov'];
+                if($arr['tipo_mov'] == 'S')
+                    $monto_entrante = $arr['total_monto_mov'];                
                 $jsonResultado = json_encode(array("resultado" => 'abierto',
                     "cod_caja" => $arr["cod_caja"],
                     "cod_usuario_caja" => $arr["cod_usuario_caja"],
                     "fecha_hora_apertura" => $arr["fecha_hora_apertura"],
                     "fecha_hora_cierre" => $arr["fechahoracierre"],
                     "monto_caja_apertura" => $arr["monto_caja_apertura"],
-                    "nombre_apellido" => $arr["nombre_apellido"]));
+                    "nombre_apellido" => $arr["nombre_apellido"],
+                    "monto_entrante" => $monto_entrante,
+                    "monto_saliente" => $monto_saliente));
             }
         } catch (Exception $e) {
                 $jsonResultado = json_encode(array("resultado" => 'error'));
