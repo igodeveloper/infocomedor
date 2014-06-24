@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//ES" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" >
+
+<?php 
+
+echo $this->headScript()->
+	   appendFile($this->baseUrl() . "/js/jquery-1.7.1.js")->
+       appendFile($this->baseUrl() . "/js/jquery-ui-1.8.17.custom.min.js")->
+       appendFile($this->baseUrl() . '/js/i18n/grid.locale-es.js')->
+       appendFile($this->baseUrl() . '/js/jquery.jqGrid.min.js')->
+       appendFile($this->baseUrl() . "/js/bootstrap.js")->
+       appendFile($this->baseUrl() . "/js/jsmodulos/periodo.js")->
+       appendFile($this->baseUrl() . "/js/grillasmodulos/gridPeriodos.js")->
+       appendFile($this->baseUrl() . "/js/jquery.tablescroll.js")->
+       appendFile($this->baseUrl() . "/js/jquery.blockUI.js");
+
+
+
+
+echo $this->headLink()
+	        ->setIndent('  ')
+	        ->prependStylesheet($this->baseUrl() . "/css/cssgenerico/ui.datepicker.css")
+	        ->prependStylesheet($this->baseUrl() . "/css/cssgenerico/bootstrap.css")
+			->prependStylesheet($this->baseUrl() . "/css/cssgenerico/jquery-ui-1.8.17.custom.css")
+	        ->prependStylesheet($this->baseUrl() . "/css/cssgenerico/bootstrap.css")
+	        ->prependStylesheet($this->baseUrl() . "/css/cssgenerico/ui.jqgrid.css")
+	        ->prependStylesheet($this->baseUrl() . "/css/cssmodulos/periodos.css")
+			->prependStylesheet($this->baseUrl() . "/css/cssgenerico/contenedor.css");
+?>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+<body>
+	<CENTER>
+	
+	<div class="modal hide fade in" id="modalEditar" style="width:800px;margin-left:-420px;">
+		            <div class="modal-header">
+		              <button data-dismiss="modal" class="close" type="button" id="cerrar-bot">�</button>
+		              <div id="cabeceraModal" class="btn btn-info" style="width:750px;color:white;">
+		   			  <h3 id="editar-nuevo" style="color:white;"></h3>
+		   			  </div>
+		              
+		              <div class="alert alert-block hide" id="warning-block-periodo">
+				    		<div id="warning-message-periodo"></div>
+      					</div>
+      					<div class="alert alert-success hide" id="success-block-periodo">
+			        		Los datos han sido almacenados exitosamente
+		      			</div>
+		      			<div class="alert alert-error hide" id="error-block-modal">
+			    		</div>
+		      			<div class="alert alert-success hide" id="limpiar-block"></div>
+
+		      	
+		            </div>
+            
+		            <div class="modal-body">
+		             <div id="contenedor-modal" style="width:750px;padding:5px 0;border: 2px solid #C6E9FF;border-color: #BCE8F1;background: #D9EDF7;">
+		            	<table>
+		            		<input type="hidden" id="id-periodo"></input>
+							<tr>
+		            			<td><label for="descripcionperiodo-modal" id="descripcionperiodo-modal-idioma">Descripci&oacuten del Periodo<font style="color: red;">(*)</font></label></td>
+								<td><input id="descripcionperiodo-modal" maxlength="50" style="width:150px;" onkeypress='return validarNumerosLetrasPorcentageEspacio(event);'></input></td>
+		            		</tr>
+							<tr>
+		            			<td><label for="cantidaddiasperiodo-modal" id="cantidaddiasperiodo-modal-idioma">Cantidad de dias<font style="color: red;">(*)</font></label></td>
+								<td><input id="cantidaddiasperiodo-modal" maxlength="3" style="width:30px;" ></input></td>
+							</tr>
+							</table>
+							</div>
+						<div id="contenedor-modal" style="text-align:left;width:750px;padding:5px 0;border: 2px solid #C6E9FF;border-color: #BCE8F1;background: #D9EDF7;">
+		            		<strong><font style="color: red;">(*)</font> Complete los campos marcados en el formulario para guardar el Periodo</strong>
+      					</div>
+					</div>
+		            
+		            <div class="modal-footer">
+		              <a data-dismiss="modal" class="btn" href="#" id="cancelar-bot">Cancelar</a>
+		              <a class="btn btn-info" id="guardar-periodo" href="#">Guardar</a>
+		            </div>
+          	</div>
+		    
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div class="span10">
+			<br>
+					<div id="cabeceraFormulario" class="btn btn-info" style="width:1100px;">
+		   				<h1 id="cabecera-titulo" align="center" style="margin-bottom: 20px;color:white;">Listado de Periodos</h1>
+				    			      		
+				    <div class="alert alert-block hide" id="warning-block-periodo-listado">
+				    		<div id="warning-message-periodo-listado"></div>
+      				</div>
+      				
+      				<div class="alert alert-success hide" id="success-block-periodo-listado">
+			        		<div id="success-message-periodo-listado"></div>
+		      		</div>
+		      		
+		      		<div class="alert alert-error hide" id="error-block-periodo-listado">
+			    	</div>
+			    	
+			    	<div class="alert alert-info hide" id="info-block-listado">
+						    		<div id="info-message"></div>
+		      		</div>
+      				
+		      			
+      				
+				    </div>
+		     	<div  id="clientes-div">
+		 		    <div id="contenedor" style="width:1100px;">
+				    		<fieldset>
+								  <table border="0">
+								    <tr>
+								    	<td><label for="descripcionperiodo" id="descripcionperiodo-idioma">Descripci&oacuten del Periodo</label></td>
+								    	<td><input id="descripcionperiodo" maxlength="50" style="width:300px;" onkeypress='return validarNumerosLetrasPorcentageEspacio(event);'></input></td>
+								    </tr>
+								</table>
+							</fieldset>
+							
+					</div>
+				</div>
+				<div  id="tab-content">
+		 		    <div id="contenedor" style="width:1100px;">
+		 		   		<a id="buscarperiodo"  class="btn btn-info"><img src="<?= $this->baseUrl() . "/css/images/buscar.png"; ?>" id="buscar-img" title="Buscar"  style="cursor: hand;"/></a>
+		 		   		<a id="nuevoperiodo"  class="btn btn-info"  data-toggle="modal"><img src="<?= $this->baseUrl() . "/css/images/nuevo.png"; ?>" id="nuevo-img" title="Nuevo"  style="cursor: hand;"/></a>
+		 		   </div> 
+				</div>
+				<div id="contenedor" style="width:1100px;">
+				 		<fieldset>
+								  <table border="0">
+								  	<tr>
+								  		<td>
+									  		<div class="tab-content" id="tab-content">
+							                    <!-- DATOS DE IMPUESTOS --->
+							                    		<div id="grillaPaginadorPeriodos">
+							                    			<table id="grillaPeriodos"></table>
+								                    		<div id="paginadorPeriodos"></div>
+								                    	</div>
+								                    	
+								            </div>
+								    	</td>
+							       	</tr>
+								</table>
+							</fieldset>
+				</div>
+				
+ 	</div>	
+	</div>
+	</div>
+	</CENTER>
+</body>
+</html> 
