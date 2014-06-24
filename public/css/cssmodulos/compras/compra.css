@@ -1,0 +1,71 @@
+root {
+    display: block;
+}
+
+td.linkjqgrid A:link {text-decoration: none;}
+td.linkjqgrid A:visited {text-decoration: none;}
+td.linkjqgrid A:active {text-decoration: none;}
+td.linkjqgrid A:hover {text-decoration: underline; color: blue; cursor: pointer;}
+td.linkjqgrid {background-color:#BCE8F1}
+
+#span10 {
+    width: 100%;
+}
+#contenedor {
+   width: 100%;
+}
+/*Agrego para estilizar este menu exclusivamente*/
+#contenedormodal{
+    align:center;
+    padding: 0.5%;
+}
+#modalEditar #modalPagos td {
+    padding-left: 0.5%;
+    padding-right: 0.5%;
+    vertical-align: middle;
+    text-align: center;
+}
+
+#modalEditar #modalPagos table {
+    width: 98%;
+      align:center;
+}
+
+.ItemsValores label {
+
+  max-height: 30px; /*min-height: 30px; ivan*/
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.btn-confirmar{
+    display: inline-block;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.modal {
+    height: auto;
+}
+.filtro label{
+    text-align: center;
+}
+
+.modal-body label{
+    text-align: right;
+}
+.btn-compra {
+  
+  border-color: rgba(0, 0, 0, 0.25) rgba(0, 0, 0, 0.25) rgba(0, 0, 0, 0.25);
+  width: 28px;
+  height: 28px;
+  border-radius:28px;
+  
+}
+
+#estado-filtro{
+  
+ margin-bottom: 0px;
+  
+}
