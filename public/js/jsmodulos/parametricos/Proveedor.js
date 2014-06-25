@@ -1,3 +1,5 @@
+var pathname = window.location.pathname;
+var table = pathname;
 mensajeWarning = new Array(        
 		"",
 		" |  Descripci\u00f3n ",
@@ -128,9 +130,9 @@ function enviarParametrosRegistro(data) {
 
     var urlenvio = '';
     if (data.idRegistro != null && data.idRegistro.length != 0) {
-        urlenvio = table + 'modificar';
+        urlenvio = table + '/modificar';
     } else {
-        urlenvio = table + 'guardar';
+        urlenvio = table + '/guardar';
     }
     var dataString = JSON.stringify(data);
 
@@ -277,7 +279,7 @@ function buscarRegistros() {
         message: "Aguarde un momento por favor"
     });
     $.ajax({
-        url: table + 'buscar',
+        url: table + '/buscar',
         type: 'post',
         data: {"data": dataJson},
         dataType: 'html',

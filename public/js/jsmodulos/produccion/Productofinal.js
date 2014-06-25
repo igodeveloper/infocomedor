@@ -1,3 +1,5 @@
+var pathname = window.location.pathname;
+var table = pathname;
 $().ready(function() {
 	loadAutocompleteProducto();
     $("#buscar-registro").click(function() {
@@ -220,7 +222,7 @@ function obtenerJsonDetalles() {
 
 
 function loadAutocompleteProducto() {
-    $.getJSON("/compras/compra2/productodata", function(data) {
+    $.getJSON(table+"/productodata", function(data) {
         var descripcionProducto = [];
         var codigoProducto = [];
         var descripcionProductoFiltro = [];
@@ -270,7 +272,7 @@ function productvalidation(data) {
     }
     if (dataString.value !== "") {
         $.ajax({
-            url: '/compras/compra2/productvalidationdata',
+            url: table+'/productvalidationdata',
             type: 'post',
             dataType: 'json',
             data: {
@@ -310,7 +312,7 @@ function enviarParametrosRegistros(data) {
     var dataGrillaLength= JSON.stringify(data.grillalength);
     
     var urlenvio = '';
-    urlenvio = '/produccion/productofinal/guardar';
+    urlenvio = table+'/guardar';
     
     $.ajax({
         url: urlenvio,
@@ -349,7 +351,7 @@ function buscar() {
     });
 
     $.ajax({
-        url: '/produccion/productofinal/buscar',
+        url: table+'/buscar',
         type: 'post',
         data: {
             "dataJsonBusqueda": dataJsonBusqueda

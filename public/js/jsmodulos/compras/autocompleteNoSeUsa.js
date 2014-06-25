@@ -1,6 +1,8 @@
+var pathname = window.location.pathname;
+var table = pathname;
 $(document).ready(function() {
 
-    $.getJSON("compra2/proveedordata", function(data) {
+    $.getJSON(table+"/proveedordata", function(data) {
         var nombreProveedor = [];
         var rucProveedor = [];
         var codProveedor = [];

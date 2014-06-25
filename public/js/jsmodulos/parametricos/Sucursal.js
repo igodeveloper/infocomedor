@@ -1,5 +1,6 @@
-
-table = "/parametricos/Sucursal/";
+//table = "/parametricos/Sucursal/";
+var pathname = window.location.pathname;
+var table = pathname;
 mensajeWarning = new Array("Complete una Descripcion por favor","Complete la direccion por favor","Complete el telefono por favor","Complete el nombre del contacto, por favor");
 idCamposGrilla = new Array("id-registro","descripcionBusqueda-modal","direccion-modal","telefono-modal","nombrecontacto-modal");
 
@@ -74,9 +75,9 @@ function enviarParametrosRegistro(data){
 
 	var urlenvio = '';
 	if(data.idRegistro != null && data.idRegistro.length != 0){
-		urlenvio = table+'modificar';
+		urlenvio = table+'/modificar';
 	}else {
-		urlenvio = table+'guardar';
+		urlenvio = table+'/guardar';
 	}
 	var dataString = JSON.stringify(data);
 
@@ -233,7 +234,7 @@ function buscarRegistros(){
         message: "Aguarde un momento por favor"
         });
 	$.ajax({
-        url: table+'buscar',
+        url: table+'/buscar',
         type: 'post',
         data: {"data":dataJson},
         dataType: 'html',

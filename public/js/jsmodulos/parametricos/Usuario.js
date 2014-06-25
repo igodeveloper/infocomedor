@@ -1,4 +1,6 @@
-table = "/parametricos/Usuario/";
+//table = "/parametricos/Usuario/";
+var pathname = window.location.pathname;
+var table = pathname;
 mensajeWarning = new Array("Complete el Nombre por favor","Complete el Apellido por favor","FALTA EL PASSWORD");
 idCamposGrilla = new Array("id-registro","nombreBusqueda-modal","apellido-modal","password-modal");
 
@@ -73,9 +75,9 @@ function enviarParametrosRegistro(data){
 
 	var urlenvio = '';
 	if(data.idRegistro != null && data.idRegistro.length != 0){
-		urlenvio = table+'modificar';
+		urlenvio = table+'/modificar';
 	}else {
-		urlenvio = table+'guardar';
+		urlenvio = table+'/guardar';
 	}
 	var dataString = JSON.stringify(data);
 
@@ -230,7 +232,7 @@ function buscarRegistros(){
         message: "Aguarde un momento por favor"
         });
 	$.ajax({
-        url: table+'buscar',
+        url: table+'/buscar',
         type: 'post',
         data: {"data":dataJson},
         dataType: 'html',

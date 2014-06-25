@@ -1,3 +1,5 @@
+var pathname = window.location.pathname;
+var table = pathname;
 $().ready(function() {
     
     $("#buscar-registro").click(function() {
@@ -224,7 +226,7 @@ function obtenerJsonDetalles() {
 
 
 function loadAutocompleteProducto() {
-    $.getJSON("/compras/compra2/productodata", function(data) {
+    $.getJSON(table+"/productodata", function(data) {
         var descripcionProducto = [];
         var codigoProducto = [];
 
@@ -265,7 +267,7 @@ function productvalidation(data) {
     }
     if (dataString.value !== "") {
         $.ajax({
-            url: '/compras/compra2/productvalidationdata',
+            url: table+'/productvalidationdata',
             type: 'post',
             dataType: 'json',
             data: {
@@ -305,7 +307,7 @@ function enviarParametrosRegistros(data) {
     var dataRecetaDetalleItem = JSON.stringify(data.RecetaDetalleItem);
 //    alert(data.Receta.codigoReceta);
     var urlenvio = '';
-    urlenvio = '/produccion/receta/guardar';
+    urlenvio = table+'/guardar';
     
     $.ajax({
         url: urlenvio,
@@ -344,7 +346,7 @@ function buscar() {
     });
 
     $.ajax({
-        url: '/produccion/receta/buscar',
+        url: table+'/buscar',
         type: 'post',
         data: {
             "dataJsonBusqueda": dataJsonBusqueda
@@ -382,7 +384,7 @@ function editarRegistro(parametros) {
 
 function cargargrillamodal(parametros){
     $.ajax({
-        url: '/produccion/receta/modaleditar',
+        url: table+'/modaleditar',
         type: 'post',
         data: {
             "codigo_receta": parametros.COD_RECETA

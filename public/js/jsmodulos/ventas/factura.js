@@ -1,3 +1,5 @@
+var pathname = window.location.pathname;
+var table = pathname;
 $().ready(function() {
     formatearFechas();
     $("#cargar-karrito").click(function() {
@@ -134,7 +136,7 @@ $().ready(function() {
         }
     });
 
-    $.getJSON("factura/clientedata", function(data) {
+    $.getJSON(table+"/clientedata", function(data) {
         var nombreCliente = [];
         var rucCliente = [];
         var codCliente = [];
@@ -235,7 +237,7 @@ function checkvalues(){
 function finditems(data){
 //	alert(JSON.stringify(data));
     $.ajax({
-        url: '/ventas/factura/getkarritodata',
+        url: table+'/getkarritodata',
         type: 'post',
         dataType: 'json',
         data: {
@@ -471,7 +473,7 @@ function validacliente(data, what) {
     }
     if (dataString.value !== "") {
         $.ajax({
-            url: '/ventas/factura/validaclientedata',
+            url: table+'/validaclientedata',
             type: 'post',
             dataType: 'json',
             data: {
@@ -526,7 +528,7 @@ function blockclientdata(action) {
 }
 
 function loadAutocompleteProducto() {
-    $.getJSON("factura/productodata", function(data) {
+    $.getJSON(table+"/productodata", function(data) {
         var descripcionProducto = [];
         var codigoProducto = [];
 
@@ -572,7 +574,7 @@ function productvalidation(data) {
     }
     if (dataString.value !== "") {
         $.ajax({
-            url: '/ventas/karrito/productoFinalData',
+            url: table+'/productoFinalData',
             type: 'post',
             dataType: 'json',
             data: {
@@ -633,7 +635,7 @@ function enviarParametros(data) {
 	var dataVenta = JSON.stringify(data.venta);
 	var dataVentaDetalle = JSON.stringify(data.ventaDetalle);
     $.ajax({
-        url: '/ventas/factura/guardar',
+        url: table+'/guardar',
         type: 'post',
         data: {"dataVenta": dataVenta, "dataVentaDetalle": dataVentaDetalle},
         dataType: 'json',
@@ -668,7 +670,7 @@ function buscar() {
     });
 
     $.ajax({
-        url: '/ventas/factura/buscar',
+        url: table+'/buscar',
         type: 'post',
         data: {
             "dataJsonBusqueda": dataJsonBusqueda
@@ -721,7 +723,7 @@ function editarRegistro(parametros) {
 function loadGridDetails(factura){
 	
 	 $.ajax({
-	        url: '/ventas/factura/modaleditar',
+	        url: table+'/modaleditar',
 	        type: 'post',
 	        data: {
 	            "NumeroInterno": factura
@@ -746,7 +748,7 @@ function loadGridDetails(factura){
 function cargarPagos(facturaCompra) {
 
     $.ajax({
-        url: '/compras/compra2/modalpagos',
+        url: table+'/modalpagos',
         type: 'post',
         data: {
             "NumeroInterno": facturaCompra

@@ -1,3 +1,5 @@
+var pathname = window.location.pathname;
+var table = pathname;
 $().ready(function() {
 	loadAutocompleteProducto();
     $("#buscar-registro").click(function() {
@@ -69,7 +71,7 @@ $().ready(function() {
 }); // cerramos el ready de js
 function print_pdf(){
 	$.ajax({
-        url: '/produccion/inventario/printpdf',
+        url: table+'/printpdf',
         type: 'post',
         dataType: 'json',
         data: {
@@ -241,7 +243,7 @@ function obtenerJsonDetalles() {
 
 
 function loadAutocompleteProducto() {
-    $.getJSON("/compras/compra2/productodata", function(data) {
+    $.getJSON(table+"/productodata", function(data) {
         var descripcionProducto = [];
         var codigoProducto = [];
         var descripcionProductoFiltro = [];
@@ -287,7 +289,7 @@ function productvalidation(data) {
     }
     if (dataString.value !== "") {
         $.ajax({
-            url: '/compras/compra2/productvalidationdata',
+            url: table+'/productvalidationdata',
             type: 'post',
             dataType: 'json',
             data: {
@@ -320,7 +322,7 @@ function enviarParametrosRegistros(data) {
     var inventario= JSON.stringify(data.inventario);
     
     var urlenvio = '';
-    urlenvio = '/produccion/inventario/guardar';
+    urlenvio = table+'/guardar';
     
     $.ajax({
         url: urlenvio,
@@ -369,7 +371,7 @@ function buscar() {
     });
 
     $.ajax({
-        url: '/produccion/inventario/buscar',
+        url: table+'/buscar',
         type: 'post',
         data: {
             "data": dataJsonBusqueda
@@ -490,7 +492,7 @@ function modalInventario(parametros) {
 function cargarInventario(nro_inventario) {
 
     $.ajax({
-        url: '/produccion/inventario/modalinventario',
+        url: table+'/modalinventario',
         type: 'post',
         data: {
             "nro_inventario": nro_inventario
@@ -513,7 +515,7 @@ function cargarInventario(nro_inventario) {
 function buscarProductos(tipoproducto){  
     if(tipoproducto != 0){
 $.ajax({
-            url: '/produccion/inventario/cargagrillaproducto',
+            url: table+'/cargagrillaproducto',
             type: 'post',
             data: {"data": tipoproducto},
             dataType: 'json',
@@ -543,7 +545,7 @@ function cargartipoproducto(){
     
 //  alert('Tipo Producto');
     $.ajax({
-        url: '/produccion/inventario/cargartipoproducto',
+        url: table+'/cargartipoproducto',
         type: 'post',
         dataType: 'html',
         async : false,

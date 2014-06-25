@@ -1,3 +1,5 @@
+var pathname = window.location.pathname;
+var table = pathname;
 $().ready(function() {
     $('#descripcionproducto-filtro').attr("value",null);
 	$("#buscarregistro").click(function() {
@@ -71,9 +73,9 @@ function enviarParametrosRegistro(data){
 
 	var urlenvio = '';
 	if(data.COD_CLIENTE !== null && data.COD_CLIENTE.length !== 0){
-		urlenvio = '/parametricos/cliente/modificar';
+		urlenvio = table+'/modificar';
 	}else {
-		urlenvio = '/parametricos/cliente/guardar';
+		urlenvio = table+'/guardar';
 	}
 	var dataString = JSON.stringify(data);
 
@@ -233,7 +235,7 @@ function buscarRegistros(){
         message: "Aguarde un momento por favor"
         });
 	$.ajax({
-        url: '/parametricos/cliente/buscar',
+        url: table+'/buscar',
         type: 'post',
         data: {"data":dataJson},
         dataType: 'html',
@@ -305,7 +307,7 @@ function cargarempresacliente(){
 	
 //	alert('Tipo Producto');
 	$.ajax({
-        url: '/parametricos/cliente/empresacliente',
+        url: table+'/empresacliente',
         type: 'post',
         dataType: 'html',
         async : false,

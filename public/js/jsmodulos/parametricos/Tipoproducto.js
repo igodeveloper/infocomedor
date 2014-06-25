@@ -1,3 +1,5 @@
+var pathname = window.location.pathname;
+var table = pathname;
 $().ready(function() {
         $('#descripciontipoproducto-filtro').attr("value",null);
 	$("#buscarregistro").click(function() {
@@ -70,9 +72,9 @@ function enviarParametrosRegistro(data){
 
 	var urlenvio = '';
 	if(data.COD_TIPO_PRODUCTO !== null && data.COD_TIPO_PRODUCTO.length !== 0){
-		urlenvio = '/parametricos/tipoproducto/modificar';
+		urlenvio = table+'/modificar';
 	}else {
-		urlenvio = '/parametricos/tipoproducto/guardar';
+		urlenvio = table+'/guardar';
 	}
 	var dataString = JSON.stringify(data);
 
@@ -210,7 +212,7 @@ function buscarRegistros(){
         message: "Aguarde un momento por favor"
         });
 	$.ajax({
-        url: '/parametricos/tipoproducto/buscar',
+        url: table+'/buscar',
         type: 'post',
         data: {"data":dataJson},
         dataType: 'html',

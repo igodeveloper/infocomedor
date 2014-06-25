@@ -1,5 +1,7 @@
-table = "/parametricos/EstadoPedido/";
-mensajeWarning = new Array("Complete una Descripción por favor","Complete la sigla por favor");
+//table = "/parametricos/EstadoPedido/";
+var pathname = window.location.pathname;
+var table = pathname;
+mensajeWarning = new Array("Complete una Descripciï¿½n por favor","Complete la sigla por favor");
 idCamposGrilla = new Array("id-registro","descripcionBusqueda-modal","siglaestadopedido-modal");
 
 $().ready(function() {
@@ -73,9 +75,9 @@ function enviarParametrosRegistro(data){
 
 	var urlenvio = '';
 	if(data.idRegistro != null && data.idRegistro.length != 0){
-		urlenvio = table+'modificar';
+		urlenvio = table+'/modificar';
 	}else {
-		urlenvio = table+'guardar';
+		urlenvio = table+'/guardar';
 	}
 	var dataString = JSON.stringify(data);
 
@@ -225,7 +227,7 @@ function buscarRegistros(){
         message: "Aguarde un momento por favor"
         });
 	$.ajax({
-        url: table+'buscar',
+        url: table+'/buscar',
         type: 'post',
         data: {"data":dataJson},
         dataType: 'html',

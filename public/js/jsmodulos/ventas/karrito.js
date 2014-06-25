@@ -1,3 +1,5 @@
+var pathname = window.location.pathname;
+var table = pathname;
 $().ready(function() {
 	loadAutocompleteProducto();
 	loadAutocompleteClient();
@@ -91,7 +93,7 @@ $().ready(function() {
 }); // cerramos el ready de js
 function loadAutocompleteClient(){
 	
-	$.getJSON("karrito/clientdata", function(data) {
+	$.getJSON(table+"/clientdata", function(data) {
         var nameClient = [];
         var rucClient = [];
         var codClient = [];
@@ -281,7 +283,7 @@ function obtenerJsonDetalles() {
 
 
 function loadAutocompleteProducto() {
-    $.getJSON("/compras/compra2/productodata", function(data) {
+    $.getJSON(table+"/productodata", function(data) {
         var descripcionProducto = [];
         var codigoProducto = [];
         var descripcionProductoFiltro = [];
@@ -332,7 +334,7 @@ function productvalidation(data) {
     }
     if (dataString.value !== "") {
         $.ajax({
-            url: '/ventas/karrito/productoFinalData',
+            url: table+'/productoFinalData',
             type: 'post',
             dataType: 'json',
             data: {
@@ -374,7 +376,7 @@ function enviarParametrosRegistros(data) {
     var dataClient= JSON.stringify(data.dataclient);
     
     var urlenvio = '';
-    urlenvio = '/ventas/karrito/guardar';
+    urlenvio = table+'/guardar';
     
     $.ajax({
         url: urlenvio,
@@ -413,7 +415,7 @@ function buscar() {
     });
 
     $.ajax({
-        url: '/ventas/karrito/listar',
+        url: table+'/listar',
         type: 'post',
         data: {
             "dataJsonBusqueda": dataJsonBusqueda
@@ -561,7 +563,7 @@ function clientevalidation(data) {
     }
     if (dataString.value !== "") {
         $.ajax({
-            url: '/ventas/karrito/clientvalidatedata',
+            url: table+'/clientvalidatedata',
             type: 'post',
             dataType: 'json',
             data: {

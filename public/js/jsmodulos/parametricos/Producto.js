@@ -1,3 +1,5 @@
+var pathname = window.location.pathname;
+var table = pathname;
 $().ready(function() {
     $('#descripcionproducto-filtro').attr("value",null);
 	$("#buscarregistro").click(function() {
@@ -69,9 +71,9 @@ function enviarParametrosRegistro(data){
 
 	var urlenvio = '';
 	if(data.COD_PRODUCTO !== null && data.COD_PRODUCTO.length !== 0){
-		urlenvio = '/parametricos/producto/modificar';
+		urlenvio = table+'/modificar';
 	}else {
-		urlenvio = '/parametricos/producto/guardar';
+		urlenvio = table+'/guardar';
 	}
 	var dataString = JSON.stringify(data);
 
@@ -239,7 +241,7 @@ function buscarRegistros(){
         message: "Aguarde un momento por favor"
         });
 	$.ajax({
-        url: '/parametricos/producto/buscar',
+        url: table+'/buscar',
         type: 'post',
         data: {"data":dataJson},
         dataType: 'html',
@@ -309,7 +311,7 @@ function cargarTipoProducto(){
 	
 //	alert('Tipo Producto');
 	$.ajax({
-        url: '/parametricos/producto/tipoproducto',
+        url: table+'/tipoproducto',
         type: 'post',
         dataType: 'html',
         async : false,
@@ -330,7 +332,7 @@ function cargarUnidadMedida(){
 	
 //	alert('Unidad Medida');
 	$.ajax({
-        url: '/parametricos/producto/unidadmedida',
+        url: table+'/unidadmedida',
         type: 'post',
         dataType: 'html',
         async : false,
@@ -352,7 +354,7 @@ function cargarReceta(){
 	
 //	alert('Tipo Producto');
 	$.ajax({
-        url: '/parametricos/producto/receta',
+        url: table+'/receta',
         type: 'post',
         dataType: 'html',
         async : false,
@@ -373,7 +375,7 @@ function cargarImpuesto(){
 	
 //	alert('Tipo Producto');
 	$.ajax({
-        url: '/parametricos/producto/impuesto',
+        url: table+'/impuesto',
         type: 'post',
         dataType: 'html',
         async : false,

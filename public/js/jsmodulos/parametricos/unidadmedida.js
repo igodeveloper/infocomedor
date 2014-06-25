@@ -1,4 +1,6 @@
-table = "/parametricos/unidadmedida/";
+//table = "/parametricos/unidadmedida/";
+var pathname = window.location.pathname;
+var table = pathname;
 mensajeWarning = new Array("Complete una Descripcion por favor","Complete el simbolo ISO por favor");
 //aqui tiene que ir lo mismo que va en index.phtml
 idCamposGrilla = new Array("id-registro","descripcionBusqueda-modal","isounidadmedida-modal");
@@ -74,9 +76,9 @@ function enviarParametrosRegistro(data){
 	
 	var urlenvio = '';
 	if(data.idRegistro != null && data.idRegistro.length != 0){
-		urlenvio = table+'modificar';
+		urlenvio = table+'/modificar';
 	}else {
-		urlenvio = table+'guardar';
+		urlenvio = table+'/guardar';
 	}
 	var dataString = JSON.stringify(data);
 	
@@ -227,7 +229,7 @@ function buscarRegistros(){
         message: "Aguarde un momento por favor"
         });
 	$.ajax({
-        url: table+'buscar',
+        url: table+'/buscar',
         type: 'post',
         data: {"data":dataJson},
         dataType: 'html',
