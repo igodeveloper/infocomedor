@@ -246,7 +246,7 @@ function cargarLinkModificar(cellvalue, options, rowObject)
     parametros.emailProveedor = rowObject[7];
     parametros.limitecreditoProveedor = rowObject[8];
     json = JSON.stringify(parametros);
-    return "<a><img title='Editar' src='../../css/images/edit.png' data-toggle='modal'  onclick='editarRegistro(" + json + ");'/></a>";
+    return "<a><img title='Editarrrr' src='../../css/images/edit.png' data-toggle='modal'  onclick='editarRegistro(" + json + ");'/></a>";
 }
 
 
