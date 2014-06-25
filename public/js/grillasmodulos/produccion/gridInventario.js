@@ -1,3 +1,5 @@
+var pathname = window.location.pathname;
+var table = pathname;
 $(document).ready(function() {
     cargarGrillaRegistro();
     cargarGrillaRegistroModal();
@@ -30,7 +32,7 @@ function bloquearPantalla() {
 function cargarGrillaRegistro() {
     jQuery("#grillaRegistro").jqGrid(
             {
-                url: "/produccion/inventario/buscar",
+                url: table+"/buscar",
                 datatype: "json",
                 mtype: "POST",
                 beforeRequest: bloquearPantalla,
@@ -321,5 +323,5 @@ function cargarLinkModificar(cellvalue, options, rowObject)
     parametros.INVENTARIO_SALDO = rowObject[8];
 //    console.log(JSON.stringify(parametros.ESTADO));
     json = JSON.stringify(parametros);
-    return "<a><img title='EDITAR' src='/css/images/edit.png' data-toggle='modal'  onclick='modalInventario(" + json + ");'/></a>";
+    return "<a><img title='EDITAR' src='../../css/images/edit.png' data-toggle='modal'  onclick='modalInventario(" + json + ");'/></a>";
 }

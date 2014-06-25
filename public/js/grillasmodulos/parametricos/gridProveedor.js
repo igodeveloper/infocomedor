@@ -1,6 +1,8 @@
 agrupamientoGrids = "";
 primeraVez = true;
-table = "/parametricos/Proveedor/";
+//table = "/parametricos/Proveedor/";
+var pathname = window.location.pathname;
+var table = pathname;
 campos = new Array('DESCRIPCION', 'RUC', 'DIRECCION', 'TELEFONO', 'CONTACTO', 'EMAIL', 'LIMITE CREDITO');
 camposId = new Array('DescripcionId', 'RucId', 'DireccionId', 'TelefonoId', 'ContactoId', 'EmailId', 'LimiteCreditoId');
 
@@ -41,7 +43,7 @@ function desbloquearPantalla() {
  */
 function cargarGrillaRegistro() {
     jQuery("#grillaRegistro").jqGrid({
-        "url": table + 'listar',
+        "url": table + '/listar',
         "mtype": "POST",
         "refresh": true,
         "datatype": "json",
@@ -204,7 +206,7 @@ function borrar() {
             return;
 
         $.ajax({
-            url: table + 'eliminar',
+            url: table + '/eliminar',
             type: 'post',
             data: {"id": id},
             dataType: 'json',
@@ -244,7 +246,7 @@ function cargarLinkModificar(cellvalue, options, rowObject)
     parametros.emailProveedor = rowObject[7];
     parametros.limitecreditoProveedor = rowObject[8];
     json = JSON.stringify(parametros);
-    return "<a><img title='Editar' src='/css/images/edit.png' data-toggle='modal'  onclick='editarRegistro(" + json + ");'/></a>";
+    return "<a><img title='Editar' src='../../css/images/edit.png' data-toggle='modal'  onclick='editarRegistro(" + json + ");'/></a>";
 }
 
 

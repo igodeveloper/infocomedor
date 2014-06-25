@@ -1,4 +1,5 @@
-
+var pathname = window.location.pathname;
+var table = pathname;
 $(document).ready(function() {
     cargarGrillaRegistro();
     cargarGrillaRegistroModal();
@@ -26,7 +27,7 @@ function bloquearPantalla() {
 function cargarGrillaRegistro() {
     jQuery("#grillaRegistro").jqGrid(
             {
-                url: "/ventas/karrito/listar",
+                url: table+"/listar",
                 datatype: "json",
                 mtype: "POST",
                 beforeRequest: bloquearPantalla,
@@ -313,7 +314,7 @@ function anularPedido()
         else if (parametrosPagos.ESTADO == 'PE' && parametrosPagos.FACT_NRO == 0 ) {
             var codigokarrito = parametrosPagos.COD_KARRITO;
             $.ajax({
-                url: '/ventas/karrito/anularpedido',
+                url: table+'/anularpedido',
                 type: 'post',
                 data: {"codigokarrito": codigokarrito},
                 dataType: 'json',

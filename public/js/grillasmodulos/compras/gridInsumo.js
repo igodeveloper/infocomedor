@@ -1,6 +1,8 @@
+var pathname = window.location.pathname;
+var table = pathname;
 agrupamientoGrids = "";
 primeraVez = true;
-table = "/compras/Insumo/";
+//table = "/compras/Insumo/";
 campos = new Array('Descripci&oacuten', 'Tipo Insumo');
 camposId = new Array('DescripcionId', 'TipoInsumo');
 
@@ -36,7 +38,7 @@ function desbloquearPantalla() {
  */
 function cargarGrillaRegistro() {
 	jQuery("#grillaRegistro").jqGrid({
-		"url":table+'listar',
+		"url":table+'/listar',
 		"mtype" : "POST",
        	"refresh": true,
        	"datatype" :"json",
@@ -138,7 +140,7 @@ function borrar(){
 			return;
 
 		$.ajax({
-	        url: table+'eliminar',
+	        url: table+'/eliminar',
 	        type: 'post',
 	        data: {"id":id},
 	        dataType: 'json',

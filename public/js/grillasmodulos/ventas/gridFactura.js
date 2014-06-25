@@ -1,3 +1,5 @@
+var pathname = window.location.pathname;
+var table = pathname;
 $(document).ready(function() {
     cargarGrillaFacturas();
     cargarGrillaFacturasModal();
@@ -25,7 +27,7 @@ function bloquearPantalla() {
 function cargarGrillaFacturas() {
     jQuery("#grillaCompras").jqGrid(
             {
-                url: "/ventas/factura/buscar",
+                url: table+"/buscar",
                 datatype: "json",
                 mtype: "POST",
                 beforeRequest: bloquearPantalla,
@@ -333,7 +335,7 @@ function cargarLinkModificar(cellvalue, options, rowObject)
    
 //    console.log(JSON.stringify(parametros.ESTADO));
     json = JSON.stringify(parametros);
-    return "<a><img title='EDITAR' src='/css/images/edit.png' data-toggle='modal'  onclick='editarRegistro(" + json + ");'/></a>";
+    return "<a><img title='EDITAR' src='../../css/images/edit.png' data-toggle='modal'  onclick='editarRegistro(" + json + ");'/></a>";
 }
 
 

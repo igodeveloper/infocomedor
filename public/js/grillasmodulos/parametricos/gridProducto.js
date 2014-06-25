@@ -1,3 +1,5 @@
+var pathname = window.location.pathname;
+var table = pathname;
 $(document).ready(function(){
 	cargarGrillaRegistro();
 });
@@ -23,7 +25,7 @@ function desbloquearPantalla() {
  */
 function cargarGrillaRegistro() {
 	jQuery("#grillaRegistro").jqGrid({
-        "url":'/parametricos/producto/listar',
+        "url":table+'/listar',
         "mtype" : "POST",
        	"refresh": true,
        	"datatype" :"json",
@@ -222,7 +224,7 @@ function borrar(){
 			return;
 
 		$.ajax({
-	        url: '/parametricos/producto/eliminar',
+	        url: table+'/eliminar',
 	        type: 'post',
 	        data: {"id":id},
 	        dataType: 'json',
@@ -265,5 +267,5 @@ function cargarLinkModificar ( cellvalue, options, rowObject )
 	parametros.IMP_PORCENTAJE = rowObject[10];
 	parametros.PRECIO_VENTA = rowObject[11];
 	json = JSON.stringify(parametros);
-	return "<a><img title='Editar' src='/css/images/edit.png' data-toggle='modal'  onclick='editarRegistro("+json+");'/></a>";
+	return "<a><img title='Editar' src='../../css/images/edit.png' data-toggle='modal'  onclick='editarRegistro("+json+");'/></a>";
 }

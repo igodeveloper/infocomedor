@@ -1,6 +1,8 @@
 agrupamientoGrids = "";
 primeraVez = true;
-table = "/parametricos/Empresa/";
+//table = "/parametricos/Empresa/";
+var pathname = window.location.pathname;
+var table = pathname;
 campos = new Array('DESCRIPCION', 'RUC','DIRECCION');
 camposId = new Array('DescripcionId', 'RUCId','DireccionId');
 
@@ -36,7 +38,7 @@ function desbloquearPantalla() {
  */
 function cargarGrillaRegistro() {
 	jQuery("#grillaRegistro").jqGrid({
-		"url":table+'listar',
+		"url":table+'/listar',
 		"mtype" : "POST",
        	"refresh": true,
        	"datatype" :"json",
@@ -150,7 +152,7 @@ function borrar(){
 			return;
 
 		$.ajax({
-	        url: table+'eliminar',
+	        url: table+'/eliminar',
 	        type: 'post',
 	        data: {"id":id},
 	        dataType: 'json',
@@ -188,7 +190,7 @@ function cargarLinkModificar ( cellvalue, options, rowObject )
         parametros.telefonoEmpresa = rowObject[5];
         parametros.nombrecontactoEmpresa = rowObject[6];       
 	json = JSON.stringify(parametros); 
-	return "<a><img title='Editar' src='/css/images/edit.png' data-toggle='modal'  onclick='editarRegistro("+json+");'/></a>";
+	return "<a><img title='Editar' src='../../css/images/edit.png' data-toggle='modal'  onclick='editarRegistro("+json+");'/></a>";
 }
 
 

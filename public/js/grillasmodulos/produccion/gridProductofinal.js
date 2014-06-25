@@ -1,4 +1,5 @@
-
+var pathname = window.location.pathname;
+var table = pathname;
 $(document).ready(function() {
     cargarGrillaRegistro();
     cargarGrillaRegistroModal();
@@ -26,7 +27,7 @@ function bloquearPantalla() {
 function cargarGrillaRegistro() {
     jQuery("#grillaRegistro").jqGrid(
             {
-                url: "/produccion/productofinal/listar",
+                url: table+"/listar",
                 datatype: "json",
                 mtype: "POST",
                 beforeRequest: bloquearPantalla,

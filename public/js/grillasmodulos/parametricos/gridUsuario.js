@@ -1,6 +1,8 @@
 agrupamientoGrids = "";
 primeraVez = true;
-table = "/parametricos/Usuario/";
+//table = "/parametricos/Usuario/";
+var pathname = window.location.pathname;
+var table = pathname;
 campos = new Array('NOMBRE','APELLIDO','PASSWORD');
 camposId = new Array('NombreId','ApellidoId','PasswordId');
 
@@ -36,7 +38,7 @@ function desbloquearPantalla() {
  */
 function cargarGrillaRegistro() {
 	jQuery("#grillaRegistro").jqGrid({
-		"url":table+'listar',
+		"url":table+'/listar',
 		"mtype" : "POST",
        	"refresh": true,
        	"datatype" :"json",
@@ -139,7 +141,7 @@ function borrar(){
 			return;
 
 		$.ajax({
-	        url: table+'eliminar',
+	        url: table+'/eliminar',
 	        type: 'post',
 	        data: {"id":id},
 	        dataType: 'json',
@@ -176,7 +178,7 @@ function cargarLinkModificar ( cellvalue, options, rowObject )
 	parametros.passwordUsuario = rowObject[4];
        
 	json = JSON.stringify(parametros);
-	return "<a><img title='Editar' src='/css/images/edit.png' data-toggle='modal'  onclick='editarRegistro("+json+");'/></a>";
+	return "<a><img title='Editar' src='../../css/images/edit.png' data-toggle='modal'  onclick='editarRegistro("+json+");'/></a>";
 }
 
 
