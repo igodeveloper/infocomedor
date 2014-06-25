@@ -1,4 +1,5 @@
-
+var pathname = window.location.pathname;
+var table = pathname;
 $(document).ready(function() {
     cargarGrillaCompras();
     cargarGrillaComprasModal();
@@ -27,7 +28,7 @@ function bloquearPantalla() {
 function cargarGrillaCompras() {
     jQuery("#grillaCompras").jqGrid(
             {
-                url: "/compras/compra2/listar",
+                url: table+"/listar",
                 datatype: "json",
                 mtype: "POST",
                 beforeRequest: bloquearPantalla,
@@ -471,7 +472,7 @@ function cargarLinkModificar(cellvalue, options, rowObject)
     parametros.ESTADO = rowObject[13];
 //    console.log(JSON.stringify(parametros.ESTADO));
     json = JSON.stringify(parametros);
-    return "<a><img title='EDITAR' src='/css/images/edit.png' data-toggle='modal'  onclick='editarRegistro(" + json + ");'/></a>";
+    return "<a><img title='EDITAR' src='../../css/images/edit.png' data-toggle='modal'  onclick='editarRegistro(" + json + ");'/></a>";
 }
 
 function modalPagos(cellvalue, options, rowObject)
@@ -495,7 +496,7 @@ function modalPagos(cellvalue, options, rowObject)
     json = JSON.stringify(parametros);
 
     
-        return "<a><img title=PAGAR src='/css/images/pago_boton.png' data-toggle='modal'  onclick='pagos(" + json + ");'/></a>";    
+        return "<a><img title=PAGAR src='../../css/images/pago_boton.png' data-toggle='modal'  onclick='pagos(" + json + ");'/></a>";    
 }
 function anularPago()
 {
@@ -516,7 +517,7 @@ function anularPago()
         if (parametrosPagos.ESTADO_PAGO == 'ACTIVO') {
             parametrosPagos = JSON.stringify(parametrosPagos);
             $.ajax({
-                url: '/compras/compra2/anulacionpago',
+                url: table+'/anulacionpago',
                 type: 'post',
                 data: {"parametrosPagos": parametrosPagos},
                 dataType: 'json',
@@ -558,7 +559,7 @@ function anularcompra()
         else if (estado == 'ACTIVO') {
            
             $.ajax({
-                url: '/compras/compra2/anularcompra',
+                url: table+'/anularcompra',
                 type: 'post',
                 data: {"nrofactura": nrofactura},
                 dataType: 'json',
