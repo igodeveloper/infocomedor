@@ -22,6 +22,10 @@ $().ready(function() {
     $("#nuevoregistro").click(function() {
 		cajaAbierta();
 		$('#modalEditar').show();
+                $('#montoentrantecaja-modal-idioma').hide();
+                $('#montoentrantecaja-modal').hide();
+                $('#montosalientecaja-modal-idioma').hide();
+                $('#montosalientecaja-modal').hide();
 		limpiarFormulario();
 		cargarUsuarioCaja();
 		$("#contenedorcierrecaja-modal").css("display", "none");
@@ -295,6 +299,11 @@ function editarRegistro(parametros){
 	cargarCierreCaja();
 	$("#guardar-registro").html("Cerrar Caja");
 	$("#contenedorcierrecaja-modal").css("display", "block");
+        
+        $('#montoentrantecaja-modal-idioma').css("display", "block");
+        $('#montoentrantecaja-modal').css("display", "block");
+        $('#montosalientecaja-modal-idioma').css("display", "block");
+        $('#montosalientecaja-modal').css("display", "block");
 }
 
 function limpiarFormulario(){

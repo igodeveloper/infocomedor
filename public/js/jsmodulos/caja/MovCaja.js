@@ -298,7 +298,9 @@ function cajaAbierta(){
 				$('#codigousuariocaja-modal').attr("value",respuesta.cod_usuario);
 				$('#nombreusuariocaja-modal').attr("value",respuesta.nombre_apellido);
 				$('#fechaaperturacaja-modal').attr("value",respuesta.fecha_hora_apertura);
-        	}
+        	}else if(respuesta.resultado == 'cerrado'){
+                    mostarVentana("error-title","No existe caja abierta");
+                }
         },
         error: function(event, request, settings){
          //   $.unblockUI();

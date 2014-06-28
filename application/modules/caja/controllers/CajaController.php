@@ -302,8 +302,8 @@ class Caja_CajaController extends Zend_Controller_Action
                                                                 'D.cod_usuario_caja',
                                  'D.fecha_hora_apertura',
                                  'D.monto_caja_apertura',))
-                                        ->join(array('M' => 'mov_caja'), 'M.cod_caja = D.cod_caja',array('total_monto_mov' =>'SUM(M.monto_mov)'))
-                                        ->join(array('T' => 'tipo_movimiento'), 'T.cod_tipo_mov = M.cod_tipo_mov',array('T.tipo_mov'))
+                    ->joinLeft(array('M' => 'mov_caja'), 'M.cod_caja = D.cod_caja',array('total_monto_mov' =>'SUM(M.monto_mov)'))
+                    ->joinLeft(array('T' => 'tipo_movimiento'), 'T.cod_tipo_mov = M.cod_tipo_mov',array('T.tipo_mov'))
                     ->where("D.cod_caja = ".$cod_caja)
                                         ->group('C.nombre_apellido')
                                         ->group('D.cod_caja')
