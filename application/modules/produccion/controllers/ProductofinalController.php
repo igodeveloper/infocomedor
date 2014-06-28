@@ -83,6 +83,18 @@ class Produccion_ProductofinalController extends Zend_Controller_Action {
         $pagina = self::obtenerPaginas($result, $cantidadFilas, $page);
         echo $this->_helper->json($pagina);
     }
+    public function productodataAction() {
+//        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $select = $db->select()
+                ->from(array('P' => 'PRODUCTO'))
+                ->order(array('P.PRODUCTO_DESC'));
+//        print_r($select);die();
+        $result = $db->fetchAll($select);
+
+        echo json_encode($result);
+    }    
 private function obtenerPaginas($result, $cantidadFilas, $page) {
         $this->_paginator = Zend_Paginator::factory($result);
         $this->_paginator->setItemCountPerPage($cantidadFilas);
@@ -123,7 +135,45 @@ private function obtenerPaginas($result, $cantidadFilas, $page) {
         }
         return $pagina;
     }
-    
+   public function productvalidationdataAction() {
+//        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
+
+        $datos = $this->getRequest()->getParam("parametro");
+        $getvalue = trim($datos["value"]);
+        $getreference = $datos["reference"];
+        switch ($getreference) {
+            case 'cod':
+                $where = "P.COD_PRODUCTO=" . $getvalue;
+                break;
+            case 'descripcion':
+                $where = "P.PRODUCTO_DESC= '" . $getvalue . "'";
+                break;
+        }
+
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $select = $db->select()
+                ->from(array('P' => 'PRODUCTO'), array('P.COD_PRODUCTO', 'P.PRODUCTO_DESC', 
+                									   'P.COD_UNIDAD_MEDIDA', 'U.ISO_UNIDAD_MEDIDA',
+                                                       'S.SALDO_STOCK','P.PRECIO_VENTA'))
+                ->distinct(true)
+                ->join(array('U' => 'UNIDAD_MEDIDA'), 'P.COD_UNIDAD_MEDIDA = U.COD_UNIDAD_MEDIDA', array())
+                ->joinLeft(array('S' => 'STOCK'), 'S.COD_PRODUCTO = P.COD_PRODUCTO', array())
+                ->where($where);
+        $result = $db->fetchAll($select);
+
+        foreach ($result as $value) {
+            $descripcionProducto = utf8_encode(trim($value ['PRODUCTO_DESC']));
+            $codProducto = $value ['COD_PRODUCTO'];
+            $uniMedidaCod = $value ['COD_UNIDAD_MEDIDA'];
+            $uniMedidaDesc = utf8_encode(trim($value ['ISO_UNIDAD_MEDIDA']));
+            $saldo_producto = $value ['SALDO_STOCK'];
+             $precio_venta = $value ['PRECIO_VENTA'];
+            $option = array("cod" => $codProducto, "descripcion" => $descripcionProducto, 
+            				"unimedcod" => $uniMedidaCod, "unimeddesc" => $uniMedidaDesc, "saldo" => $saldo_producto, "precioventa" =>$precio_venta );
+        }
+        echo json_encode($option);
+    }   
 public function guardarAction() {
 
 //		$this->_helper->layout->disableLayout();
