@@ -68,7 +68,18 @@ class Produccion_RecetaController extends Zend_Controller_Action {
         }
         return $pagina;
     }
-    
+    public function productodataAction() {
+//        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $select = $db->select()
+                ->from(array('P' => 'PRODUCTO'))
+                ->order(array('P.PRODUCTO_DESC'));
+//        print_r($select);die();
+        $result = $db->fetchAll($select);
+
+        echo json_encode($result);
+    }    
 public function guardarAction() {
 
 //		$this->_helper->layout->disableLayout();

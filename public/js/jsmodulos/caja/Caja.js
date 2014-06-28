@@ -20,19 +20,40 @@ $().ready(function() {
 
 
     $("#nuevoregistro").click(function() {
-		cajaAbierta();
+		//cajaAbierta();
+//	alert('Unidad Medida');
+	$.ajax({
+            url: table+'/cajaabiertadata',
+            type: 'post',
+            dataType: 'json',
+            async : false,
+            success: function(respuesta){            
+                if(respuesta.resultado == 'error'){
+                        mostarVentana("error-title","Ocurrio Error");
+                }else if(respuesta.resultado != 'cerrado'){
+                    //alert("Ya existe una caja abierta. Usuario : "+respuesta.nombre_apellido+" Fecha : "+respuesta.fecha_hora_apertura);
+                    //exit;
+                    mostarVentana("warning-block-title","Ya existe una caja abierta. Usuario : "+respuesta.nombre_apellido+" Fecha : "+respuesta.fecha_hora_apertura);
+                    return;                                
+                }
+		limpiarFormulario();
+		cargarUsuarioCaja();                
 		$('#modalEditar').show();
                 $('#montoentrantecaja-modal-idioma').hide();
                 $('#montoentrantecaja-modal').hide();
                 $('#montosalientecaja-modal-idioma').hide();
                 $('#montosalientecaja-modal').hide();
-		limpiarFormulario();
-		cargarUsuarioCaja();
 		$("#contenedorcierrecaja-modal").css("display", "none");
 		//ID de registro
 		$('#codigotipoproducto-modal').attr("value",null);
 		$("#guardar").html("Guardar");
-		 $("#editar-nuevo").html("Apertura de Caja");             
+		$("#editar-nuevo").html("Apertura de Caja");                                 
+            },
+            error: function(event, request, settings){
+             //   $.unblockUI();
+                     mostarVentana("error-title","Ocurrio Error");
+            }
+        });	                
     });
 
     $('#guardar').click(function() {
@@ -211,7 +232,8 @@ function ocultarWarningBlock(){
 }
 
 function ocultarWarningBlockTitle(){
-	$("#warning-block-registro-listado").hide(500);
+     $("#warning-block-title").hide(500);
+	//$("#warning-block-registro-listado").hide(500);
 }
 
 function ocultarSuccessBlockTitle(){
@@ -229,7 +251,7 @@ function mostarVentana(box,mensaje){
 		$("#warning-message").text(mensaje);
 		$("#warning-block").show();
 		setTimeout("ocultarWarningBlock()",5000);
-	} else if(box == "#warning-block-title") {
+	} else if(box == "warning-block-title") {
 		$("#warning-message-title").text(mensaje);
 		$("#warning-block-title").show();
 		setTimeout("ocultarWarningBlockTitle()",5000);
@@ -290,7 +312,8 @@ function buscarRegistros(){
 function editarRegistro(parametros){
 	limpiarFormulario();
         if(parametros.arqueo_caja == 'S'){
-            alert("La caja ya se encuentra arqueada!!");
+            //alert("La caja ya se encuentra arqueada!!");
+            mostarVentana("warning-block-title","La caja ya se encuentra arqueada!!");
             return;
         }
 	$("#modalEditar").show();
@@ -371,8 +394,10 @@ function cajaAbierta(){
         	if(respuesta.resultado == 'error'){
         		mostarVentana("error-title","Ocurrio Error");
         	}else if(respuesta.resultado != 'cerrado'){
-				alert("Ya existe una caja abierta. Usuario : "+respuesta.nombre_apellido+" Fecha : "+respuesta.fecha_hora_apertura);
-				exit;
+                    //alert("Ya existe una caja abierta. Usuario : "+respuesta.nombre_apellido+" Fecha : "+respuesta.fecha_hora_apertura);
+                    //exit;
+                    mostarVentana("warning-block-title","Ya existe una caja abierta. Usuario : "+respuesta.nombre_apellido+" Fecha : "+respuesta.fecha_hora_apertura);
+                    return;                                
         	}
         },
         error: function(event, request, settings){

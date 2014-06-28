@@ -19,14 +19,37 @@ $().ready(function() {
 
 
 	$("#nuevoregistro").click(function() {
-		$('#modalEditar').show();
-        //ID de registro
-		$('#codmovcaja-modal').attr("value",null);
-		$("#guardar").html("Guardar");
-		$("#editar-nuevo").html("Nuevo Registro");
-		limpiarFormulario();
-		cajaAbierta();
-		cargarTipoMovimiento();
+                $.ajax({
+                    url: table+'/cajaabiertadata',
+                    type: 'post',
+                    dataType: 'json',
+                    async : false,
+                    success: function(respuesta){            
+                            if(respuesta.resultado == 'error'){
+                                    mostarVentana("error-title",mostrarError("OcurrioError"));
+                            }else if(respuesta.resultado != 'cerrado'){
+                                limpiarFormulario();
+                                //cajaAbierta();                
+                                cargarTipoMovimiento();            
+                                $('#modalEditar').show();
+                        //ID de registro
+                                $('#codmovcaja-modal').attr("value",null);
+                                $("#guardar").html("Guardar");
+                                $("#editar-nuevo").html("Nuevo Registro");                                
+                                
+                                $('#codcaja-modal').attr("value",respuesta.cod_caja);
+                                $('#codigousuariocaja-modal').attr("value",respuesta.cod_usuario);
+                                $('#nombreusuariocaja-modal').attr("value",respuesta.nombre_apellido);
+                                $('#fechaaperturacaja-modal').attr("value",respuesta.fecha_hora_apertura);
+                            }else if(respuesta.resultado == 'cerrado'){
+                                mostarVentana("warning-block-title","No existe caja abierta");
+                            }
+                    },
+                    error: function(event, request, settings){
+                     //   $.unblockUI();
+                             alert(mostrarError("OcurrioError"));
+                    }
+                });	            
 	});
 
 	$('#guardar').click(function() {
@@ -171,7 +194,9 @@ function ocultarWarningBlock(){
 }
 
 function ocultarWarningBlockTitle(){
-	$("#warning-block-registro-listado").hide(500);
+    
+    $("#warning-block-title").hide(500);
+	//$("#warning-block-registro-listado").hide(500);
 }
 
 function ocultarSuccessBlockTitle(){
@@ -189,7 +214,7 @@ function mostarVentana(box,mensaje){
 		$("#warning-message").text(mensaje);
 		$("#warning-block").show();
 		setTimeout("ocultarWarningBlock()",5000);
-	} else if(box == "#warning-block-title") {
+	} else if(box == "warning-block-title") {
 		$("#warning-message-title").text(mensaje);
 		$("#warning-block-title").show();
 		setTimeout("ocultarWarningBlockTitle()",5000);
@@ -299,7 +324,7 @@ function cajaAbierta(){
 				$('#nombreusuariocaja-modal').attr("value",respuesta.nombre_apellido);
 				$('#fechaaperturacaja-modal').attr("value",respuesta.fecha_hora_apertura);
         	}else if(respuesta.resultado == 'cerrado'){
-                    mostarVentana("error-title","No existe caja abierta");
+                    mostarVentana("warning-block-title","No existe caja abierta");
                 }
         },
         error: function(event, request, settings){
