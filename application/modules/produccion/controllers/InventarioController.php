@@ -66,6 +66,18 @@ class Produccion_InventarioController extends Zend_Controller_Action {
         $pagina = self::obtenerPaginas($result, $cantidadFilas, $page);
         echo $this->_helper->json($pagina);
     }
+    public function productodataAction() {
+//        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $select = $db->select()
+                ->from(array('P' => 'PRODUCTO'))
+                ->order(array('P.PRODUCTO_DESC'));
+//        print_r($select);die();
+        $result = $db->fetchAll($select);
+
+        echo json_encode($result);
+    }    
 private function obtenerPaginas($result, $cantidadFilas, $page) {
         $this->_paginator = Zend_Paginator::factory($result);
         $this->_paginator->setItemCountPerPage($cantidadFilas);

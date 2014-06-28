@@ -39,46 +39,60 @@
             <div class="row-fluid">
                 <div class="span10">
                  <div  class="titulo-cabecera" style="text-align: left">
-							<nav id="colorNav" >
-	<ul>
+                    <nav id="colorNav" >
+                        <ul>
+                            <li class="menu">
+                                <a href="<?php echo $this->baseUrl() ."/parametricos/menu";?>" class="">MENU</a>
+                           </li>
+                            <li class="red">
+                                <a href="#" class="" title="COMPRAS">COMPRAS</a>
+                                <ul>
+                                    <li><a href="<?php echo $this->baseUrl() ."/parametricos/proveedor";?>">Proveedor</a></li>
+                                    <li><a href="<?php echo $this->baseUrl() ."/compras/compra2";?>">Compras - Pagos</a></li>
 
-		<li class="red">
-			<a href="#" class="" title="COMPRAS">COMPRAS</a>
-			<ul>
-				<li><a href="/parametricos/proveedor">Proveedor</a></li>
-				<li><a href="/compras/compra2">Compras - Pagos</a></li>
-			  
-			</ul>
-		</li>
-		<li class="green">
-			<a href="#" class="" title="PRODUCCION">PRODUCCION</a>
-			<ul>
-				<li><a href="/parametricos/tipoproducto">Tipo Producto</a></li>
-				<li><a href="/parametricos/producto">Producto</a></li>
-				<li><a href="/produccion/receta">Recetas</a></li>
-				<li><a href="/produccion/productofinal">Produccion</a></li>
+                                </ul>
+                            </li>
+                            <li class="green">
+                                <a href="#" class="" title="PRODUCCION">PRODUCCION</a>
+                                <ul>
+                                    <li><a href="<?php echo $this->baseUrl() ."/parametricos/tipoproducto";?>">Tipo Producto</a></li>
+                                    <li><a href="<?php echo $this->baseUrl() ."/parametricos/producto";?>">Producto</a></li>
+                                    <li><a href="<?php echo $this->baseUrl() ."/produccion/receta";?>">Recetas</a></li>
+                                    <li><a href="<?php echo $this->baseUrl() ."/produccion/productofinal";?>">Produccion</a></li>
 
-			</ul>
-		</li>
-		<li class="blue">
-			<a href="#" class="" title="VENTAS">VENTAS</a>
-			<ul>
-			 <li><a href="/parametricos/empresa">Empresa Clientes</a></li>
-				 <li><a href="/parametricos/cliente">Clientes</a></li>
-				 <li><a href="/ventas/karrito">Pedidos</a></li>
-				 <li><a href="/ventas/factura">Facturacion</a></li>
-				
-			</ul>
-		</li>
-		<li class="yellow">
-			<a href="#" class="" title="INVENTARIO">INVENTARIO</a>
-			<ul>
-			<li><a href="/produccion/inventario">Inventario</a></li>
-		  
-			  </ul>
-		</li>
-	</ul>
-</nav>
+                                </ul>
+                            </li>
+                            <li class="blue">
+                                <a href="#" class="" title="VENTAS">VENTAS</a>
+                                <ul>
+                                     <li><a href="<?php echo $this->baseUrl() ."/parametricos/empresa";?>">Empresa Clientes</a></li>
+                                     <li><a href="<?php echo $this->baseUrl() ."/parametricos/cliente";?>">Clientes</a></li>
+                                     <li><a href="<?php echo $this->baseUrl() ."/ventas/karrito";?>">Pedidos</a></li>
+                                     <li><a href="<?php echo $this->baseUrl() ."/ventas/factura";?>">Facturacion</a></li>
+
+                                </ul>
+                            </li>
+                            <li class="yellow">
+                                <a href="#" class="" title="INVENTARIO">INVENTARIO</a>
+                                <ul>
+                                     <li><a href="<?php echo $this->baseUrl() ."/produccion/inventario";?>">Inventario</a></li>
+                                     <li><a href="<?php echo $this->baseUrl() ."/produccion/ajusteinventario";?>">Ajuste</a></li>
+                                </ul>
+                            </li>
+                            <li class="purple">
+                                <a href="#" class=""title="CAJA">CAJA</a>
+                               <ul>
+                                    <li><a href="<?php echo $this->baseUrl() ."/caja/caja";?>">Caja</a></li>
+                                    <li><a href="<?php echo $this->baseUrl() ."/caja/tipomovimiento";?>">Tipo Movimiento</a></li>
+                                    <li><a href="<?php echo $this->baseUrl() ."/caja/movcaja";?>">Movimientos</a></li>
+                               </ul>
+                           </li>
+                           <li class="">
+                                <a href="<?php echo $this->baseUrl() ."/menus/menu";?>">LogOut</a>
+                           </li>
+
+                        </ul>
+                    </nav>
 	                </div> 
                     <div  class="titulo-cabecera">
                         <h1 id="cabecera-titulo">Pedidos</h1>
