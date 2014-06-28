@@ -85,7 +85,7 @@ private function obtenerPaginas($result, $cantidadFilas, $page) {
         $pagina ['rows'] = array();
 
         foreach ($this->_paginator as $item) {
-            if($item['COD_INVENTARIO'] == 'N'){$estado = "NO";}
+            if($item['ESTADO'] == 'N'){$estado = "NO";}
                 else{$estado = "SI";}
             $arrayDatos ['cell'] = array(
                 null,

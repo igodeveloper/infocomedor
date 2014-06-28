@@ -892,7 +892,7 @@ function filtrosbusqueda() {
     obj.fechaemision = $('#fechaemision-filtro').attr("value");
     obj.fechavencimiento = $('#fechavencimiento-filtro').attr("value");
     var estado = document.getElementById("estado-filtro");
-    obj.estado = formapago.options[formapago.selectedIndex].value;
+    //obj.estado = formapago.options[formapago.selectedIndex].value;
     return obj;
 }
 function clearfilters() {

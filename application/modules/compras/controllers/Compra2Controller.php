@@ -267,7 +267,28 @@ class Compras_Compra2Controller extends Zend_Controller_Action {
 
         echo json_encode($result);
     }
-
+    public function compraspagosusuarioAction() {
+        
+        $this->_helper->viewRenderer->setNoRender ( true );
+        $parametrosNamespace = new Zend_Session_Namespace ( 'parametros' );
+        $parametrosNamespace->unlock ();      
+        
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $select = $db->select()
+                 ->from(array('C' => 'CAJA'), array('distinct(C.COD_USUARIO_CAJA)','COD_CAJA'))
+                 ->where("C.COD_USUARIO_CAJA = ?", $parametrosNamespace->cod_usuario)
+                 ->where("C.FECHA_HORA_CIERRE IS NULL");
+        $result = $db->fetchAll($select);
+       
+        $arrResult=array("COD_USUARIO_CAJA" => $result[0] ['COD_USUARIO_CAJA'], 
+                        "USERNAME" => $parametrosNamespace->username, 
+                        "NOMBRE_APELLIDO" => $parametrosNamespace->desc_usuario,
+                        "COD_CAJA" => $result[0] ['COD_CAJA']
+                        );
+        $parametrosNamespace->lock ();
+        echo json_encode($arrResult);
+        
+     }
     public function maxnrofacturaAction() {
 //        $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender(true);

@@ -79,8 +79,10 @@ function print_pdf(){
         async: false,
         success: function(respuesta) {
         	 //alert('No se encontro el valor');
-        	
-        	window.open('../../'+respuesta.url, 'target', '_blank')
+                //var url = table;
+                //url = url.replace('',"public/produccion/");  
+                //http://localhost/infocomedorv1/public/produccion/inventario
+        	window.open('http://localhost/infocomedorv1/public/'+respuesta.url, 'target', '_blank')
         },
         error: function(event, request, settings) {
             alert('No se imprimio');

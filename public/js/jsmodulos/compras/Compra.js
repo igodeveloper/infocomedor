@@ -688,7 +688,7 @@ function cargarPagos(facturaCompra) {
 function pagos(parametros) {
 
      $.ajax({
-        url: '/menus/acceso/compraspagosusuario',
+        url: table+'/compraspagosusuario',
         type: 'post',
         dataType: 'json',
         async: true,
