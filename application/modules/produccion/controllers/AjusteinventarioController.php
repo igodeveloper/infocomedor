@@ -291,14 +291,22 @@ public function modalinventarioAction() {
                             
                     $existe = ($resultado_select[0]['COD_PRODUCTO'] <> null)?$resultado_select[0]['COD_PRODUCTO']:0;
                     $saldo_producto = ($resultado_select[0]['SALDO_STOCK']>0)?$resultado_select[0]['SALDO_STOCK']:0;
+                    if((float)$fila->saldos == 0){
+                        $fila->DIFERENCIA = 0;
+                        $fila->saldo = 0;
+                    }
+
                     $data = array(
                         'COD_PRODUCTO' => $fila->codproducto,
-                        'SALDO_STOCK' => ($saldo_producto+((float)$fila->DIFERENCIA)),
+                        // 'SALDO_STOCK' => ($saldo_producto-((float)$fila->DIFERENCIA)),
+                        'SALDO_STOCK' => (((float)$fila->saldo) - ( (float) $fila->DIFERENCIA) ),
                         'STOCK_FECHA_ACTUALIZA' => ( date("Y-m-d H:i:s"))
                     );
+                     
                     if($existe == 0){
                         $upd = $db->insert('STOCK', $data);
                     } else {
+                        // print_r($data);
                         $where = "COD_PRODUCTO= " . $fila->codproducto;
                         $upd = $db->update('STOCK', $data, $where);
                     }

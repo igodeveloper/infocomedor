@@ -345,30 +345,32 @@ function enviarParametrosRegistros(data) {
 
 function buscar() {
     var dataJsonBusqueda = JSON.stringify(filtrosbusqueda());
+    $('#grillaRegistro').jqGrid('clearGridData');
+    $('#grillaRegistro').trigger('reloadGrid');
 
-    $.blockUI({
-        message: "Aguarde un Momento"
-    });
+//     $.blockUI({
+//         message: "Aguarde un Momento"
+//     });
 
-    $.ajax({
-        url: table+'/buscar',
-        type: 'post',
-        data: {
-            "dataJsonBusqueda": dataJsonBusqueda
-        },
-        dataType: 'json',
-        async: false,
-        success: function(respuesta) {
-//                            $("#grillaCompras").jqGrid("clearGridData");
-            $("#grillaRegistro")[0].addJSONData(respuesta);
+//     $.ajax({
+//         url: table+'/buscar',
+//         type: 'post',
+//         data: {
+//             "dataJsonBusqueda": dataJsonBusqueda
+//         },
+//         dataType: 'json',
+//         async: false,
+//         success: function(respuesta) {
+// //                            $("#grillaCompras").jqGrid("clearGridData");
+//             $("#grillaRegistro")[0].addJSONData(respuesta);
            
-            $.unblockUI();
-        },
-        error: function(event, request, settings) {
-            $.unblockUI();
-            alert(mostrarError("OCURRIO UN ERROR"));
-        }
-    });
+//             $.unblockUI();
+//         },
+//         error: function(event, request, settings) {
+//             $.unblockUI();
+//             alert(mostrarError("OCURRIO UN ERROR"));
+//         }
+//     });
 }
 
 /*

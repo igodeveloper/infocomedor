@@ -481,7 +481,7 @@ function validacliente(data, what) {
             },
             async: false,
             success: function(respuesta) {
-                alert(respuesta.cod+"-"+respuesta.name+"-"+respuesta.ruc);
+                // alert(respuesta.cod+"-"+respuesta.name+"-"+respuesta.ruc);
                 
                 if(respuesta.cod){
                     $("#codigocliente-modal" + pago).attr("value", respuesta.cod);
@@ -664,7 +664,7 @@ function enviarParametros(data) {
 
 function buscar() {
     var dataJsonBusqueda = JSON.stringify(filtrosbusqueda());
-
+    // console.log(dataJsonBusqueda);
     $.blockUI({
         message: "Aguarde un Momento"
     });
@@ -890,9 +890,9 @@ function filtrosbusqueda() {
     }
 
     obj.fechaemision = $('#fechaemision-filtro').attr("value");
-    obj.fechavencimiento = $('#fechavencimiento-filtro').attr("value");
+    // obj.fechavencimiento = $('#fechavencimiento-filtro').attr("value");
     var estado = document.getElementById("estado-filtro");
-    //obj.estado = formapago.options[formapago.selectedIndex].value;
+    obj.estado = estado.options[estado.selectedIndex].value;
     return obj;
 }
 function clearfilters() {

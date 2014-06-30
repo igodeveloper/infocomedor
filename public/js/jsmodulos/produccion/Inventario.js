@@ -78,11 +78,9 @@ function print_pdf(){
         },
         async: false,
         success: function(respuesta) {
-        	 //alert('No se encontro el valor');
-                //var url = table;
-                //url = url.replace('',"public/produccion/");  
-                //http://localhost/infocomedorv1/public/produccion/inventario
-        	window.open('http://localhost/infocomedorv1/public/'+respuesta.url, 'target', '_blank')
+        	 
+             
+        	window.open('../../'+respuesta.url, 'target', '_blank')
         },
         error: function(event, request, settings) {
             alert('No se imprimio');
@@ -367,32 +365,34 @@ function enviarParametrosRegistros(data) {
 
 function buscar() {
     var dataJsonBusqueda = JSON.stringify(filtrosbusqueda());
+    $('#grillaRegistro').jqGrid('clearGridData');
+    $('#grillaRegistro').trigger('reloadGrid');
 
-    $.blockUI({
-        message: "Aguarde un Momento"
-    });
+    // $.blockUI({
+    //     message: "Aguarde un Momento"
+    // });
 
-    $.ajax({
-        url: table+'/buscar',
-        type: 'post',
-        data: {
-            "data": dataJsonBusqueda
-        },
-        dataType: 'json',
-        async: false,
-        success: function(respuesta) {
-        	if(respuesta.mensajeSinFilas)
-        		mostarVentana("warning", "Sin registros");
+    // $.ajax({
+    //     url: table+'/buscar',
+    //     type: 'post',
+    //     data: {
+    //         "data": dataJsonBusqueda
+    //     },
+    //     dataType: 'json',
+    //     async: false,
+    //     success: function(respuesta) {
+    //     	if(respuesta.mensajeSinFilas)
+    //     		mostarVentana("warning", "Sin registros");
         	
-            $("#grillaRegistro")[0].addJSONData(respuesta);
+    //         $("#grillaRegistro")[0].addJSONData(respuesta);
            
-            $.unblockUI();
-        },
-        error: function(event, request, settings) {
-            $.unblockUI();
-            //alert(mostrarError("OCURRIO UN ERROR"));
-        }
-    });
+    //         $.unblockUI();
+    //     },
+    //     error: function(event, request, settings) {
+    //         $.unblockUI();
+    //         //alert(mostrarError("OCURRIO UN ERROR"));
+    //     }
+    // });
 }
 
 /*

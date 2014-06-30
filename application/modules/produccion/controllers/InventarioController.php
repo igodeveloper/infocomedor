@@ -293,6 +293,7 @@ public function guardarAction() {
 				}
 			header('Content-type: application/pdf');
 			$pdf->save($name);
+         
 			echo json_encode(array("result" => "EXITO","url" => $name));
 		} catch (Zend_Pdf_Exception $e) {
 			die ('PDF error: ' . $e->getMessage());  
@@ -377,8 +378,10 @@ public function modalinventarioAction() {
                         'M.PRODUCTO_DESC',
                         'M.COD_UNIDAD_MEDIDA',
                         'T.ISO_UNIDAD_MEDIDA',
-                        'M.COD_RECETA'
+                        'M.COD_RECETA',
+                        'S.SALDO_STOCK'
                         ))
+                ->joinLeft(array('S' => 'STOCK'), 'M.COD_PRODUCTO = S.COD_PRODUCTO')
                 ->join(array('T' => 'UNIDAD_MEDIDA'), 'M.COD_UNIDAD_MEDIDA = T.COD_UNIDAD_MEDIDA')
                 ->where("M.COD_PRODUCTO_TIPO = ?",$cod);
 //        print_r($select);
@@ -393,7 +396,7 @@ public function modalinventarioAction() {
                 "codUnidadMedida" => $value ['COD_UNIDAD_MEDIDA'],
                 "unidadmedida" => $value ['ISO_UNIDAD_MEDIDA'],
                 "COD_RECETA" => $value ['COD_RECETA'],
-                "saldo" => 0,
+                "saldo" => $value ['SALDO_STOCK'],
                 "saldos" => 0,
             );
             array_push($option, $option1);

@@ -200,6 +200,28 @@ class Parametricos_ProductoController extends Zend_Controller_Action
 //            print_r($data);
 //            die();
             $upd = $db->insert('PRODUCTO', $data);
+
+            $codigoInsertado = $db->lastInsertId();
+
+                $select = $db->select()
+                        ->from(array('S' => 'STOCK'), array('S.COD_PRODUCTO','S.SALDO_STOCK'))
+                        ->distinct(true)
+                        ->where("S.COD_PRODUCTO = ?", $codigoInsertado);
+                $resultado_select = $db->fetchAll($select);
+                
+                $existe = ($resultado_select[0]['COD_PRODUCTO'] <> null)?$resultado_select[0]['COD_PRODUCTO']:0;
+                $saldo_producto = ($resultado_select[0]['SALDO_STOCK']>0)?$resultado_select[0]['SALDO_STOCK']:0;
+                    $data = array(
+                        'COD_PRODUCTO' => $codigoInsertado,
+                        'SALDO_STOCK' => 0,
+                        'STOCK_FECHA_ACTUALIZA' => ( date("Y-m-d H:i:s"))
+                    );
+                // SI EL PRODUCTO EXISTE INSERAMOS SI NO ACTUALIZAMOS
+
+                if($existe == 0){
+                            $upd = $db->insert('STOCK', $data);
+                } 
+
             $db->commit();
             echo json_encode(array("result" => "EXITO"));
         } catch (Exception $e) {

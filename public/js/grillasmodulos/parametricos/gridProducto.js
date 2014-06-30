@@ -192,7 +192,16 @@ function cargarGrillaRegistro() {
 	       		"align":"right",
 	       		"sortable" : false,
 	       		"hidden" : false
-       		}]
+       		}],
+
+                grouping: true,
+                groupingView: {
+                    groupField: ['TIPO_PRODUCTO_DESCRIPCION'],
+                    groupSummary: [true],
+                    groupColumnShow: [true],
+                    groupCollapse: false,
+                    groupOrder: ['asc']
+                }
     }).navGrid('#paginadorRegistro',{
         add:false,
         edit:false,

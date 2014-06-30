@@ -236,6 +236,7 @@ function mostarVentana(box,mensaje){
 }
 
 function buscarRegistros(){
+
 	var dataJson = obtenerJsonBuscar();
 	$.blockUI({
         message: "Aguarde un momento por favor"
@@ -247,16 +248,22 @@ function buscarRegistros(){
         dataType: 'html',
         async : false,
         success: function(respuesta){
+        	$.unblockUI();
+        	 $("#grillaRegistro").jqGrid("clearGridData", true);
+        	jQuery("#grillaRegistro").setGridParam({grouping: false});
         	$("#grillaRegistro")[0].addJSONData(JSON.parse(respuesta));
+        	// $("#grillaRegistro")[0].addJSONData(respuesta);
         	var obj = JSON.parse(respuesta);
         	if(obj.mensajeSinFilas == true){
         		mostarVentana("info","No se encontraron registros con los parametros ingresados");
+        		jQuery("#grillaRegistro").setGridParam({grouping: true});
         	}
         	$.unblockUI();
+        	jQuery("#grillaRegistro").setGridParam({grouping: true});
         },
         error: function(event, request, settings){
             $.unblockUI();
-            alert("Ha ocurrido un error");
+            // alert("Ha ocurrido un error");
         }
     });
 }

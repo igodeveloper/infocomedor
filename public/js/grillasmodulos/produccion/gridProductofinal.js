@@ -27,12 +27,23 @@ function bloquearPantalla() {
 function cargarGrillaRegistro() {
     jQuery("#grillaRegistro").jqGrid(
             {
-                url: table+"/listar",
+                url: table+"/buscar",
                 datatype: "json",
                 mtype: "POST",
                 beforeRequest: bloquearPantalla,
                 loadComplete: function() {
                     $.unblockUI();
+                },
+                 serializeGridData : function(data) {
+
+                    var objBusqueda = new Object();
+                    objBusqueda.descripcionproducto = $('#descripcionproductofinal-filtro').attr("value");
+                    objBusqueda.descripciontipoproducto = $('#descripciontipoproducto-filtro').attr("value");
+                    
+
+                    var t = $.param(data) + '&' + "data="
+                            + JSON.stringify(objBusqueda);
+                    return t;
                 },
                 refresh: true,
                 scrollerbar: true,
@@ -91,7 +102,15 @@ function cargarGrillaRegistro() {
                         hidden: false
                     }
                 
-                ]
+                ],
+                 sortname : 'TIPO_PRODUCTO_DESCRIPCION',
+                gridview : true,
+                "grouping" : true,
+                "groupingView" : {
+                    groupField : [ 'TIPO_PRODUCTO_DESCRIPCION' ],
+                    groupColumnShow : false,
+                    groupDataSorted : true,
+                    groupCollapse : true}
             }).navGrid('#paginadorRegistro', {
         add: false,
         edit: false,
@@ -100,15 +119,15 @@ function cargarGrillaRegistro() {
         search: false,
         refresh: false});
     $("#grillaRegistro").setGridWidth($('#contenedor').width());
-    $("#grillaRegistro").jqGrid('navButtonAdd', '#paginadorRegistro', {
-        buttonicon: 'ui-icon-trash',
-        caption: "",
-        title: "Borrar Receta",
-        onClickButton: function() {
-            borrarReceta();	
-        }
-    }
-    );
+    // $("#grillaRegistro").jqGrid('navButtonAdd', '#paginadorRegistro', {
+    //     buttonicon: 'ui-icon-trash',
+    //     caption: "",
+    //     title: "Borrar Receta",
+    //     onClickButton: function() {
+    //         borrarReceta();	
+    //     }
+    // }
+    // );
 
 
 }

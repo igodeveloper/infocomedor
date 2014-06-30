@@ -54,7 +54,7 @@ class Produccion_ProductofinalController extends Zend_Controller_Action {
         if (!isset($page)) {
             $page = 1;
         }
-        $datos = $this->getRequest()->getParam("dataJsonBusqueda");
+        $datos = $this->getRequest()->getParam("data");
         $Obj = json_decode($datos);
 
         $db = Zend_Db_Table::getDefaultAdapter();
@@ -202,6 +202,7 @@ public function guardarAction() {
 		            	'STOCK_FECHA_ACTUALIZA' => ( date("Y-m-d H:i:s"))
 	        		);
 	        	// SI EL PRODUCTO EXISTE INSERAMOS SI NO ACTUALIZAMOS
+
       			if($existe == 0){
 		            		$upd = $db->insert('STOCK', $data);
 				} else {
@@ -228,18 +229,25 @@ public function guardarAction() {
                 		->join(array('RD' => 'RECETA_DETALLE'), 'RD.COD_RECETA = P.COD_RECETA')
                 		->joinLeft(array('S' => 'STOCK'), 'S.COD_PRODUCTO = RD.COD_PRODUCTO')
                 		->where("P.COD_PRODUCTO = ?", $cod_producto);
+                         
+
+
                 $resultado_select = $db->fetchAll($select);
    			$n = 0;
+
    			if($resultado_select){
+                     // print_r( $resultado_select);
 	   				foreach ($resultado_select as $fila) {	
 	                    $where= array(
 			                'COD_PRODUCTO = ?' => $fila['COD_PRODUCTO']
 			            );
+                        
 	                 	$data = array(
 			                'COD_PRODUCTO' => $fila['COD_PRODUCTO'],
 	                 		'SALDO_STOCK' => ($fila['SALDO_STOCK']-($fila['RECETA_DET_CANTIDAD']*$cantidad_producida)),
 			                'STOCK_FECHA_ACTUALIZA' => date("Y-m-d H:i:s")
 			            );
+                        
 			            if($fila['SALDO_STOCK'] == null){
 			            	$n = $db->insert('STOCK', $data);
 			            } else {
