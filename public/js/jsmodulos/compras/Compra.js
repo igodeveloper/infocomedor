@@ -300,7 +300,10 @@ function addItem() {
         var rows = jQuery("#grillaComprasModal").jqGrid('getRowData');
         jQuery("#grillaComprasModal").jqGrid('addRowData', (rows.length) + 1, data);
         CleanFormItems();
-        BlockProveedorData("additem");
+        if(($('#idproveedor').attr("value").length > 0) && ($('#controlfiscal-modal_3').attr("value").length > 0)){
+             BlockProveedorData("additem");
+        }
+           
     }
 
 }
@@ -321,13 +324,13 @@ function obtenerJsonDetalles() {
 
     if (impuesto === 5) {
         jsonObject.codimpuesto = impuesto;
-        jsonObject.iva5 = (jsonObject.totalparcial * 5) / 105;
+        jsonObject.iva5 = parseInt((jsonObject.totalparcial * 5) / 105);
         jsonObject.iva10 = 0;
     }
     if (impuesto === 10) {
         jsonObject.codimpuesto = impuesto;
         jsonObject.iva5 = 0;
-        jsonObject.iva10 = (jsonObject.totalparcial * 10) / 110;
+        jsonObject.iva10 = parseInt((jsonObject.totalparcial * 10) / 110);
     }
     
     var mensaje = 'Ingrese los campos: ';
@@ -591,7 +594,7 @@ function buscar() {
 
 function editarRegistro(parametros) {
     cleanFormModalHide("edit");
-    $("#modalEditar").show();
+    
     $("#reloadProveedor").hide();
     $("#editar-nuevo").html("Editar Registro");
     $.blockUI({
@@ -619,7 +622,7 @@ function editarRegistro(parametros) {
     $("#guardar").hide();
     $("#addProductos").hide();
     BlockProveedorData("editar");
-    $("#modalEditar").show();
+   
     $.ajax({
         url: table+'/modaleditar',
         type: 'post',
@@ -658,6 +661,7 @@ function editarRegistro(parametros) {
 //            mostarVentana("warning", "Verifique los datos ingresados");
         }
     });
+ $("#modalEditar").show();
 }
 function cargarPagos(facturaCompra) {
 

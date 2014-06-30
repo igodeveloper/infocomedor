@@ -347,6 +347,18 @@ public function guardarAction() {
 						'FAC_DET_TOTAL'=>$fila->KAR_PRECIO_PRODUCTO
 		            );
 		            $insertDetalle = $db->insert('FACTURA_DETALLE', $data);
+                    $data_ingreso = array(
+                            'COD_MOV_CAJA' => 0,
+                            'COD_CAJA' => (int)$data_Pagos->codigo_caja,
+                            'FECHA_HORA_MOV' => date('Y-m-d H:i:s'),
+                            'MONTO_MOV' => (int)$data_Pagos->vuelto,
+                            'COD_TIPO_MOV' => 3,
+                            'FACTURA_MOV' =>  $data_Pagos->numero_factura,
+                            'TIPO_FACTURA_MOV' => 'C',
+                            'OBSERVACION_MOV' => 'Vuelto: '.$data_Pagos->numero_factura
+                        );
+                    $insertEgreso = $db->insert('MOV_CAJA', $data_ingreso);  
+                    
 		            if($fila->COD_KARRITO == 0){
 		            	$dataKarrito = array(
 		            		'COD_KARRITO'=>0,
