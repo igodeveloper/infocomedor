@@ -320,7 +320,7 @@ function enviarParametrosRegistros(data) {
     
     var dataGrilla = JSON.stringify(data.grilla);
     var inventario= JSON.stringify(data.inventario);
-    
+    console.log("llego");
     var urlenvio = '';
     urlenvio = table+'/guardar';
     
