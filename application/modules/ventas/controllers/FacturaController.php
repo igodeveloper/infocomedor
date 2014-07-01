@@ -347,17 +347,7 @@ public function guardarAction() {
 						'FAC_DET_TOTAL'=>$fila->KAR_PRECIO_PRODUCTO
 		            );
 		            $insertDetalle = $db->insert('FACTURA_DETALLE', $data);
-                    $data_ingreso = array(
-                            'COD_MOV_CAJA' => 0,
-                            'COD_CAJA' => (int)$data_Pagos->codigo_caja,
-                            'FECHA_HORA_MOV' => date('Y-m-d H:i:s'),
-                            'MONTO_MOV' => (int)$data_Pagos->vuelto,
-                            'COD_TIPO_MOV' => 3,
-                            'FACTURA_MOV' =>  $data_Pagos->numero_factura,
-                            'TIPO_FACTURA_MOV' => 'C',
-                            'OBSERVACION_MOV' => 'Vuelto: '.$data_Pagos->numero_factura
-                        );
-                    $insertEgreso = $db->insert('MOV_CAJA', $data_ingreso);  
+                    
                     
 		            if($fila->COD_KARRITO == 0){
 		            	$dataKarrito = array(
@@ -405,6 +395,17 @@ public function guardarAction() {
 		            }
                 	  
                 }
+                $data_ingreso = array(
+                    'COD_MOV_CAJA' => 0,
+                    'COD_CAJA' => (int)$dataVenta->codigo_caja,
+                    'FECHA_HORA_MOV' => date('Y-m-d H:i:s'),
+                    'MONTO_MOV' => (float)($dataVenta->montoTotal),
+                    'COD_TIPO_MOV' => 2,
+                    'FACTURA_MOV' => $factura_nro,
+                    'TIPO_FACTURA_MOV' => 'V',
+                    'OBSERVACION_MOV' => 'Factura Venta: '.$factura_nro
+                );
+                $insertEgreso = $db->insert('MOV_CAJA', $data_ingreso); 
                 $db->commit();
              
              echo json_encode(array("result" => "EXITO"));
@@ -467,5 +468,28 @@ public function modaleditarAction() {
             
             }
     }
+
+        public function ventasusuarioAction() {
+        
+        $this->_helper->viewRenderer->setNoRender ( true );
+        $parametrosNamespace = new Zend_Session_Namespace ( 'parametros' );
+        $parametrosNamespace->unlock ();      
+        
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $select = $db->select()
+                 ->from(array('C' => 'CAJA'), array('distinct(C.COD_USUARIO_CAJA)','COD_CAJA'))
+                 ->where("C.COD_USUARIO_CAJA = ?", $parametrosNamespace->cod_usuario)
+                 ->where("C.FECHA_HORA_CIERRE IS NULL");
+        $result = $db->fetchAll($select);
+       
+        $arrResult=array("COD_USUARIO_CAJA" => $result[0] ['COD_USUARIO_CAJA'], 
+                        "USERNAME" => $parametrosNamespace->username, 
+                        "NOMBRE_APELLIDO" => $parametrosNamespace->desc_usuario,
+                        "COD_CAJA" => $result[0] ['COD_CAJA']
+                        );
+        $parametrosNamespace->lock ();
+        echo json_encode($arrResult);
+        
+     }
   
 }

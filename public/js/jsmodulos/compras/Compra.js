@@ -714,7 +714,7 @@ function pagos(parametros) {
 }
 
 function levantapagos(parametros){
-    $("#modalPagos").show();
+        $("#modalPagos").show();
         $('#AgregarPagos').show();
         $("#editar-nuevo").html("Registrar Pago");
         $("#grillaComprasModalPagos").jqGrid("clearGridData");

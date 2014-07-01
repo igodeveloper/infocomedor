@@ -96,28 +96,7 @@ $().ready(function() {
     
     
     $("#nuevoCompra").click(function() {
-        
-        $("#guardar-registro").html("Guardar");
-        $("#cabecera-factura").hide();
-        $(".btn-compra").show();
-        $("#buscar-karrito").show();
-        $("#cargar-karrito").show();
-        $("#editar-nuevo").html("Nuevo Registro");
-        $("#numeroFacturaLb").css("display", "none");
-        $("#numeroFacturaIn").css("display", "none");
-        $("#guardar").show();
-        $("#addProductos").hide();
-        $("#addItem").attr("disabled", "disabled");
-        $('#cant-item').attr("value", 0);
-        $('#precio-item').attr("value", 0);
-        $('#total-item').attr("value", 0);
-        $("#total-item").attr("disabled", "disabled");
-        cleanFormModalHide("exit");
-        blockclientdata('clear');
-        bloqueamosCeldas('desbloqueamos');
-        CleanFormItems();
-        formatearFechas();
-        $('#modalEditar').show();
+        verificarCaja();
     });
 
     $("#addItem").click(function() {
@@ -838,6 +817,8 @@ function obtenerGrid() {
     dataObjectVenta.fechaEmision = $('#FechaFactura-modal').attr("value");
     dataObjectVenta.fechaVencimiento = $('#FechaVencimiento-modal').attr("value");
     dataObjectVenta.montoTotal = montoTotal;
+    dataObjectVenta.codigo_caja = $('#codigoCaja-modal-ventas').attr("value");
+    dataObjectVenta.usuario_caja = $('#usuarioCaja-modal-ventas').attr("value");
 
     var mensaje = 'Ingrese:';
     var focus = 0;
@@ -963,6 +944,49 @@ function BlockProveedorData(modal) {
     $('#factura-modal' + pagos).attr("disabled", true);
 }
 
+function verificarCaja(){
+     $.ajax({
+        url: table+'/ventasusuario',
+        type: 'post',
+        dataType: 'json',
+        async: true,
+        success: function(respuesta) {
+            console.log(JSON.stringify(respuesta));
+            if(respuesta.COD_USUARIO_CAJA){
+                $('#codigoCaja-modal-ventas').attr("value", respuesta.COD_CAJA);
+                $('#usuarioCaja-modal-ventas').attr("value", respuesta.COD_USUARIO_CAJA);
+                levantamodal();
+            }else{
+                mostarVentana("warning-title", "Debe tener una caja abierta para acceder a facturacion");    
+            }
+            
+        },
+        error: function(event, request, settings) {
+             mostarVentana("warning-title", "Debe tener una caja abierta para acceder a facturacion");
+        }
+    });    
+}
 
-
-
+function levantamodal(){
+    $("#guardar-registro").html("Guardar");
+        $("#cabecera-factura").hide();
+        $(".btn-compra").show();
+        $("#buscar-karrito").show();
+        $("#cargar-karrito").show();
+        $("#editar-nuevo").html("Nuevo Registro");
+        $("#numeroFacturaLb").css("display", "none");
+        $("#numeroFacturaIn").css("display", "none");
+        $("#guardar").show();
+        $("#addProductos").hide();
+        $("#addItem").attr("disabled", "disabled");
+        $('#cant-item').attr("value", 0);
+        $('#precio-item').attr("value", 0);
+        $('#total-item').attr("value", 0);
+        $("#total-item").attr("disabled", "disabled");
+        cleanFormModalHide("exit");
+        blockclientdata('clear');
+        bloqueamosCeldas('desbloqueamos');
+        CleanFormItems();
+        formatearFechas();
+        $('#modalEditar').show();
+}

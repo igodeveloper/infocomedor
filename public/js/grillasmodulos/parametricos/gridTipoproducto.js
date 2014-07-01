@@ -93,14 +93,14 @@ function cargarGrillaRegistro() {
         refresh:false});
 	$("#grillaRegistro").setGridWidth($('#contenedor').width());
 
-	$("#grillaRegistro").jqGrid('navButtonAdd','#paginadorRegistro',{
-		buttonicon :'ui-icon-trash',
-		caption: "",
-		title: "Eliminar fila seleccionada",
-		onClickButton : function (){
-			borrar();	//Funcion de borrar
-		}
-	});
+	// $("#grillaRegistro").jqGrid('navButtonAdd','#paginadorRegistro',{
+	// 	buttonicon :'ui-icon-trash',
+	// 	caption: "",
+	// 	title: "Eliminar fila seleccionada",
+	// 	onClickButton : function (){
+	// 		borrar();	//Funcion de borrar
+	// 	}
+	// });
 }
 /**
  * Elimina una fila de la tabla visual de registros
