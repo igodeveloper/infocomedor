@@ -106,12 +106,31 @@ $().ready(function() {
         CleanFormItems();
         bloqueamosCeldas('desbloqueo');
     });
-    
+     $("#cerrar-venta").click(function() {
+        // $.unblockUI();
+        $('#modalEditar').show();
+        $('#modalFormaPago').hide();
+        $("#grillaRegistroPagoVenta").jqGrid("clearGridData", true);
+        $('#factura-modal-pagos').attr("value", null);
+    });
+    $("#guardar-venta").click(function() {
+
+         var data = obtenerGrid();
+         var pago = obtenerPagos();
+        if (data,pago) {enviarParametros(data,pago);}
+    });
 
     $("#guardar").click(function() {
+        
         var data = obtenerGrid();
-        if (data) {	
-            enviarParametros(data);
+        if (data) {
+            // $.blockUI();
+            console.log(data);
+            $('#modalFormaPago').show();
+            $('#modalEditar').hide();
+            $('#montoPago-modal-pagos').attr("value", data.venta.montoTotal);
+            $('#factura-modal-pagos').attr("value", data.venta.montoTotal);
+            $('#factura-modal-pagos').attr("disabled", true);
         }
     });
 
@@ -609,33 +628,49 @@ function calculoTotalParcial() {
     $('#totalparcial-item').attr("value", TotalParcial);
 }
 
-function enviarParametros(data) {
+function enviarParametros(data,pago) {
 //	console.log(JSON.stringify(data));
+$('#modalFormaPago').hide();
+$('#modalEditar').show();
+    // $.unblockUI();
 	var dataVenta = JSON.stringify(data.venta);
-	var dataVentaDetalle = JSON.stringify(data.ventaDetalle);
+    var dataVentaDetalle = JSON.stringify(data.ventaDetalle);
+	var dataVentaPago = JSON.stringify(pago);
     $.ajax({
         url: table+'/guardar',
         type: 'post',
-        data: {"dataVenta": dataVenta, "dataVentaDetalle": dataVentaDetalle},
+        data: {"dataVenta": dataVenta, "dataVentaDetalle": dataVentaDetalle, "dataVentaPago":dataVentaPago},
         dataType: 'json',
         async: true,
         success: function(respuesta) {
 //                alert(respuesta+"hola");
             if (respuesta == null) {
+                
+                
                 mostarVentana("error", "TIMEOUT");
+
             } else if (respuesta.result == "EXITO") {
                 mostarVentana("success-title", "Datos Almacenados exitosamente");
+                
+                $("#grillaRegistroPagoVenta").jqGrid("clearGridData", true);
+                $('#factura-modal-pagos').attr("value", null);
                 $('#modalEditar').hide();
+                 // $('#modal-footer-ventas').show();
                 cleanFormModalHide("exit");
             } else if (respuesta.result == "ERROR") {
+                 $('#modalFormaPago').hide();
+                  // $('#modal-footer-ventas').show();
                 if (respuesta.mensaje == 23505) {
                     mostarVentana("warning", "Datos duplicados");
+                   
                 } else {
                     mostarVentana("warning", "Intente mas tarde");
                 }
             }
         },
         error: function(event, request, settings) {
+             $('#modalFormaPago').hide();
+              $('#modal-footer-ventas').show();
             mostarVentana("warning", "Intente mas tarde");
         }
     });
@@ -989,4 +1024,23 @@ function levantamodal(){
         CleanFormItems();
         formatearFechas();
         $('#modalEditar').show();
+}
+
+function selectFormaPago(formaPago) {
+    if (formaPago == "cheque") {
+        $('#banco-modal-pagos').attr("disabled", false);
+        $('#cheque-modal-pagos').attr("disabled", false);
+        $('#montoPago-modal-pagos').attr("disabled", false);
+        $('input[name=formaPagoEfectivo]').attr('checked', false);
+        $("#montoPago-modal-pagos").attr("disabled", false);
+    } else if(formaPago =='efectivo'){      
+        $('#banco-modal-pagos').attr("disabled", true);
+        $('#cheque-modal-pagos').attr("disabled", true); 
+        $('#banco-modal-pagos').attr("value", null);
+        $('#cheque-modal-pagos').attr("value", null);
+        $('input[name=formaPagoCheque]').attr('checked', false);
+        $("#montoPago-modal-pagos").attr("disabled", false);
+         
+    }
+
 }

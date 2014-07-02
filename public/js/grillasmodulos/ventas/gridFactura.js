@@ -540,3 +540,72 @@ function eliminarItem(){
         $('#grillaComprasModal').jqGrid('delRowData',id);
 	}
 }
+
+function cargarGrillaComprasModalPagos() {
+    jQuery("#grillaRegistroPagoVenta").jqGrid(
+            {
+                datatype: "local",
+                refresh: true,
+                formatter: null,
+                ExpandColumn: true,
+                width: null,
+                height: "auto",
+                gridview: false,
+                multiselect: false,
+                viewrecords: true,
+                autowidth: true,
+                rowNum: 10,
+                rowList: [10, 20, 30],
+                colModel: [
+                    {
+                        name: 'MONTO_PAGO',
+                        label: 'MONTO PAGO',
+                        id: "MONTO_PAGO",
+                        hidden: false,
+                        width: 5,
+                        sorttype: "int",
+                        align: 'right'
+
+                    },
+                    {
+                        name: 'DES_BANCO',
+                        label: 'BANCO',
+                        id: "DES_BANCO",
+                        hidden: false,
+                        width: 5,
+                        align: 'right'
+                    },
+                    {
+                        title: false,
+                        name: 'NRO_CHEQUE',
+                        label: 'CHEQUE',
+                        id: 'NRO_CHEQUE',
+                        align: "right",
+                        hidden: false,
+                        width: 5
+
+                    }
+                ]
+
+            }).navGrid('#paginadorRegistroPagoVenta', {
+        add: false,
+        edit: false,
+        del: false,
+        view: false,
+        search: false,
+        refresh: true});
+
+    $("#grillaRegistroPagoVenta").jqGrid('setGridWidth', widthOfGrid(), true);
+
+    $("#grillaRegistroPagoVenta").jqGrid('navButtonAdd', '#paginadorRegistroPagoVenta', {
+        buttonicon: 'ui-icon-trash',
+        caption: "",
+        title: "Borrar Pago",
+        onClickButton: function() {
+            var id = $("#grillaRegistroPagoVenta").jqGrid('getGridParam','selrow');
+                     $('#grillaRegistroPagoVenta').jqGrid('delRowData',id);
+           
+        }
+    }
+    );
+}

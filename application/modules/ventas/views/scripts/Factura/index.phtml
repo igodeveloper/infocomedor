@@ -337,12 +337,12 @@
                             <table id="grillaComprasModal"></table>
                             <div id="paginadorComprasModal"></div>
 <!--                    </div>-->
-                    <div class="modal-footer">
+                    <div class="modal-footer" id="modal-footer-ventas">
                         <a data-dismiss="modal" class="btn" id="cancelar-bot"><?php echo 'Cancelar'; ?></a>
                         <a class="btn btn-info" id="guardar"><?php echo 'Guardar'; ?></a>
                     </div>
                 </div>
-            
+
                 
                 <!--    MODAL KARRITO     -->
                 <div class="modal hide" id="modalKarrito">   
@@ -392,6 +392,62 @@
                     </div>
                 </div>
                 <!--    FIN - MODAL KARRITO     -->
+                                <!--    MODAL FORMA DE PAGO     -->
+                <div class="modal hide" id="modalFormaPago">   
+                    <div class="modal-header">
+                        <div id="cabeceraModal" class="btn btn-info">
+                            <h3 id="title-modal-karrito" style="color:white; display: inline;">Forma de Pago</h3>
+                            <button data-dismiss="modal" class="close" type="button" id="cerrar-bot-karrito" style="display: inline">X</button>
+                        </div>
+                    </div>                
+                    <div class="modal-body">
+                         <table style="width: 90%; padding: 1%;">
+                                <tr>
+                                <td style="text-align: right" class="checkboxes" >
+                                    Efectivo : <input type="checkbox" name="formaPagoEfectivo" id="formaPagoEfectivo" checked value="EF" onclick="selectFormaPago('efectivo');">
+                                    <br>
+                                    Cheque : <input type="checkbox" name="formaPagoCheque" id="formaPagoCheque" value="CH" onclick="selectFormaPago('cheque');" >
+                                </td>
+                                <td class="cheque">
+                                    <label for="banco-modal-pagos" id="banco-modal-pagos-idioma">Banco:</label>
+                                </td>
+                                <td class="cheque">
+                                    <input id="banco-modal-pagos"  class="input-block-level" onchange="" >
+                                </td>
+                                <td class="cheque">
+                                    <label for="cheque-modal-pagos" id="cheque-modal-pagos-idioma">Cheque:</label>
+                                </td>
+                                 <td class="cheque">
+                                    <input id="cheque-modal-pagos"  class="input-block-level" onchange="" >
+                                </td>
+                                <td>
+                                    <label for="montoPago-modal-pagos" id="montoPago-modal-pagos-idioma">Monto pago:</label>
+                                </td>
+                                <td >
+                                    <input id="montoPago-modal-pagos"  class="input-block-level" onchange="" >
+                                </td>
+                                <td>
+                                    <label for="factura-modal-pagos" id="factura-modal-pagos-idioma">Total Factura:</label>
+                                </td>
+                                <td >
+                                    <input id="factura-modal-pagos"  class="input-block-level" onchange="">
+                                </td>
+                                <td>
+                                <button title="Agregar Pago" class="btn-compra" type="button" id="addPago"><img src="<?= $this->baseUrl() . "/css/Icons/thumbails/_0009_Add.png"; ?>"/></button>
+                                 </td>
+                            </tr>
+                        </table>
+                            <!--Aca se pone la grilla para el modal-->
+                            <table id="grillaRegistroPagoVenta"></table>
+                            <div id="paginadorRegistroPagoVenta"></div>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <a data-dismiss="modal" class="btn" id="cerrar-venta"><?php echo 'Cancelar'; ?></a>
+                        <a class="btn btn-info" id="guardar-venta"><?php echo 'Confirmar'; ?></a>
+                    </div>
+                </div>
             </div>
         </div>
     </body>
