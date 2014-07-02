@@ -1165,8 +1165,8 @@ function insertaEgreso(){
     var montoMovCaja = parseInt($("#grillaModalEgreso").jqGrid('getCell', rowGridEgreso, 'MONTO_MOV'));
     var saldoPediente = parseInt($("#saldoPendiente-modal-pagos").val());
     //verificar si el egreso es mayor, menor o igual
-    console.log(montoMovCaja+" - "+saldoPediente);
-   if(montoMovCaja>saldoPediente)   {
+   
+   if(montoMovCaja>saldoPediente){
                console.log("RECIBIR VUELTO, dar ingreso de dinero en caja");
                var vuelto = montoMovCaja - saldoPediente;
                $("#vuelto-modal-pagos").show();
@@ -1185,20 +1185,16 @@ function insertaEgreso(){
                    $("#montoPago-modal-pagos").attr("disabled", true);
                     reloadEgresoModal();
     }else if(montoMovCaja==saldoPediente){
-                    $("#vuelto-modal-pagos").hide();
+        
+                   $("#modalBuscarEgreso").hide();
+                   $("#vuelto-modal-pagos").hide();
                    $("#vuelto-modal-pagos-idioma").hide();
                    $("#vuelto-modal-pagos").val(0);
                    $("#montoPago-modal-pagos").val(montoMovCaja);
                    $("#montoPago-modal-pagos").attr("disabled", true);
+                   reloadEgresoModal();
     }else{
     console.log("no se recupero el pago");
+    reloadEgresoModal();
     }
-
-    // si es mayor registrar ingreso por vuelto
-
-    // si es menor registrar pago por egreso.
-
-    // si es igual registrar egreso
-
-    // marcar egreso con el nro de factura compra 
 }

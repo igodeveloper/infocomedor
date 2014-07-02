@@ -92,7 +92,7 @@ function cargarGrillaRegistro() {
 	       		"search" : false,
 	       		"remove" : false,
 	       		"width" : 200,
-	       		"align":"left",
+	       		"align":"right",
 	       		"sortable" : false,
 	       		"hidden" : false
        		},			
@@ -104,7 +104,7 @@ function cargarGrillaRegistro() {
 	       		"search" : false,
 	       		"remove" : false,
 	       		"width" : 200,
-	       		"align":"left",
+	       		"align":"right",
 	       		"sortable" : false,
 	       		"hidden" : false
        		},			       	 
@@ -128,7 +128,7 @@ function cargarGrillaRegistro() {
 	       		"search" : false,
 	       		"remove" : false,
 	       		"width" : 200,
-	       		"align":"left",
+	       		"align":"right",
 	       		"sortable" : false,
 	       		"hidden" : false
        		},
@@ -152,7 +152,7 @@ function cargarGrillaRegistro() {
 	       		"search" : false,
 	       		"remove" : false,
 	       		"width" : 200,
-	       		"align":"left",
+	       		"align":"right",
 	       		"sortable" : false,
 	       		"hidden" : true
        		},
@@ -164,7 +164,7 @@ function cargarGrillaRegistro() {
 	       		"search" : false,
 	       		"remove" : false,
 	       		"width" : 200,
-	       		"align":"left",
+	       		"align":"right",
 	       		"sortable" : false,
 	       		"hidden" : false
        		},

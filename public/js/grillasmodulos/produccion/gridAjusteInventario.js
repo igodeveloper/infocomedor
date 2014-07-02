@@ -121,7 +121,7 @@ function cargarGrillaRegistro() {
                     {
                         title: false,
                         name: 'INVENTARIO_ENTRADA',
-                        label: 'ENTRADA',
+                        label: 'EXISTENCIA',
                         id: 'INVENTARIO_ENTRADA',
                         align: 'right',
                         width: 20,
@@ -271,11 +271,11 @@ function cargarGrillaRegistroModal() {
                     {
                         "title": false,
                         "name": 'saldo',
-                        "label": 'SALDO',
+                        "label": 'EXISTENCIA',
                         "id": 'saldo',
                         "align": "right",
                         "sortable": false,
-                        "hidden": true,
+                        "hidden": false,
                         width: 7,
                         
                     },
