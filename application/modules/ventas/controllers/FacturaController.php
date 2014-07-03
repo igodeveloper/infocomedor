@@ -321,6 +321,7 @@ public function guardarAction() {
         $this->_helper->viewRenderer->setNoRender(true);
         $dataVenta = json_decode($this->getRequest()->getParam("dataVenta"));
         $dataVentaDetalle = json_decode($this->getRequest()->getParam("dataVentaDetalle"));
+        $dataVentaPago = json_decode($this->getRequest()->getParam("dataVentaPago"));
        try {
             $db = Zend_Db_Table::getDefaultAdapter();
             $db->beginTransaction();
@@ -395,17 +396,21 @@ public function guardarAction() {
 		            }
                 	  
                 }
-                $data_ingreso = array(
-                    'COD_MOV_CAJA' => 0,
-                    'COD_CAJA' => (int)$dataVenta->codigo_caja,
-                    'FECHA_HORA_MOV' => date('Y-m-d H:i:s'),
-                    'MONTO_MOV' => (float)($dataVenta->montoTotal),
-                    'COD_TIPO_MOV' => 2,
-                    'FACTURA_MOV' => $factura_nro,
-                    'TIPO_FACTURA_MOV' => 'V',
-                    'OBSERVACION_MOV' => 'Factura Venta: '.$factura_nro
-                );
-                $insertEgreso = $db->insert('MOV_CAJA', $data_ingreso); 
+
+                foreach ($dataVentaPago as $value) {
+                    $data_ingreso = array(
+                        'COD_MOV_CAJA' => 0,
+                        'COD_CAJA' => (int)$value->CODIGO_CAJA,
+                        'FECHA_HORA_MOV' => date('Y-m-d H:i:s'),
+                        'MONTO_MOV' => (float)($value->MONTO_PAGO),
+                        'COD_TIPO_MOV' => 2,
+                        'FACTURA_MOV' => $factura_nro,
+                        'TIPO_FACTURA_MOV' => 'V',
+                        'OBSERVACION_MOV' => 'Factura Venta: '.$factura_nro,
+                        'TIPO_MOV' => $value->FORMA_PAGO
+                    );
+                    $insertEgreso = $db->insert('MOV_CAJA', $data_ingreso); 
+                }
                 $db->commit();
              
              echo json_encode(array("result" => "EXITO"));

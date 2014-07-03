@@ -398,6 +398,9 @@
                         <div id="cabeceraModal" class="btn btn-info">
                             <h3 id="title-modal-karrito" style="color:white; display: inline;">Forma de Pago</h3>
                             <button data-dismiss="modal" class="close" type="button" id="cerrar-bot-karrito" style="display: inline">X</button>
+                             <div class="alert alert-block hide" id="warning-block-pagos">
+                            <div id="warning-message-pagos"></div>
+                        </div>
                         </div>
                     </div>                
                     <div class="modal-body">
@@ -427,10 +430,11 @@
                                     <input id="montoPago-modal-pagos"  class="input-block-level" onchange="" >
                                 </td>
                                 <td>
-                                    <label for="factura-modal-pagos" id="factura-modal-pagos-idioma">Total Factura:</label>
+                                    <label for="saldoPendiente-modal-pagos" id="factura-modal-pagos-idioma">Saldo Factura:</label>
                                 </td>
                                 <td >
-                                    <input id="factura-modal-pagos"  class="input-block-level" onchange="">
+                                    <input id="saldoPendiente-modal-pagos"  class="input-block-level" onchange="">
+                                    <input id="totalFactura-modal-pagos"  class="hide" onchange="">
                                 </td>
                                 <td>
                                 <button title="Agregar Pago" class="btn-compra" type="button" id="addPago"><img src="<?= $this->baseUrl() . "/css/Icons/thumbails/_0009_Add.png"; ?>"/></button>

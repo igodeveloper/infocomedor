@@ -102,6 +102,9 @@ $().ready(function() {
     $("#addItem").click(function() {
         addItem();
     });
+    $("#addPago").click(function() {
+        addPagos();
+    });
     $("#reloadItem").click(function() {
         CleanFormItems();
         bloqueamosCeldas('desbloqueo');
@@ -114,23 +117,22 @@ $().ready(function() {
         $('#factura-modal-pagos').attr("value", null);
     });
     $("#guardar-venta").click(function() {
-
          var data = obtenerGrid();
          var pago = obtenerPagos();
         if (data,pago) {enviarParametros(data,pago);}
     });
 
-    $("#guardar").click(function() {
-        
+    $("#guardar").click(function() {  
         var data = obtenerGrid();
         if (data) {
             // $.blockUI();
             console.log(data);
+            cargarGrillaRegistroPagoVenta();
             $('#modalFormaPago').show();
             $('#modalEditar').hide();
             $('#montoPago-modal-pagos').attr("value", data.venta.montoTotal);
-            $('#factura-modal-pagos').attr("value", data.venta.montoTotal);
-            $('#factura-modal-pagos').attr("disabled", true);
+            $('#saldoPendiente-modal-pagos').attr("value", data.venta.montoTotal);
+            $('#saldoPendiente-modal-pagos').attr("disabled", true);
         }
     });
 
@@ -321,6 +323,9 @@ function ocultarWarningBlockTitle() {
 function ocultarWarningBlockKarrito() {
     $("#warning-block-karrito").hide(300);
 }
+function ocultarWarningBlockPagos() {
+    $("#warning-block-pagos").hide(300);
+}
 
 function ocultarSuccessBlockTitle() {
     $("#success-block-title").hide(500);
@@ -358,6 +363,10 @@ function mostarVentana(box, mensaje) {
         $("#warning-message-karrito").text(mensaje);
         $("#warning-block-karrito").show();
         setTimeout("ocultarWarningBlockKarrito()", 5000);
+    }else if (box == "warning-block-pagos") {
+        $("#warning-message-pagos").text(mensaje);
+        $("#warning-block-pagos").show();
+        setTimeout("ocultarWarningBlockPagos()", 5000);
     }
 }
 function ocultarErrorBlockTitle() {
@@ -392,6 +401,24 @@ function addItem() {
         CleanFormItems();
         bloqueamosCeldas('desbloqueamos');
 //        BlockProveedorData("additem");
+    }
+
+}
+
+function addPagos() {
+//    alert("ingreso");
+    var data = obtenerPagosDetalles();
+//    alert(JSON.stringify(data));
+    if (data !== null) {
+        console.log(data);
+        var rows = jQuery("#grillaRegistroPagoVenta").jqGrid('getRowData');
+        jQuery("#grillaRegistroPagoVenta").jqGrid('addRowData', (rows.length) + 1, data);
+        var saldo = parseInt($("#saldoPendiente-modal-pagos").attr("value"))-parseInt(data.MONTO_PAGO);
+        $("#saldoPendiente-modal-pagos").attr("value",saldo);
+        $("#montoPago-modal-pagos").attr("value",saldo);
+        $("#banco-modal-pagos").attr("value",null);
+        $("#cheque-modal-pagos").attr("value",null);
+
     }
 
 }
@@ -440,6 +467,53 @@ function obtenerJsonDetalles() {
         return jsonObject;
     }
 }
+
+function obtenerPagosDetalles() {
+    var data = new Object();
+    var mensaje = '';
+    var focus = 0;
+     
+    if ($('#montoPago-modal-pagos').val() === "" || $('#montoPago-modal-pagos').val() < 0 || isNaN($('#montoPago-modal-pagos').val())) {
+        mensaje+= ' | El monto ingresado no es correcto ';
+        focus++;
+        addrequiredattr('montoPago-modal-pagos',focus);
+    } 
+    if (parseInt($('#saldoPendiente-modal-pagos').val()) < parseInt($('#montoPago-modal-pagos').val())) {
+        mensaje+= ' | El monto a pagar supera el saldo pendiente';
+        focus++;
+        addrequiredattr('montoPago-modal-pagos',focus);
+    } 
+    if (($('input[name=formaPagoCheque]').is(':checked')) && ($("#banco-modal-pagos").val() === "" || $("#cheque-modal-pagos").val() === "")) {
+        mensaje+= ' | Ingrese los datos del cheque';
+        focus++;
+        addrequiredattr('banco-modal-pagos',focus);
+        addrequiredattr('cheque-modal-pagos',focus++);
+    }
+    if(mensaje !=''){
+        mensaje+= ' |';
+        mostarVentana("warning-block-pagos", mensaje);
+        return null;
+    } else {
+        
+        data.MONTO_PAGO = $('#montoPago-modal-pagos').val();    
+        if ($('input[name=formaPagoCheque]').is(':checked')) {
+            data.FORMA_PAGO = 'CHEQUE';
+            data.DES_BANCO = $("#banco-modal-pagos").val();
+            data.NRO_CHEQUE = $("#cheque-modal-pagos").val();
+        } else {
+            data.FORMA_PAGO = 'EFECTIVO';
+            data.nombre_banco = "0";
+            data.numero_cheque = 0;
+        }
+       
+    }
+        data.CODIGO_CAJA = $("#codigoCaja-modal-ventas").val();
+        data.USUARIO_CAJA = $("#usuarioCaja-modal-ventas").val();
+        parseFloat(data.MONTO_PAGO);
+//        alert(data.monto_pago);
+        return data;
+    }
+
 
 function validacliente(data, what) {
     var dataString = new Object();
@@ -653,7 +727,7 @@ $('#modalEditar').show();
                 mostarVentana("success-title", "Datos Almacenados exitosamente");
                 
                 $("#grillaRegistroPagoVenta").jqGrid("clearGridData", true);
-                $('#factura-modal-pagos').attr("value", null);
+                $('#saldoPendiente-modal-pagos').attr("value", null);
                 $('#modalEditar').hide();
                  // $('#modal-footer-ventas').show();
                 cleanFormModalHide("exit");
@@ -670,7 +744,6 @@ $('#modalEditar').show();
         },
         error: function(event, request, settings) {
              $('#modalFormaPago').hide();
-              $('#modal-footer-ventas').show();
             mostarVentana("warning", "Intente mas tarde");
         }
     });
@@ -887,11 +960,52 @@ function obtenerGrid() {
         return jsonObject;
     }
     return null;
-    
-    
-    
 }
 
+function obtenerPagos() {
+    
+    
+    var pagoGridDetalles = new Object();
+
+    pagoGridDetalles = jQuery("#grillaRegistroPagoVenta").jqGrid('getRowData');
+    var totalFactura = parseInt($("#totalFactura-modal-pagos").attr("value"));
+    var montoTotal = 0;
+
+    //Calculamos el precio total
+    for (var i = 0; i < pagoGridDetalles.length; i++) {
+        montoTotal = montoTotal + parseInt(pagoGridDetalles[i].MONTO_PAGO);
+
+    }
+
+
+
+
+    var mensaje = 'Ingrese:';
+    var focus = 0;
+
+    
+    // validar los campos por orden      
+    if(pagoGridDetalles.length < 1){
+        mensaje+= ' | Un pago como minimo';
+        focus++;
+        addrequiredattr('controlfiscal-modal_3',focus);
+    }
+    if(parseInt(totalFactura) < parseInt(montoTotal)){
+        mensaje+= ' | La cantidad de pagos ingresados supera el monto de la factura';
+    }
+    if(parseInt(totalFactura) > parseInt(montoTotal)){
+        mensaje+= ' | La cantidad de pagos ingresados es menor al monto de la factura';
+    }
+    if (mensaje != 'Ingrese:') {
+        mensaje+= ' |';
+        mostarVentana("warning-block-pagos", mensaje);
+        return null;
+    } else {
+
+        return pagoGridDetalles;
+    }
+    return null;
+}
 
 function filtrosbusqueda() {
     var obj = new Object();

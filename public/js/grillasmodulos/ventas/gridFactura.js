@@ -541,7 +541,7 @@ function eliminarItem(){
 	}
 }
 
-function cargarGrillaComprasModalPagos() {
+function cargarGrillaRegistroPagoVenta() {
     jQuery("#grillaRegistroPagoVenta").jqGrid(
             {
                 datatype: "local",
@@ -549,7 +549,7 @@ function cargarGrillaComprasModalPagos() {
                 formatter: null,
                 ExpandColumn: true,
                 width: null,
-                height: "auto",
+                height: "150",
                 gridview: false,
                 multiselect: false,
                 viewrecords: true,
@@ -558,6 +558,34 @@ function cargarGrillaComprasModalPagos() {
                 rowList: [10, 20, 30],
                 colModel: [
                     {
+                        name: 'FORMA_PAGO',
+                        label: 'FORMA PAGO',
+                        id: "FORMA_PAGO",
+                        hidden: true,
+                        width: 5,
+                        sorttype: "int",
+                        align: 'right'
+
+                    },
+                    {
+                        name: 'CODIGO_CAJA',
+                        label: 'CODIGO_CAJA',
+                        id: "CODIGO_CAJA",
+                        hidden: true,
+                        width: 5,
+                        sorttype: "int",
+                        align: 'right'
+
+                    },
+                    {
+                        name: 'USUARIO_CAJA',
+                        label: 'USUARIO_CAJA',
+                        id: "USUARIO_CAJA",
+                        hidden: true,
+                        width: 5,
+                        align: 'right'
+
+                    },{
                         name: 'MONTO_PAGO',
                         label: 'MONTO PAGO',
                         id: "MONTO_PAGO",
@@ -606,6 +634,5 @@ function cargarGrillaComprasModalPagos() {
                      $('#grillaRegistroPagoVenta').jqGrid('delRowData',id);
            
         }
-    }
-    );
+    });
 }
