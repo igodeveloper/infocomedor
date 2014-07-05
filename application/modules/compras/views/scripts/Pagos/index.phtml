@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//ES" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+    <?php
+    echo $this->headScript()->
+            appendFile($this->baseUrl() . "/js/jquery-1.7.1.js")->
+            appendFile($this->baseUrl() . "/js/jquery-ui-1.8.17.custom.min.js")->
+            appendFile($this->baseUrl() . '/js/i18n/grid.locale-es.js')->
+            appendFile($this->baseUrl() . '/js/jquery.jqGrid.min.js')->
+            appendFile($this->baseUrl() . "/js/bootstrap.js")->
+            appendFile($this->baseUrl() . "/js/jsmodulos/compras/pagos.js")->
+            appendFile($this->baseUrl() . "/js/grillasmodulos/compras/gridPagos.js")->
+            appendFile($this->baseUrl() . "/js/jquery.tablescroll.js")->
+            appendFile($this->baseUrl() . "/js/jquery.blockUI.js");
+
+    echo $this->headLink()
+            ->setIndent('  ')
+            ->prependStylesheet($this->baseUrl() . "/css/cssgenerico/generico.css")
+            ->prependStylesheet($this->baseUrl() . "/css/cssgenerico/ui.datepicker.css")
+            ->prependStylesheet($this->baseUrl() . "/jquery-ui-1.10.3.custom/css/ui-lightness/jquery-ui-1.10.3.custom.css")
+            ->prependStylesheet($this->baseUrl() . "/css/cssgenerico/jquery-ui-1.8.17.custom.css")
+            ->prependStylesheet($this->baseUrl() . "/css/cssgenerico/ui.jqgrid.css")
+            ->prependStylesheet($this->baseUrl() . "/css/cssgenerico/bootstrap.css")
+            ->prependStylesheet($this->baseUrl() . "/css/cssgenerico/bootstrap-responsive.css")
+            ->prependStylesheet($this->baseUrl() . "/css/cssmodulos/compras/compra.css")
+            ->prependStylesheet($this->baseUrl() . "/css/cssgenerico/default.css")
+            ->prependStylesheet($this->baseUrl() . "/css/cssgenerico/contenedor.css")
+            ->prependStylesheet($this->baseUrl() . "/css/cssgenerico/ui.jqgrid.css")
+            ->prependStylesheet($this->baseUrl() . "/css/cssmodulos/parametricos/menucss3/css/cool_nav.css");
+    ?>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+        <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" >
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>Infocomedor</title>
+    </head>
+
+    <body>
+
+        <div class="container-fluid"> 
+            <div class="row-fluid">
+                <div class="span10">
+                 <div  class="titulo-cabecera" style="text-align: left">
+                    <nav id="colorNav" >
+                        <ul>
+                            <li class="menu">
+                                <a href="<?php echo $this->baseUrl() ."/parametricos/menu";?>" class="">MENU</a>
+                           </li>
+                            <li class="red">
+                                <a href="#" class="" title="COMPRAS">COMPRAS</a>
+                                <ul>
+                                    <li><a href="<?php echo $this->baseUrl() ."/parametricos/proveedor";?>">Proveedor</a></li>
+                                    <li><a href="<?php echo $this->baseUrl() ."/compras/compra2";?>">Compras - Pagos</a></li>
+
+                                </ul>
+                            </li>
+                            <li class="green">
+                                <a href="#" class="" title="PRODUCCION">PRODUCCION</a>
+                                <ul>
+                                    <li><a href="<?php echo $this->baseUrl() ."/parametricos/tipoproducto";?>">Tipo Producto</a></li>
+                                    <li><a href="<?php echo $this->baseUrl() ."/parametricos/producto";?>">Producto</a></li>
+                                    <li><a href="<?php echo $this->baseUrl() ."/produccion/receta";?>">Recetas</a></li>
+                                    <li><a href="<?php echo $this->baseUrl() ."/produccion/productofinal";?>">Produccion</a></li>
+
+                                </ul>
+                            </li>
+                            <li class="blue">
+                                <a href="#" class="" title="VENTAS">VENTAS</a>
+                                <ul>
+                                     <li><a href="<?php echo $this->baseUrl() ."/parametricos/empresa";?>">Empresa Clientes</a></li>
+                                     <li><a href="<?php echo $this->baseUrl() ."/parametricos/cliente";?>">Clientes</a></li>
+                                     <li><a href="<?php echo $this->baseUrl() ."/ventas/karrito";?>">Pedidos</a></li>
+                                     <li><a href="<?php echo $this->baseUrl() ."/ventas/factura";?>">Facturacion</a></li>
+
+                                </ul>
+                            </li>
+                            <li class="yellow">
+                                <a href="#" class="" title="INVENTARIO">INVENTARIO</a>
+                                <ul>
+                                     <li><a href="<?php echo $this->baseUrl() ."/produccion/inventario";?>">Inventario</a></li>
+                                     <li><a href="<?php echo $this->baseUrl() ."/produccion/ajusteinventario";?>">Ajuste</a></li>
+                                </ul>
+                            </li>
+                            <li class="purple">
+                                <a href="#" class=""title="CAJA">CAJA</a>
+                               <ul>
+                                    <li><a href="<?php echo $this->baseUrl() ."/caja/caja";?>">Caja</a></li>
+                                    <li><a href="<?php echo $this->baseUrl() ."/caja/tipomovimiento";?>">Tipo Movimiento</a></li>
+                                    <li><a href="<?php echo $this->baseUrl() ."/caja/movcaja";?>">Movimientos</a></li>
+                               </ul>
+                           </li>
+                           <li class="">
+                                <a href="<?php echo $this->baseUrl() ."/menus/menu";?>">LogOut</a>
+                           </li>
+
+                        </ul>
+                    </nav>
+
+	         </div> 
+                    <div  class="titulo-cabecera">
+                        <h1 id="cabecera-titulo">Compras</h1>
+
+                    </div>
+                  
+                    <div>
+                        <div class="alert alert-block hide" id="warning-block-title">
+                            <div id="warning-message-title"></div>
+                        </div>
+                        <div class="alert alert-success hide" id="success-block-title">
+                            <div id="success-message-title"></div>
+                        </div>
+                        <div class="alert alert-info hide" id="info-block-listado">
+                            <div id="info-message"></div>
+                        </div>
+                        <div id="contenedor" class="filtro" align=center>
+                            <table style="width: 90%; padding: 1%;">
+                                <tr>
+                                    
+                                    <td style="width: 7%">
+                                        <label for="codigointerno-filtro" id="codigointerno-filtro-idioma">C&oacute;d. Interno</label>
+                                    </td>
+                                    <td style="width: 13%">
+                                        <input id="codigointerno-filtro"  maxlength="10" class="input-block-level" >
+                                    </td>
+                                    
+                                    <td style="width: 10%">
+                                        <label for="formapago-filtro" id="formapago-filtro-idioma">Pago</label>
+                                    </td>
+                                    <td style="width: 15%">
+                                        <select class="input-block-level" name="estado-filtro-idioma" id="estado-filtro" onchange="">
+                                            <option value="-1">Seleccione</option>
+                                            <option value="A">Anulado</option>
+                                            <option value="T">Activo</option>
+                                        </select>
+                                    </td>
+
+                                </tr>
+                            </table>
+                        </div>
+                        <div  id="tab-content">
+                            <div id="contenedor" align=center>
+                                <a id="buscarCompra"  class="btn btn-info"><img src="<?php echo $this->baseUrl() . "/css/images/buscar.png"; ?>" id="buscar-img" title="Buscar"  style="cursor: hand;"/></a>
+
+
+                            </div> 
+                        </div>
+                    </div>
+                    <div id="contenedor" >
+                        <div class="contenedor-grid">
+                            <table id="grillaPagos"></table>
+                            <div id="paginadorPagos"></div>
+                        </div>
+                    </div>
+                </div>
+
+
+               
+                </div>
+            </div>
+    </body>
+</html>
