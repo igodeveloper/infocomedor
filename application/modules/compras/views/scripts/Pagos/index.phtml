@@ -7,7 +7,7 @@
             appendFile($this->baseUrl() . '/js/i18n/grid.locale-es.js')->
             appendFile($this->baseUrl() . '/js/jquery.jqGrid.min.js')->
             appendFile($this->baseUrl() . "/js/bootstrap.js")->
-            appendFile($this->baseUrl() . "/js/jsmodulos/compras/pagos.js")->
+            appendFile($this->baseUrl() . "/js/jsmodulos/compras/Pagos.js")->
             appendFile($this->baseUrl() . "/js/grillasmodulos/compras/gridPagos.js")->
             appendFile($this->baseUrl() . "/js/jquery.tablescroll.js")->
             appendFile($this->baseUrl() . "/js/jquery.blockUI.js");
@@ -97,7 +97,7 @@
 
 	         </div> 
                     <div  class="titulo-cabecera">
-                        <h1 id="cabecera-titulo">Compras</h1>
+                        <h1 id="cabecera-titulo">Pagos</h1>
 
                     </div>
                   
@@ -121,12 +121,18 @@
                                     <td style="width: 13%">
                                         <input id="codigointerno-filtro"  maxlength="10" class="input-block-level" >
                                     </td>
+                                    <td style="width: 7%">
+                                        <label for="nrocheque-filtro" id="nrocheque-filtro-idioma">Cheque:</label>
+                                    </td>
+                                    <td style="width: 13%">
+                                        <input id="nrocheque-filtro"  maxlength="10" class="input-block-level" >
+                                    </td>
                                     
                                     <td style="width: 10%">
                                         <label for="formapago-filtro" id="formapago-filtro-idioma">Pago</label>
                                     </td>
                                     <td style="width: 15%">
-                                        <select class="input-block-level" name="estado-filtro-idioma" id="estado-filtro" onchange="">
+                                        <select class="input-block-level" name="estado-filtro-idioma" id="formapago-filtro" onchange="">
                                             <option value="-1">Seleccione</option>
                                             <option value="A">Anulado</option>
                                             <option value="T">Activo</option>
@@ -145,10 +151,10 @@
                         </div>
                     </div>
                     <div id="contenedor" >
-                        <div class="contenedor-grid">
+                        <!-- <div class="contenedor-grid"> -->
                             <table id="grillaPagos"></table>
                             <div id="paginadorPagos"></div>
-                        </div>
+                        <!-- </div> -->
                     </div>
                 </div>
 

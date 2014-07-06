@@ -27,11 +27,13 @@ $().ready(function() {
 
     $("#cerrar-bot-pagos").click(function() {
         $('#modalPagos').hide();
+        jQuery("#grillaComprasModalPagos").jqGrid("clearGridData", true);
         $('#codigoCaja-modal-pagos').attr("value", 0);
         $('#usuarioCaja-modal-pagos').attr("value", 0);
     });
     $("#cancelar-bot-pagos").click(function() {
         $('#modalPagos').hide();
+        jQuery("#grillaComprasModalPagos").jqGrid("clearGridData", true);
         $('#codigoCaja-modal-pagos').attr("value", 0);
         $('#usuarioCaja-modal-pagos').attr("value", 0);
 
@@ -94,12 +96,33 @@ $().ready(function() {
         }
     });
 
+    $("#addPagos").click(function() {
+        console.log("ejecuto");
+        var data = obtenerMontoPago();
+        if (data !== null) {
+        var rows = jQuery("#grillaComprasModalPagos").jqGrid('getRowData');
+        jQuery("#grillaComprasModalPagos").jqGrid('addRowData', (rows.length) + 1, data);
+        // $("#grillaComprasModalPagos")[0].addJSONData(JSON.stringify(data));
+        var saldo = parseInt($("#saldoPendiente-modal-pagos").val());
+        var pago = parseInt(data.MONTO_PAGO);
+        var saldoActual = parseInt(saldo-pago);
+        $("#saldoPendiente-modal-pagos").attr("value",saldoActual);
+        $('#montoPago-modal-pagos').attr("value",saldoActual);
+        $('#vuelto-modal-pagos').attr("value",0);
+        $('#cheque-modal-pagos').attr("value",null);
+        $('#banco-modal-pagos').attr("value",null);
+        }
+    });
+
+
     $("#guardar-pagos").click(function() {
 //        if (!confirm("Esta seguro de que desea almacenar el pago?"))
 //            return;
-        var data = obtenerMontoPago();
-        if (data !== null) {
+        var data = jQuery("#grillaComprasModalPagos").jqGrid('getRowData');
+        if (data.length>0) {
             guardarPagos(data);
+        }else{
+            mostarVentana("warning-pagos","Ingrese al menos un pago");
         }
     });
     $.getJSON(table+"/proveedordata", function(data) {
@@ -734,7 +757,7 @@ function levantapagos(parametros){
         $(".btn-compra").hide();
         $('#factura-modal-pagos').attr("value", parametros.NRO_FACTURA_COMPRA);
         $('#codigoMoneda-pagos').attr("value", parametros.COD_MONEDA_COMPRA);
-        cargarPagos(parametros.NRO_FACTURA_COMPRA);
+        // cargarPagos(parametros.NRO_FACTURA_COMPRA);
         var control_1 = parametros.CONTROL_FISCAL.substr(0, 3);
         var control_2 = parametros.CONTROL_FISCAL.substr(4, 3);
         var control_3 = parametros.CONTROL_FISCAL.substr(8, (parametros.CONTROL_FISCAL.length - 8));
@@ -1064,6 +1087,7 @@ function cargartipoegreso(){
 
 function obtenerMontoPago() {
     var data = new Object();
+    var dataGrid = new Object();
     
     var mensaje = '';
     var focus = 0;
@@ -1094,33 +1118,46 @@ function obtenerMontoPago() {
         mostarVentana("warning-pagos", mensaje);
         return null;
     } else {
-        data.numero_factura = $('#factura-modal-pagos').val();
-        data.monto_pago = $('#montoPago-modal-pagos').val();
-        data.moneda_pago = $('#codigoMoneda-pagos').val();
-        data.estado_pago = 'T';
+         data.NRO_FACTURA_COMPRA = $('#factura-modal-pagos').val();
+        data.MONTO_PAGO = $('#montoPago-modal-pagos').val();
+        // data.moneda_pago = $('#codigoMoneda-pagos').val();
+        // data.estado_pago = 'T';
         if ($('input[name=formaPagoCheque]').is(':checked')) {
-            data.nombre_banco = $("#banco-modal-pagos").val();
-            data.numero_cheque = $("#cheque-modal-pagos").val();
-            data.forma_pago = "cheque";
+            data.DES_BANCO = $("#banco-modal-pagos").val();
+            data.NRO_CHEQUE = $("#cheque-modal-pagos").val();
+            data.FORMA_PAGO = "CHEQUE";
         } else {
-            data.forma_pago = "efectivo";
-            data.nombre_banco = "0";
-            data.numero_cheque = 0;
+            data.FORMA_PAGO = "EFECTIVO";
+            data.DES_BANCO = "-";
+            data.NRO_CHEQUE = 0;
         }
         if ($('input[name=formaPagoEgreso]').is(':checked')) {
-            data.forma_pago = "egreso";
-            data.vuelto = $("#vuelto-modal-pagos").val();
-            data.codigo_egreso = $("#idEgreso-modal-pagos").val();
+            data.FORMA_PAGO = "EGRESO";
+            data.VUELTO = $("#vuelto-modal-pagos").val();
+            data.CODIGO_EGRESO = $("#idEgreso-modal-pagos").val();
            
         } else {
-            data.vuelto = "0";
-            data.codigo_egreso = 0;
+            data.VUELTO = "0";
+            data.CODIGO_EGRESO = 0;
         }
-        data.codigo_caja = $("#codigoCaja-modal-pagos").val();
-        data.usuario_caja = $("#usuarioCaja-modal-pagos").val();
-        parseFloat(data.monto_pago);
+        // data.COD_MOV_CAJA = 0;
+        data.CODIGO_CAJA = $("#codigoCaja-modal-pagos").val();
+        data.USUARIO_CAJA = $("#usuarioCaja-modal-pagos").val();
+        parseFloat(data.MONTO_PAGO);
+    
+        dataGrid.FORMA_PAGO=data.FORMA_PAGO;
+        dataGrid.CODIGO_CAJA=data.CODIGO_CAJA;
+        dataGrid.USUARIO_CAJA=data.USUARIO_CAJA;
+        dataGrid.MONTO_PAGO=data.MONTO_PAGO;
+        dataGrid.DES_BANCO=data.DES_BANCO;
+        dataGrid.NRO_CHEQUE=data.NRO_CHEQUE;
+        dataGrid.CODIGO_EGRESO=data.CODIGO_EGRESO;
+        dataGrid.VUELTO=data.VUELTO;
+        dataGrid.NRO_FACTURA_COMPRA=data.NRO_FACTURA_COMPRA;
+
 //        alert(data.monto_pago);
-        return data;
+// console.log(dataGrid);
+        return dataGrid;
     }
 
 }
@@ -1128,6 +1165,7 @@ function obtenerMontoPago() {
 function guardarPagos(data) {
 
     data = JSON.stringify(data);
+    console.log(data);
     $.ajax({
         url: table+'/guardarpagos',
         type: 'post',
@@ -1140,6 +1178,7 @@ function guardarPagos(data) {
                 mostarVentana("error", "TIMEOUT");
             } else if (respuesta.result == "EXITO") {
                 $('#modalPagos').hide();
+                jQuery("#grillaComprasModalPagos").jqGrid("clearGridData", true);
                 $('#codigoCaja-modal-pagos').attr("value", 0);
                 $('#usuarioCaja-modal-pagos').attr("value", 0);
                 mostarVentana("success-title", "Pago almacenado exitosamente");

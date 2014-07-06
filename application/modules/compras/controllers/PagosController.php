@@ -58,7 +58,7 @@ class Compras_PagosController extends Zend_Controller_Action {
             if ($Obj->NRO_CHEQUE != null) {
                 $select->where("PP.NRO_CHEQUE = ?", $Obj->NRO_CHEQUE);
             }
-            if ($Obj->ESTADO_PAGO != null) {
+            if ($Obj->ESTADO_PAGO != -1) {
                 $select->where("PP.ESTADO_PAGO = ?", $Obj->ESTADO_PAGO);
             }
             $result = $db->fetchAll($select);

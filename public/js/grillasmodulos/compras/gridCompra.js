@@ -181,6 +181,7 @@ function cargarGrillaCompras() {
                         align: 'center',
                         hidden: false
                     }
+
                 ]
             }).navGrid('#paginadorCompras', {
         add: false,
@@ -363,35 +364,48 @@ function cargarGrillaComprasModalPagos() {
     jQuery("#grillaComprasModalPagos").jqGrid(
             {
                 datatype: "local",
-                beforeRequest: bloquearPantalla,
-                loadComplete: function() {
-                    $.unblockUI();
-                },
-                serializeGridData: function() {
-                },
                 refresh: true,
                 formatter: null,
                 ExpandColumn: true,
                 width: null,
-                height: "auto",
+                height: "150",
                 gridview: false,
                 multiselect: false,
                 viewrecords: true,
                 autowidth: true,
-                pager: '#paginadorComprasModalPagos',
                 rowNum: 10,
                 rowList: [10, 20, 30],
+                pager: "#paginadorComprasModalPagos",
                 colModel: [
                     {
-                        name: 'COD_PAGO_PROVEEDOR',
-                        label: 'COD PAGO',
-                        id: "COD_PAGO_PROVEEDOR",
+                        name: 'FORMA_PAGO',
+                        label: 'FORMA PAGO',
+                        id: "FORMA_PAGO",
                         hidden: false,
                         width: 5,
+                        sorttype: "int",
                         align: 'right'
 
                     },
                     {
+                        name: 'CODIGO_CAJA',
+                        label: 'CODIGO_CAJA',
+                        id: "CODIGO_CAJA",
+                        hidden: true,
+                        width: 5,
+                        sorttype: "int",
+                        align: 'right'
+
+                    },
+                    {
+                        name: 'USUARIO_CAJA',
+                        label: 'USUARIO_CAJA',
+                        id: "USUARIO_CAJA",
+                        hidden: true,
+                        width: 5,
+                        align: 'right'
+
+                    },{
                         name: 'MONTO_PAGO',
                         label: 'MONTO PAGO',
                         id: "MONTO_PAGO",
@@ -421,12 +435,32 @@ function cargarGrillaComprasModalPagos() {
                     },
                     {
                         title: false,
-                        name: 'ESTADO_PAGO',
-                        label: 'ESTADO',
-                        id: 'ESTADO_PAGO',
+                        name: 'CODIGO_EGRESO',
+                        label: 'COD EGRESO',
+                        id: 'CODIGO_EGRESO',
                         align: "right",
                         hidden: false,
                         width: 5
+
+                    },
+                    {
+                        title: false,
+                        name: 'VUELTO',
+                        label: 'VUELTO',
+                        id: 'VUELTO',
+                        align: "right",
+                        hidden: false,
+                        width: 5
+
+                    },
+                    {
+                        title: false,
+                        name: 'NRO_FACTURA_COMPRA',
+                        label: 'NRO_FACTURA_COMPRA',
+                        id: 'NRO_FACTURA_COMPRA',
+                        width: 8,
+                        align: 'center',
+                        hidden: true
                     }
                 ]
 
@@ -434,16 +468,17 @@ function cargarGrillaComprasModalPagos() {
         add: false,
         edit: false,
         del: false,
-        view: false,
+        view: true,
         search: false,
-        refresh: true});
+        refresh: false});
 
-    $("#grillaComprasModalPagos").jqGrid('setGridWidth', widthOfGrid(), true);
+
+        $("#grillaComprasModalPagos").jqGrid('setGridWidth', widthOfGrid(), true);
 
     $("#grillaComprasModalPagos").jqGrid('navButtonAdd', '#paginadorComprasModalPagos', {
         buttonicon: 'ui-icon-trash',
         caption: "",
-        title: "Anular pago",
+        title: "Borrar pago",
         onClickButton: function() {
             anularPago();
         }
@@ -500,47 +535,14 @@ function modalPagos(cellvalue, options, rowObject)
 }
 function anularPago()
 {
-    var id = $("#grillaComprasModalPagos").jqGrid('getGridParam', 'selrow');
-    var parametrosPagos = new Object();
-
-    parametrosPagos.COD_PAGO_PROVEEDOR = $("#grillaComprasModalPagos").jqGrid('getCell', id, 'COD_PAGO_PROVEEDOR');
-    parametrosPagos.MONTO_PAGO = $("#grillaComprasModalPagos").jqGrid('getCell', id, 'MONTO_PAGO');
-    parametrosPagos.DES_BANCO = $("#grillaComprasModalPagos").jqGrid('getCell', id, 'DES_BANCO');
-    parametrosPagos.NRO_CHEQUE = $("#grillaComprasModalPagos").jqGrid('getCell', id, 'NRO_CHEQUE');
-    parametrosPagos.ESTADO_PAGO = $("#grillaComprasModalPagos").jqGrid('getCell', id, 'ESTADO_PAGO');
-    parametrosPagos.NRO_FACTURA_COMPRA = $('#factura-modal-pagos').val();
-     parametrosPagos.COD_MONEDA_COMPRA = $('#codigoMoneda-pagos').val();
-    if (id == false) {
-        alert("Para anular un pago debe seleccionarlo previamente.");
-    } else {
-        
-        if (parametrosPagos.ESTADO_PAGO == 'ACTIVO') {
-            parametrosPagos = JSON.stringify(parametrosPagos);
-            $.ajax({
-                url: table+'/anulacionpago',
-                type: 'post',
-                data: {"parametrosPagos": parametrosPagos},
-                dataType: 'json',
-                async: false,
-                success: function(data) {
-                    if (data.result == "ERROR") {
-                        mostarVentana("warning-pagos", "Ha ocurrido un error, verifique sus datos");
-                    } else {
-                        $('#modalPagos').hide();
-                        mostarVentana("success-title", "Pago anulado con exito");    
-                        
-                    }
-                },
-                error: function(event, request, settings) {
-                    $.unblockUI();
-                    mostarVentana("warning-pagos", "Ha ocurrido un error, verifique sus datos");
-                }
-            });
-        } else {
-        	mostarVentana("warning-pagos", "El pago se encuentra anulado");
-        }
-    }
-    return false;
+     var id = $("#grillaComprasModalPagos").jqGrid('getGridParam','selrow');
+     var pagoGrilla = $("#grillaComprasModalPagos").jqGrid('getCell', id, 'MONTO_PAGO');
+     var saldo = parseInt($("#saldoPendiente-modal-pagos").val());
+     var pago = parseInt(pagoGrilla);
+     var saldoActual = parseInt(saldo+pago);
+     $("#saldoPendiente-modal-pagos").attr("value",saldoActual);
+     $('#montoPago-modal-pagos').attr("value",saldoActual);
+     $('#grillaComprasModalPagos').jqGrid('delRowData',id);
 }
 
 function anularcompra()

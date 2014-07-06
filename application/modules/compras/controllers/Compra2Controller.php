@@ -548,78 +548,77 @@ class Compras_Compra2Controller extends Zend_Controller_Action {
 
     public function guardarpagosAction() {
         $this->_helper->viewRenderer->setNoRender(true);
-        $data_Pagos = json_decode($this->getRequest()->getParam("data"));
+        $data = json_decode($this->getRequest()->getParam("data"));
         $pago_Model = new Application_Model_Pagoproveedor();
-        self::almacenarPagos($pago_Model, $data_Pagos);
+        self::almacenarPagos($pago_Model, $data);
     }
 
-    public function almacenarPagos($pago_Model, $data_Pagos) {
+    public function almacenarPagos($pago_Model, $data) {
 //        print_r("hola".$data_Pagos->numero_factura);
 //        die();
         try {
             $db = Zend_Db_Table::getDefaultAdapter();
             $db->beginTransaction();
-
+            foreach ($data as $data_Pagos) {
             // Se guarda pagos
             $serv_pagos = new Application_Model_DataService("Application_Model_DbTable_Pagoproveedor");
             $pago_Model->setCod_pago_proveedor((int) 0);
-            $pago_Model->setNro_factura_compra((int) $data_Pagos->numero_factura);
-            $pago_Model->setMonto_pago((float) $data_Pagos->monto_pago);
-            $pago_Model->setCod_moneda_pago((int) $data_Pagos->moneda_pago);
-            $pago_Model->setNro_cheque((int) $data_Pagos->numero_cheque);
-            $pago_Model->setDes_banco($data_Pagos->nombre_banco);
-            $pago_Model->setEstado_pago($data_Pagos->estado_pago);
+            $pago_Model->setNro_factura_compra((int) $data_Pagos->NRO_FACTURA_COMPRA);
+            $pago_Model->setMonto_pago((float) $data_Pagos->MONTO_PAGO);
+            $pago_Model->setCod_moneda_pago((int) 1);
+            $pago_Model->setNro_cheque((int) $data_Pagos->NRO_CHEQUE);
+            $pago_Model->setDes_banco($data_Pagos->DES_BANCO);
+            $pago_Model->setEstado_pago("T");
 
             $result_pagos = $serv_pagos->saveRow($pago_Model);
 
 
             // se hace un update de EGRESOS
-            if($data_Pagos->codigo_egreso != 0){
-                    $data_Egreso = array(
-                            'FACTURA_MOV'=>$data_Pagos->numero_factura,
+            if($data_Pagos->FORMA_PAGO == "EGRESO"){
+                        $data_Egreso = array(
+                            'FACTURA_MOV'=>$data_Pagos->NRO_FACTURA_COMPRA,
                             'TIPO_FACTURA_MOV'=>'C',
-                            'OBSERVACION_MOV' => 'Tiene Vuelto: '.$data_Pagos->vuelto
+                            'OBSERVACION_MOV' => 'Tiene Vuelto: '.$data_Pagos->VUELTO
                         );
-                        $where = "COD_MOV_CAJA= " . $data_Pagos->codigo_egreso;
+                        $where = "COD_MOV_CAJA= " . $data_Pagos->CODIGO_EGRESO;
                         $updateEgreso = $db->update('MOV_CAJA', $data_Egreso, $where);  
+                         // si corresponde se agrega un registro en mov_caja como vuelto
+                        if($data_Pagos->VUELTO > 0){
+                             $data_ingreso_caja = array(
+                                'COD_MOV_CAJA' =>0,
+                                'COD_CAJA' => $data_Pagos->CODIGO_CAJA,
+                                'FECHA_HORA_MOV' => date('Y-m-d H:i:s'),
+                                'MONTO_MOV' => (int)$data_Pagos->VUELTO,
+                                'COD_TIPO_MOV' => 3,
+                                'FACTURA_MOV'=>$data_Pagos->NRO_FACTURA_COMPRA,
+                                'TIPO_FACTURA_MOV'=>'C',
+                                'OBSERVACION_MOV' => 'Vuelto Factura Compra: '.$data_Pagos->NRO_FACTURA_COMPRA,
+                                'TIPO_MOV' => 'EFECTIVO'
+                        );
+        
+                        $update_ingreso_caja = $db->insert('MOV_CAJA', $data_ingreso_caja);  
+
+                        }
             }   
-            //Si es egreso en efectivo se registra 
-            if($data_Pagos->forma_pago == "efectivo"){
+
+            if($data_Pagos->FORMA_PAGO !== "EGRESO"){
                     $data_Egreso_Caja = array(
                         'COD_MOV_CAJA' =>0,
-                        'COD_CAJA' => $data_Pagos->codigo_caja,
+                        'COD_CAJA' => $data_Pagos->CODIGO_CAJA,
                         'FECHA_HORA_MOV' => date('Y-m-d H:i:s'),
-                        'MONTO_MOV' => (int)$data_Pagos->monto_pago,
+                        'MONTO_MOV' => (int)$data_Pagos->MONTO_PAGO,
                         'COD_TIPO_MOV' => 1,
-                        'FACTURA_MOV'=>$data_Pagos->numero_factura,
+                        'FACTURA_MOV'=>$data_Pagos->NRO_FACTURA_COMPRA,
                         'TIPO_FACTURA_MOV'=>'C',
-                        'OBSERVACION_MOV' => 'Pago Factura Compra: '.$data_Pagos->numero_factura
+                        'OBSERVACION_MOV' => 'Pago Factura Compra: '.$data_Pagos->NRO_FACTURA_COMPRA,
+                        'TIPO_MOV' => $data_Pagos->FORMA_PAGO
                         );
         
                         $updateEgreso = $db->insert('MOV_CAJA', $data_Egreso_Caja);  
-            }  
-            // si corresponde se agrega un registro en mov_caja como vuelto
-             if((int)$data_Pagos->vuelto != 0){
-
-                    $data_Vuelto = array(
-                            'COD_MOV_CAJA' => 0,
-                            'COD_CAJA' => (int)$data_Pagos->codigo_caja,
-                            'FECHA_HORA_MOV' => date('Y-m-d H:i:s'),
-                            'MONTO_MOV' => (int)$data_Pagos->vuelto,
-                            'COD_TIPO_MOV' => 3,
-                            'FACTURA_MOV' =>  $data_Pagos->numero_factura,
-                            'TIPO_FACTURA_MOV' => 'C',
-                            'OBSERVACION_MOV' => 'Vuelto: '.$data_Pagos->numero_factura
-                        );
-                       
-                        $insertEgreso = $db->insert('MOV_CAJA', $data_Vuelto);  
-            }   
-
-
-
+            } 
+            } 
+             
             $db->commit();
-
-
             echo json_encode(array("result" => "EXITO"));
         } catch (Exception $e) {
             echo json_encode(array("result" => "ERROR", "errotname" => $e->getMessage()));
@@ -627,34 +626,6 @@ class Compras_Compra2Controller extends Zend_Controller_Action {
         }
     }
 
-    public function anulacionpagoAction() {
-        $this->_helper->viewRenderer->setNoRender(true);
-        $parametros_pagos = json_decode($this->getRequest()->getParam("parametrosPagos"));
-        try {
-            $db = Zend_Db_Table::getDefaultAdapter();
-            $db->beginTransaction();
-
-            $serv_pagos = new Application_Model_DataService("Application_Model_DbTable_Pagoproveedor");
-            $pago_Model = new Application_Model_Pagoproveedor();
-            $pago_Model->setCod_pago_proveedor((int) $parametros_pagos->COD_PAGO_PROVEEDOR);
-            $pago_Model->setNro_factura_compra((int) $parametros_pagos->NRO_FACTURA_COMPRA);
-            $pago_Model->setMonto_pago((int) $parametros_pagos->MONTO_PAGO);
-            $pago_Model->setCod_moneda_pago((int) $parametros_pagos->COD_MONEDA_COMPRA);
-            $pago_Model->setNro_cheque((int) $parametros_pagos->NRO_CHEQUE);
-            $pago_Model->setDes_banco($parametros_pagos->DES_BANCO);
-            $pago_Model->setEstado_pago("A");
-
-            $result_pagos = $serv_pagos->saveRow($pago_Model);
-
-            $db->commit();
-
-
-            echo json_encode(array("result" => "EXITO"));
-        } catch (Exception $e) {
-            echo json_encode(array("result" => "ERROR", "errotname" => $e->getMessage()));
-            $db->rollBack();
-        }
-    }
     
 public function anularcompraAction() {
         $this->_helper->viewRenderer->setNoRender(true);
