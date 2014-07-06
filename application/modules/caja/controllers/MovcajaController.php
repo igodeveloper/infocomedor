@@ -224,6 +224,7 @@ class Caja_MovcajaController extends Zend_Controller_Action
 					$rowClass->setObservacion_mov(trim(utf8_decode($rowData->observacion_mov)));
 				else
 					$rowClass->setObservacion_mov('');
+                                $rowClass->setTipo_mov('EFECTIVO');
                 $result = $service->saveRow($rowClass);
 	    	$db->commit();
 	    	echo json_encode(array("result" => "EXITO"));

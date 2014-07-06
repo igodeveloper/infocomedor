@@ -9,6 +9,7 @@ class Application_Model_Movcaja extends ZendExt_Db_Table_Row_Abstract {
 	protected $_factura_mov = null;
 	protected $_tipo_factura_mov = null;
 	protected $_observacion_mov = null;
+	protected $_tipo_mov = null;
 	public $_data = null;
 	public function getCod_mov_caja(){
 		return $this->_cod_mov_caja;
@@ -34,6 +35,9 @@ class Application_Model_Movcaja extends ZendExt_Db_Table_Row_Abstract {
 	public function getObservacion_mov(){
 		return $this->_observacion_mov;
 	}
+	public function getTipo_mov(){
+		return $this->_tipo_mov;
+	}
 	public function setCod_mov_caja($_cod_mov_caja){
 		$this->_cod_mov_caja = $_cod_mov_caja;
 	}
@@ -58,6 +62,9 @@ class Application_Model_Movcaja extends ZendExt_Db_Table_Row_Abstract {
 	public function setObservacion_mov($_observacion_mov){
 		$this->_observacion_mov = $_observacion_mov;
 	}
+	public function setTipo_mov($_tipo_mov){
+		$this->_tipo_mov = $_tipo_mov;
+	}
 	public function __get($propertyName) {
 		$getter = "get" . $propertyName;
 		if (!method_exists($this, $getter)) {
@@ -74,10 +81,11 @@ class Application_Model_Movcaja extends ZendExt_Db_Table_Row_Abstract {
 			'cod_tipo_mov' => $this->_cod_tipo_mov, 
 			'factura_mov' => $this->_factura_mov, 
 			'tipo_factura_mov' => $this->_tipo_factura_mov, 
-			'observacion_mov' => $this->_observacion_mov);
+			'observacion_mov' => $this->_observacion_mov, 
+			'tipo_mov' => $this->_tipo_mov);
 }
     public function setFromArray(array $data) {
-    	foreach (array('cod_mov_caja', 'cod_caja', 'fecha_hora_mov', 'monto_mov', 'cod_tipo_mov', 'factura_mov', 'tipo_factura_mov', 'observacion_mov') as  $property) {
+    	foreach (array('cod_mov_caja', 'cod_caja', 'fecha_hora_mov', 'monto_mov', 'cod_tipo_mov', 'factura_mov', 'tipo_factura_mov', 'observacion_mov', 'tipo_mov') as  $property) {
     		if (isset($data[strtoupper($property)])) {
      			$this->{'_'. $property} = $data[strtoupper($property)];
     		}

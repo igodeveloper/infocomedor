@@ -257,7 +257,7 @@ class Caja_CajaController extends Zend_Controller_Action
     }
     public function creartablasAction()
     {        
-        $table = new Zend_ModelCreator('baja_stock','infocomedor');
+        $table = new Zend_ModelCreator('mov_caja','infocomedor');
     }    
     public function cajaabiertadataAction()
     {
