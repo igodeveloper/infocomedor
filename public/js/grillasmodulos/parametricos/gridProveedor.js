@@ -172,7 +172,8 @@ function cargarGrillaRegistro() {
                         "align": "right",
                         "sortable": false,
                         "hidden": false,
-                        formatter: 'number'
+                        formatter: 'number',
+                formatoptions:{thousandsSeparator: ".", decimalPlaces: 0},
                     }
                 ]
     }).navGrid('#paginadorRegistro', {

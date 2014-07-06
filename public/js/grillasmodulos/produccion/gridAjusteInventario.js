@@ -80,6 +80,8 @@ function cargarGrillaRegistro() {
                          id: 'INVENTARIO',
                          align: 'right',
                          width: 20,
+                         formatter: 'number',
+                formatoptions:{thousandsSeparator: ".", decimalPlaces: 0},
                          hidden: false
                      },
                      {
@@ -89,6 +91,8 @@ function cargarGrillaRegistro() {
                         id: 'COD_PRODUCTO',
                         align: 'right',
                         width: 20,
+                        formatter: 'number',
+                formatoptions:{thousandsSeparator: ".", decimalPlaces: 0},
                         hidden: false
                     },
                     {
@@ -125,6 +129,8 @@ function cargarGrillaRegistro() {
                         id: 'INVENTARIO_ENTRADA',
                         align: 'right',
                         width: 20,
+                        formatter: 'number',
+                formatoptions:{thousandsSeparator: ".", decimalPlaces: 0},
                         hidden: false
                     },
                     {
@@ -134,6 +140,8 @@ function cargarGrillaRegistro() {
                         id: 'INVENTARIO_SALIDA',
                         align: 'right',
                         width: 20,
+                        formatter: 'number',
+                formatoptions:{thousandsSeparator: ".", decimalPlaces: 0},
                         hidden: false
                     },
                     {
@@ -143,6 +151,8 @@ function cargarGrillaRegistro() {
                         id: 'INVENTARIO_SALDO',
                         align: 'right',
                         width: 20,
+                        formatter: 'number',
+                formatoptions:{thousandsSeparator: ".", decimalPlaces: 0},
                         hidden: false
                     },
                     {
@@ -152,6 +162,8 @@ function cargarGrillaRegistro() {
                         id: 'DESC_UNIDAD_MEDIDA',
                         align: 'left',
                         width: 20,
+                        formatter: 'number',
+                formatoptions:{thousandsSeparator: ".", decimalPlaces: 0},
                         hidden: false
                     },
                     {
@@ -227,6 +239,8 @@ function cargarGrillaRegistroModal() {
                         name: 'codproducto',
                         label: 'CODIGO',
                         id: "codproducto",
+                        formatter: 'number',
+                formatoptions:{thousandsSeparator: ".", decimalPlaces: 0},
                         hidden: false,
                         width: 8
                     },
@@ -275,6 +289,8 @@ function cargarGrillaRegistroModal() {
                         "id": 'saldo',
                         "align": "right",
                         "sortable": false,
+                        formatter: 'number',
+                formatoptions:{thousandsSeparator: ".", decimalPlaces: 0},
                         "hidden": false,
                         width: 7,
                         
@@ -288,6 +304,8 @@ function cargarGrillaRegistroModal() {
                         "sortable": false,
                         "hidden": false,
                         width: 7,
+                        formatter: 'number',
+                formatoptions:{thousandsSeparator: ".", decimalPlaces: 0},
                         editable: true
                         
                     },
@@ -299,7 +317,9 @@ function cargarGrillaRegistroModal() {
                         "align": "right",
                         "sortable": false,
                         "hidden": false,
-                        width: 7,
+                        formatter: 'number',
+                formatoptions:{thousandsSeparator: ".", decimalPlaces: 0},
+                        width: 7
                         
                         
                     }

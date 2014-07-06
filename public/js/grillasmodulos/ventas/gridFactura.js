@@ -71,6 +71,8 @@ function cargarGrillaFacturas() {
                         label: 'CODIGO',
                         id: 'COD_CLIENTE',
                         align: 'right',
+                        formatter: 'number',
+                formatoptions:{thousandsSeparator: ".", decimalPlaces:0},
                         width: 7,
                         hidden: false
                     },
@@ -98,6 +100,8 @@ function cargarGrillaFacturas() {
                         label: 'CONTROL INTERNO',
                         id: 'FAC_NRO',
                         align: 'right',
+                        formatter: 'number',
+                formatoptions:{thousandsSeparator: ".", decimalPlaces:0},
                         width: 15,
                         hidden: false
                     },
@@ -127,8 +131,8 @@ function cargarGrillaFacturas() {
                         align: 'right',
                         width: 14,
                         hidden: false,
-                        sorttype: 'float',
-                        formatter: 'number'
+                        formatter: 'number',
+                formatoptions:{thousandsSeparator: ".", decimalPlaces:0}
                     },
                     {
                         title: false,

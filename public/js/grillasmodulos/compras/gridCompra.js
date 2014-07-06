@@ -133,8 +133,8 @@ function cargarGrillaCompras() {
                         align: 'right',
                         width: 14,
                         hidden: false,
-                        sorttype: 'float',
-                        formatter: 'number'
+                        formatter: 'number',
+                        formatoptions:{thousandsSeparator: ".", decimalPlaces: 0}
                     },
                     {
                         title: false,
@@ -248,6 +248,8 @@ function cargarGrillaComprasModal() {
                         label: 'CODIGO',
                         id: "codproducto",
                         hidden: false,
+                        formatter: 'number',
+                        formatoptions:{thousandsSeparator: ".", decimalPlaces: 0},
                         width: 8
                     },
                     {
@@ -266,6 +268,8 @@ function cargarGrillaComprasModal() {
                         "id": 'cantidad',
                         "align": "center",
                         "hidden": false,
+                        formatter: 'number',
+                        formatoptions:{thousandsSeparator: ".", decimalPlaces: 0},
                         width: 10
                     },
                     {
@@ -294,6 +298,8 @@ function cargarGrillaComprasModal() {
                         "id": 'preciounitario',
                         "align": "right",
                         "hidden": false,
+                        formatter: 'number',
+                        formatoptions:{thousandsSeparator: ".", decimalPlaces: 0},
                         width: 10
                     }, {
                         "title": false,
@@ -311,6 +317,8 @@ function cargarGrillaComprasModal() {
                         "id": 'iva5',
                         "align": "right",
                         "hidden": false,
+                        formatter: 'number',
+                        formatoptions:{thousandsSeparator: ".", decimalPlaces: 0},
                         width: 10
                     },
                     {
@@ -320,6 +328,8 @@ function cargarGrillaComprasModal() {
                         "id": 'iva10',
                         "align": "right",
                         "hidden": false,
+                        formatter: 'number',
+                        formatoptions:{thousandsSeparator: ".", decimalPlaces: 0},
                         width: 10
                     },
                     {
@@ -330,9 +340,10 @@ function cargarGrillaComprasModal() {
                         "align": "right",
                         "hidden": false,
                         width: 20,
-                        formatter: "number",
                         summaryType: 'sum',
-                        sorttype: "float"
+                        formatter: 'number',
+                        formatoptions:{thousandsSeparator: ".", decimalPlaces: 0}
+
                     }
                 ],
                 sortname: 'nombreproveedor',
@@ -412,6 +423,8 @@ function cargarGrillaComprasModalPagos() {
                         hidden: false,
                         width: 5,
                         sorttype: "int",
+                         formatter: 'number',
+                        formatoptions:{thousandsSeparator: ".", decimalPlaces: 0},
                         align: 'right'
 
                     },
@@ -430,6 +443,8 @@ function cargarGrillaComprasModalPagos() {
                         id: 'NRO_CHEQUE',
                         align: "right",
                         hidden: false,
+                        formatter: 'number',
+                        formatoptions:{thousandsSeparator: ".", decimalPlaces: 0},
                         width: 5
 
                     },
@@ -440,6 +455,8 @@ function cargarGrillaComprasModalPagos() {
                         id: 'CODIGO_EGRESO',
                         align: "right",
                         hidden: false,
+                        formatter: 'number',
+                        formatoptions:{thousandsSeparator: ".", decimalPlaces: 0},
                         width: 5
 
                     },
@@ -450,6 +467,8 @@ function cargarGrillaComprasModalPagos() {
                         id: 'VUELTO',
                         align: "right",
                         hidden: false,
+                        formatter: 'number',
+                        formatoptions:{thousandsSeparator: ".", decimalPlaces: 0},
                         width: 5
 
                     },
@@ -460,6 +479,8 @@ function cargarGrillaComprasModalPagos() {
                         id: 'NRO_FACTURA_COMPRA',
                         width: 8,
                         align: 'center',
+                        formatter: 'number',
+                        formatoptions:{thousandsSeparator: ".", decimalPlaces: 0},
                         hidden: true
                     }
                 ]
@@ -640,6 +661,8 @@ function cargarGrillaEgreso() {
                         hidden: false,
                         width: 5,
                         sorttype: "int",
+                        formatter: 'number',
+                        formatoptions:{thousandsSeparator: ".", decimalPlaces: 0},
                         align: 'right'
 
                     },

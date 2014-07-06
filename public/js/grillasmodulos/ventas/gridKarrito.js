@@ -52,6 +52,8 @@ function cargarGrillaRegistro() {
                         id: 'COD_KARRITO',
                         align: 'right',
                         width: 10,
+                        formatter: 'number',
+                formatoptions:{thousandsSeparator: ".", decimalPlaces:0},
                         hidden: false
                     },
                     {
@@ -70,6 +72,7 @@ function cargarGrillaRegistro() {
                         id: 'COD_CLIENTE',
                         align: 'right',
                         width: 20,
+                       
                         hidden: false
                     },
                     {
@@ -96,6 +99,8 @@ function cargarGrillaRegistro() {
                         label: 'COD PRODUCTO',
                         id: 'COD_PRODUCTO',
                         align: 'right',
+                        formatter: 'number',
+                formatoptions:{thousandsSeparator: ".", decimalPlaces:0},
                         width: 10,
                         hidden: true
                     },
@@ -114,6 +119,8 @@ function cargarGrillaRegistro() {
                         label: 'CANTIDAD',
                         id: 'KAR_CANT_PRODUCTO',
                         align: 'right',
+                        formatter: 'number',
+                formatoptions:{thousandsSeparator: ".", decimalPlaces:2},
                         width: 10,
                         hidden: false
                     },
@@ -124,6 +131,8 @@ function cargarGrillaRegistro() {
                         id: 'KAR_PRECIO_PRODUCTO',
                         align: 'right',
                         width: 20,
+                        formatter: 'number',
+                formatoptions:{thousandsSeparator: ".", decimalPlaces:0},
                         hidden: false
                     },
                     {
@@ -142,6 +151,8 @@ function cargarGrillaRegistro() {
                         id: 'FACT_NRO',
                         align: 'right',
                         width: 10,
+                        formatter: 'number',
+                formatoptions:{thousandsSeparator: ".", decimalPlaces:0},
                         hidden: false
                     },
                     {

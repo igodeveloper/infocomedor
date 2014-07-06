@@ -70,6 +70,8 @@ function cargarGrillaRegistro() {
 	       		"align":"right",
 	       		"search" : false,
 	       		"remove" : false,
+	       		formatter: 'number',
+                formatoptions:{thousandsSeparator: ".", decimalPlaces: 0},
 	       		"hidden" : false
        	  },
        	  {
@@ -191,6 +193,8 @@ function cargarGrillaRegistro() {
 	       		"width" : 20,
 	       		"align":"right",
 	       		"sortable" : false,
+	       		formatter: 'number',
+                formatoptions:{thousandsSeparator: ".", decimalPlaces: 0},
 	       		"hidden" : false
        		}],
 

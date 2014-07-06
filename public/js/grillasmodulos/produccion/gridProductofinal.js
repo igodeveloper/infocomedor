@@ -63,6 +63,8 @@ function cargarGrillaRegistro() {
                         id: 'COD_PRODUCTO',
                         align: 'right',
                         width: 20,
+                        formatter: 'number',
+                formatoptions:{thousandsSeparator: ".", decimalPlaces:0},
                         hidden: false
                     },
                     {
@@ -81,6 +83,8 @@ function cargarGrillaRegistro() {
                         id: 'SALDO_STOCK',
                         align: 'right',
                         width: 20,
+                        formatter: 'number',
+                formatoptions:{thousandsSeparator: ".", decimalPlaces: 2},
                         hidden: false
                     },
                     {

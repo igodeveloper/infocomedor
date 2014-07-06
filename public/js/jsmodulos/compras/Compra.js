@@ -6,7 +6,16 @@ $().ready(function() {
      */
      setInputsDate();
 
-
+     jQuery('.just-number').keypress(function(tecla) {
+        console.log(tecla.charCode);
+        if(tecla.charCode < 48 || tecla.charCode > 57){
+            if(tecla.charCode == 0){
+                return true;
+            } else{
+                return false;
+            }
+        } 
+    });
 
     $("#buscarCompra").click(function() {
         buscar();
@@ -158,6 +167,8 @@ $().ready(function() {
     });
 
 }); // cerramos el ready de js
+
+
 
 function reloadEgresoModal(){
     $('#modalBuscarEgreso').hide();

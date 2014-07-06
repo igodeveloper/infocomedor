@@ -118,7 +118,7 @@
                                         <label for="codproveedor-filtro" id="codproveedor-filtro-idioma">C&oacute;digo Proveedor</label>
                                     </td>
                                     <td style="width: 10%">
-                                        <input id="codproveedor-filtro"  class="input-block-level" >
+                                        <input id="codproveedor-filtro"  class="input-block-level just-number" >
                                     </td>
                                     <td style="width: 7%">
                                         <label for="nameproveedor-filtro" id="nameproveedor-filtro-idioma">Proveedor</label>
@@ -138,7 +138,7 @@
                                     <td style="width: 40%">
                                         <input id="controlfiscal-filtro_1"  class="input-block-level" maxlength="3" value="001" style="width: 10%; display: inline; " >
                                         <input id="controlfiscal-filtro_2"  maxlength="3" class="input-block-level" max="3" value="001" style="width: 10%; display: inline;" >
-                                        <input id="controlfiscal-filtro_3"  maxlength="10" class="input-block-level" style="width: 30%; display: inline;" >
+                                        <input id="controlfiscal-filtro_3"  maxlength="10" class="input-block-level just-number" style="width: 30%; display: inline;" >
                                     </td>
                                 </tr>
                             </table>
@@ -218,7 +218,7 @@
                                     <button class="btn-compra" type="button" onclick="validaProveedor('cod');"><img src="<?= $this->baseUrl() . "/css/Icons/thumbails/_0007_Tick.png"; ?>"/></button>
                                 </td>
                                 <td style="width: 10%">
-                                    <input id="codigoproveedor-modal"  maxlength="10" class="input-block-level" 
+                                    <input id="codigoproveedor-modal"  maxlength="10" class="input-block-level just-number" 
                                            onchange=""  >
                                 </td>
 
@@ -256,7 +256,7 @@
                                     <label for="factura-modal" id="factura-modal-idioma">N&uacute;mero Factura</label>
                                 </td>
                                 <td id="numeroFacturaIn"style="width: 10%">
-                                    <input id="factura-modal"  maxlength="10" class="input-block-level" onchange=""  >
+                                    <input id="factura-modal"  maxlength="10" class="input-block-level just-number" onchange=""  >
                                 </td>
                                 </td>
                                 <td style="width: 5%">
@@ -265,10 +265,10 @@
                                 <td style="width: 15%">
                                     <input id="controlfiscal-modal_1"  class="input-block-level" maxlength="3" value="001" style="width: 20%" >
                                     <input id="controlfiscal-modal_2"  maxlength="10" class="input-block-level" max="3" value="001" style="width: 20%" >
-                                    <input id="controlfiscal-modal_3"  maxlength="10" class="input-block-level" style="width: 50%" >
+                                    <input id="controlfiscal-modal_3"  maxlength="10" class="input-block-level just-number" style="width: 50%" >
 
                                 </td>
-                                <td style="width: 10%">
+                                <td style="width: 10%" class="hide">
                                     <input type="radio" name=formaPago value="1" checked>Contado
 
                                     <input type="radio" name=formaPago value="2" >Cr&eacute;dito
@@ -324,7 +324,7 @@
                             <tr>
                                 <td style="width:11%">
                                     <div class="btn-confirmar" style="width: 80%">
-                                        <input id="codproducto-item"  maxlength="10" class="input-block-level" onchange="" 
+                                        <input id="codproducto-item"  maxlength="10" class="input-block-level just-number" onchange="" 
                                                style="width: 80%" >
                                         <button class="btn-compra" onclick="productvalidation('cod');"><img src="<?= $this->baseUrl() . "/css/Icons/thumbails/_0007_Tick.png"; ?>"/></button>
                                     </div>
@@ -336,14 +336,14 @@
                                     </div> 
                                 </td>
                                 <td style="width: 5%; text-align: center;">
-                                    <input id="cantidad-item"  maxlength="10" class="input-block-level" onchange="calculoTotalParcial();" >
+                                    <input id="cantidad-item"  maxlength="10" class="input-block-level just-number" onchange="calculoTotalParcial();" >
                                 </td>
                                 <td style="width: 3%">
                                     <input id="codUnidadMedida-item" type="hidden" value="1">
                                     <input id="unidadmedida-item"  maxlength="10" class="input-block-level" onchange="">
                                 </td>
                                 <td style="width: 6%; text-align: right;" >
-                                    <input id="preciounitario-item"  maxlength="10" class="input-block-level" onchange="calculoTotalParcial();" >
+                                    <input id="preciounitario-item"  maxlength="10" class="input-block-level just-number" onchange="calculoTotalParcial();" >
                                 </td>
                                 <td style="width: 4%">
                                     <select class="input-block-level" name="tipoimpuesto-item" id="tipoimpuesto-item" onchange="">
@@ -408,7 +408,7 @@
                                     <button class="btn-compra" type="button" onclick="validaProveedor('cod');"><img src="<?= $this->baseUrl() . "/css/Icons/thumbails/_0007_Tick.png"; ?>"/></button>
                                 </td>
                                 <td style="width: 10%">
-                                    <input id="codigoproveedor-modal-pagos"  maxlength="10" class="input-block-level" 
+                                    <input id="codigoproveedor-modal-pagos"  maxlength="10" class="input-block-level just-number" 
                                            onchange=""  >
                                 </td>
 
@@ -446,7 +446,7 @@
                                     <label for="factura-modal-pagos" id="factura-modal-pagos-idioma">N&uacute;mero Factura</label>
                                 </td>
                                 <td id="numeroFacturaIn-pagos"style="width: 10%">
-                                    <input id="factura-modal-pagos"  maxlength="10" class="input-block-level" onchange=""  >
+                                    <input id="factura-modal-pagos"  maxlength="10" class="input-block-level just-number" onchange=""  >
                                 </td>
                                 </td>
                                 <td style="width: 10%">
@@ -455,27 +455,27 @@
                                 <td style="width: 20%">
                                     <input id="controlfiscal-modal_1-pagos"  class="input-block-level" maxlength="3" value="001" style="width: 20%" >
                                     <input id="controlfiscal-modal_2-pagos"  maxlength="10" class="input-block-level" max="3" value="001" style="width: 20%" >
-                                    <input id="controlfiscal-modal_3-pagos"  maxlength="10" class="input-block-level" style="width: 50%"  >
+                                    <input id="controlfiscal-modal_3-pagos just-number"  maxlength="10" class="input-block-level" style="width: 50%"  >
 
                                 </td>
                                 <td style="width: 5%">
                                     <label for="montoTotal-pagos" id="montoTotal-modal-pagos-idioma">Monto</label>
                                 </td>
                                 <td style="width: 10%">
-                                    <input id="montoTotal-pagos"  class="input-block-level">
+                                    <input id="montoTotal-pagos"  class="input-block-level just-number">
                                     <input id="codigoMoneda-pagos" type="hidden" >
                                 </td>
                                 <td style="width: 5%">
                                     <label for="pagosrealizados-modal-pagos" id="pagosrealizados-modal-pagos-idioma">Pagos</label>
                                 </td>
                                 <td style="width: 10%">
-                                    <input id="pagosrealizados-modal-pagos"  class="input-block-level" maxlength="3">
+                                    <input id="pagosrealizados-modal-pagos"  class="input-block-level just-number" maxlength="3">
                                 </td>
                                 <td style="width: 5%">
                                     <label for="saldoPendiente-modal-pagos" id="saldoPendiente-modal-pagos-idioma">Saldo</label>
                                 </td>
                                 <td style="width: 10%">
-                                    <input id="saldoPendiente-modal-pagos"  class="input-block-level" maxlength="3">
+                                    <input id="saldoPendiente-modal-pagos"  class="input-block-level just-number" maxlength="3">
                                 </td>
                             </tr>
 
@@ -500,20 +500,20 @@
                                     <label for="cheque-modal-pagos" id="cheque-modal-pagos-idioma">Cheque:</label>
                                 </td>
                                  <td class="cheque">
-                                    <input id="cheque-modal-pagos"  class="input-block-level" onchange="" >
+                                    <input id="cheque-modal-pagos"  class="input-block-level just-number" onchange="" >
                                 </td>
                                 <td>
                                     <label for="montoPago-modal-pagos" id="montoPago-modal-pagos-idioma">Monto pago:</label>
                                 </td>
                                 <td >
-                                    <input id="montoPago-modal-pagos"  class="input-block-level" onchange="" >
+                                    <input id="montoPago-modal-pagos"  class="input-block-level just-number" onchange="" >
                                 </td>
                                 <td>
                                     <label for="vuelto-modal-pagos" id="vuelto-modal-pagos-idioma">Vuelto:</label>
                                 </td>
                                 <td >
                                     <input id="vuelto-modal-pagos"  class="input-block-level" onchange="" >
-                                    <input id="idEgreso-modal-pagos"  class="input-block-level" style="visibility: hidden" >
+                                    <input id="idEgreso-modal-pagos"  class="input-block-level just-number" style="visibility: hidden" >
                                 </td>
                                 <td>
                                     <button class="btn" type="button" id="addPagos"><img src="<?= $this->baseUrl() . "/css/Icons/thumbails/_0009_Add.png"; ?>"/></button>

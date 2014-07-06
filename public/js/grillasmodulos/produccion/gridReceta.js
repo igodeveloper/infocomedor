@@ -64,6 +64,8 @@ function cargarGrillaRegistro() {
                         id: 'COD_RECETA',
                         align: 'right',
                         width: 20,
+                        formatter: 'number',
+                formatoptions:{thousandsSeparator: ".", decimalPlaces: 0},
                         hidden: false
                     },
                     {
@@ -134,6 +136,8 @@ function cargarGrillaRegistroModal() {
                         label: 'CODIGO',
                         id: "codproducto",
                         hidden: false,
+                        formatter: 'number',
+                formatoptions:{thousandsSeparator: ".", decimalPlaces: 0},
                         width: 8
                     },
                     {

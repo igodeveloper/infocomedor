@@ -146,7 +146,7 @@ public function guardarAction() {
             $list_data = array();
            	foreach ($data_grilla as $fila) {
            		$fila->saldos=($fila->saldos == '')?0:$fila->saldos;
-           		
+           		// $fila->diferencia=($fila->diferencia == '')?0:$fila->diferencia;
            		if($data_inventario == null || $data_inventario == 0){
            			$listado->inventario = 0;
 	           		$data = array(
@@ -325,6 +325,7 @@ public function modalinventarioAction() {
         $result = $db->fetchAll($select);
         $option = array();
         foreach ($result as $value) {
+            $value ['INVENTARIO_SALIDA']=($value ['INVENTARIO_SALIDA'] == '')?0:$value ['INVENTARIO_SALIDA'];
             $option1 = array(
                 "codproducto" => $value ['COD_PRODUCTO'],
                 "descripcionproducto" => $value ['PRODUCTO_DESC'],
