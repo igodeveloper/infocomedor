@@ -33,39 +33,7 @@ $().ready(function() {
         //ID de registro
         $('#codigotipoproducto-modal').attr("value",null);
         $("#guardar").html("Guardar");
-        $("#editar-nuevo").html("Apertura de Caja");
-    });
-    $("#productostock-select").click(function() {
-        var jsonObject = new Object();
-        jsonObject.cliente = $('#productostock-select').attr("value");
-        var dataString = JSON.stringify(data);
-	$.ajax({
-            url: table+'/cargarunidadproductostock',
-            type: 'post',
-            data: {"parametros":dataString},
-            dataType: 'json',
-            async : true,
-            success: function(respuesta){
-                    if(respuesta == null){
-                            mostarVentana("error","TIMEOUT");
-                    } else if(respuesta.result == "EXITO") {
-                            mostarVentana("success-registro-listado","Los datos han sido almacenados exitosamente");
-                            $('#modalEditar').hide();
-                            $("#grillaRegistro").trigger("reloadGrid");
-                    } else if(respuesta.result == "ERROR") {
-                            if(respuesta.mensaje == 23505){
-                                    mostarVentana("warning-registro","Ya existe un registro con la descripcion ingresada");
-                            } else {
-                                    mostarVentana("error-modal","Ha ocurrido un error");
-                            }
-                    }
-                    $.unblockUI();
-            },
-            error: function(event, request, settings){
-                    mostarVentana("error-registro-listado","Ha ocurrido un error");
-                    $.unblockUI();
-            }
-        });
+        $("#editar-nuevo").html("Baja Stock");
     });
     $('#guardar').click(function() {
 //		 if(!confirm("Esta seguro de que desea almacenar los datos?"))
@@ -77,6 +45,38 @@ $().ready(function() {
      });
     validarNumerosCampo();
 });
+function buscarUnidadMedida() {
+     var jsonObject = new Object();
+     jsonObject.producto = $('#productostock-select option:selected').val(); // get the value from a dropdown selec          
+     var dataString = JSON.stringify(jsonObject);
+     $.ajax({
+         url: table+'/cargarunidadproductostock',
+         type: 'post',
+         data: {"parametros":dataString},
+         dataType: 'json',
+         async : true,
+         success: function(respuesta){
+                 if(respuesta == null){
+                         mostarVentana("error","TIMEOUT");
+                 } else if(respuesta.resultado == "EXITO") {
+                    $('#unidadproducto-input').attr('value',respuesta.desc_unidad_medida);
+                    $('#codunidadproducto-hidden').attr('value',respuesta.cod_unidad_medida);
+                    $('#cantidadactual-input').attr('value',respuesta.saldo_stock);
+                 } else if(respuesta.resultado == "ERROR") {
+                    if(respuesta.mensaje == 23505){
+                            mostarVentana("warning-registro","Ha ocurrido un error al recuperar la unidad de medida del producto");
+                    } else {
+                            mostarVentana("error-modal","Ha ocurrido un error");
+                    }
+                 }
+                 $.unblockUI();
+         },
+         error: function(event, request, settings){
+                 mostarVentana("error-registro-listado","Ha ocurrido un error");
+                 $.unblockUI();
+         }
+     });
+ }
 function cargarProductoStock(){
 	$.ajax({
         url: table+'/cargarproductostock',
@@ -93,7 +93,7 @@ function cargarProductoStock(){
     });	
 }
 function validarNumerosCampo(){
-    $("#montoaperturacaja-modal").keydown(function(event) {
+    $("#cantidadbaja-input").keydown(function(event) {
 	   // Allow: backspace, delete, tab, escape, and enter
 	   if ( event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 || event.keyCode == 13 ||
 			// Allow: Ctrl+A
@@ -109,24 +109,7 @@ function validarNumerosCampo(){
 			   event.preventDefault();
 		   }
 	   }
-    });
-    $("#montocierrecaja-modal").keydown(function(event) {
-	   // Allow: backspace, delete, tab, escape, and enter
-	   if ( event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 || event.keyCode == 13 ||
-			// Allow: Ctrl+A
-		   (event.keyCode == 65 && event.ctrlKey === true) ||
-			// Allow: home, end, left, right
-		   (event.keyCode >= 35 && event.keyCode <= 39)) {
-				// let it happen, don't do anything
-				return;
-	   }
-	   else {
-		   // Ensure that it is a number and stop the keypress
-		   if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105 )) {
-			   event.preventDefault();
-		   }
-	   }
-    });    
+    });   
 }
 function validarNumerosLetrasPorcentageEspacio(e) { // 1
 	var te;
@@ -157,7 +140,7 @@ function enviarParametrosRegistro(data){
     });
 
 	var urlenvio = '';
-	if(data.cod_caja !== null && data.cod_caja.length !== 0){
+	if(data.cod_baja_stock !== null && data.cod_baja_stock.length !== 0){
 		urlenvio = table+'/modificar';
 	}else {
 		urlenvio = table+'/guardar';
@@ -202,19 +185,24 @@ function obtenerJsonFormulario() {
 	var jsonObject = new Object();
 	var mensaje = '';
 	var error = 0;
-	if($('#codigousuariocaja-modal').attr("value") == null || $('#codigousuariocaja-modal').attr("value").length == 0){
-    	mensaje+= ' | No se identifico el usuario de logeo | ';
-		error = 1;
+	if($('#productostock-select').attr("value") == -1 || $('#productostock-select').attr("value").length == 0){
+            mensaje+= ' | Debe seleccionar un producto | ';
+            error = 1;
+            $('#productostock-select').attr("required", "required");
 	}
-	if($('#montoaperturacaja-modal').attr("value") == null || $('#montoaperturacaja-modal').attr("value").length == 0){
-		mensaje+= ' | Ingrese un monto de apertura | ';
-		$('#montoaperturacaja-modal').attr("required", "required");
+	if($('#cantidadbaja-input').attr("value") == null || $('#cantidadbaja-input').attr("value").length == 0){
+		mensaje+= ' | Debe ingresar una cantidad para la baja del producto | ';
+		$('#cantidadbaja-input').attr("required", "required");
 		error = 1;
-    }
-	if(($.trim($('#codcaja-modal').attr("value")) != '' || $('#codcaja-modal').attr("value").length != 0) &&
-		($('#montocierrecaja-modal').attr("value") == null || $('#montocierrecaja-modal').attr("value").length == 0 )){
-		mensaje+= ' | Ingrese un monto de cierre | ';
-		$('#montocierrecaja-modal').attr("required", "required");
+        }
+        if($('#observacionbaja-input').attr("value") == null || $('#observacionbaja-input').attr("value").length == 0){
+		mensaje+= ' | Debe ingresar una observacion | ';
+		$('#observacionbaja-input').attr("required", "required");
+		error = 1;
+        }        
+	if($('#cantidadactual-input').attr("value") < $('#cantidadbaja-input').attr("value")){
+		mensaje+= ' | El valor ingresado es mayor al existen,verifique | ';
+		$('#cantidadbaja-input').attr("required", "required");
 		error = 1;
     }	
     if(error == 1){
@@ -222,12 +210,12 @@ function obtenerJsonFormulario() {
 		return null;            
     }else {
 		//LOS CAMPOS DEBEN LLAMARSE IGUAL QUE EN gridTipoInsumo.js
-		jsonObject.cod_caja = $('#codcaja-modal').attr("value");
-		jsonObject.cod_usuario_caja = $('#codigousuariocaja-modal').attr("value");
-		jsonObject.monto_caja_apertura = $('#montoaperturacaja-modal').attr("value");	
-		jsonObject.monto_caja_cierre = $('#montocierrecaja-modal').attr("value");
-                jsonObject.monto_entrante = $('#montoentrantecaja-modal').attr("value");
-                jsonObject.monto_saliente = $('#montosalientecaja-modal').attr("value");
+                jsonObject.cod_baja_stock = $('#cod_baja_stock-hidden').attr("value");
+                jsonObject.cod_producto = $('#productostock-select option:selected').val();
+                jsonObject.cod_producto = $('#productostock-select option:selected').val();
+		jsonObject.cod_unidad_medida = $('#codunidadproducto-hidden').attr("value");
+		jsonObject.cantidad_baja = $('#cantidadbaja-input').attr("value");	
+		jsonObject.observacion_mov = $('#observacionbaja-input').attr("value");
 		return jsonObject;
 	}
     
@@ -360,14 +348,14 @@ function limpiarFormulario(){
 	$("#warning-block").hide();
 	$("#warning-block-registro").hide();
 	$("#success-block").hide();
-	$("#codcaja-modal").attr("value",null);
-	$("#codigousuariocaja-modal").attr("value",null);
-	$("#nombreusuariocaja-modal").attr("value",null);
-	$("#fechaaperturacaja-modal").attr("value",null);
-	$("#montoaperturacaja-modal").attr("value",null);
-	$("#montocierrecaja-modal").attr("value",null);
-        $("#montoentrantecaja-modal").attr("value",null);
-        $("#montosalientecaja-modal").attr("value",null);
+        
+        $("#cod_baja_stock-hidden").attr("value",null);
+	$("#codunidadproducto-hidden").attr("value",null);
+	$("#productostock-select").attr("value",-1);
+	$("#unidadproducto-input").attr("value",null);
+        $("#cantidadbaja-input").attr("value",null);
+        $("#cantidadactual-input").attr("value",null);  
+        $("#observacionbaja-input").attr("value",null);
 }
 
 

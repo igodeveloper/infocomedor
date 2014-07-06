@@ -57,7 +57,7 @@ function cargarGrillaRegistro() {
        		"width" : 10,
        		"edittype" :'link',
        		"remove" : false,
-       		"hidden" : false,
+       		"hidden" : true,
        		"classes" : "linkjqgrid",
        		"formatter" :cargarLinkModificar
        },      
@@ -132,6 +132,18 @@ function cargarGrillaRegistro() {
 	       		"align":"left",
 	       		"sortable" : false,
 	       		"hidden" : false
+       		},
+       	  {
+	       		"title" : false,
+	       		"name" : "cod_baja_stock",
+	       		"label" : "cod_baja_stock",
+	       		"id" : "cod_baja_stock",
+	       		"search" : false,
+	       		"remove" : false,
+	       		"width" : 150,
+	       		"align":"left",
+	       		"sortable" : false,
+	       		"hidden" : true
        		}]            
     }).navGrid('#paginadorRegistro',{
         add:false,
@@ -156,7 +168,7 @@ function cargarGrillaRegistro() {
  */
 function borrar(){
 	var id = $("#grillaRegistro").jqGrid('getGridParam','selrow');
-	id = $("#grillaRegistro").jqGrid('getCell', id, 'cod_tipo_mov');
+	id = $("#grillaRegistro").jqGrid('getCell', id, 'cod_baja_stock');
 	if( id == false ){
 		alert("Para eliminar un registro debe seleccionarlo previamente.");
 	}else{

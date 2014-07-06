@@ -128,7 +128,7 @@
                             <div id="contenedor" align=center>
                                
                                 <a id="buscarregistro"  class="btn btn-info"><img src="<?php echo $this->baseUrl() . "/css/images/buscar.png"; ?>" id="buscar-img" title="Buscar"  style="cursor: hand;"/></a>
-                                <a id="nuevoregistro"  class="btn btn-info" <?php echo $this->guardar ?>><img src="<?php echo $this->baseUrl() . "/css/images/nuevo.png"; ?>" id="nuevo-img" title="Apertura de Caja"  style="cursor: hand;"/></a>
+                                <a id="nuevoregistro"  class="btn btn-info" <?php echo $this->guardar ?>><img src="<?php echo $this->baseUrl() . "/css/images/nuevo.png"; ?>" id="nuevo-img" title="Baja Stock"  style="cursor: hand;"/></a>
                             </div> 
                         </div>
                     </div>
@@ -145,7 +145,7 @@
                     <div class="modal-header">
 
                         <div id="cabeceraModal" class="btn btn-info">
-                            <h3 id="editar-nuevo" style="color:white; display: inline;"><?php echo 'Apertura/Cierre de Caja'; ?></h3>
+                            <h3 id="editar-nuevo" style="color:white; display: inline;"><?php echo 'Baja Stock'; ?></h3>
                             <button data-dismiss="modal" class="close" type="button" id="cerrar-bot" style="display: inline">x</button>
                         </div>
                         <div class="alert alert-block hide" id="warning-block">
@@ -161,39 +161,36 @@
                             <table class=" form-inline">
                                 <!-- AGREGAR CAMPOS AQUI-->
                                 <tr>
-                                    <input type="hidden" id="codcaja-modal"></input>
-                                    <input type="hidden" id="codigousuariocaja-modal"></input>                                    
-                                    <td><label for="productostock-label" id="productostock-idioma">Producto<font style="color: red;">(*)</font></label></td>
-                                    <td><select class="input-small" name="productostock-select" id="productostock-select" style="width:150px;" ><option value="-1">---Seleccione---</option></select></td>                                                                                                                
+                                    <input type="hidden" id="cod_baja_stock-hidden"></input>
+                                    <input type="hidden" id="codunidadproducto-hidden"></input>                                    
+                                    <td><label for="productostock-label" id="productostock-idioma">Producto</label></td>
+                                    <td><select class="input-small" name="productostock-select" id="productostock-select" style="width:150px;" onchange="buscarUnidadMedida();" ><option value="-1">---Seleccione---</option></select></td>                                                                                                                
                                     <td style="width: 16%">
                                         <label for="unidadproducto-label" id="unidadproducto-label">Unidad de Medida</label>
                                     </td> 
                                     <td style="width: 16%">
                                         <input readonly="" id="unidadproducto-input" maxlength="45" class="unidadproducto-input"></input>
-                                    </td>                                    
+                                    </td> 
+                                    <td style="width: 16%">
+                                        <label for="cantidadactual-label" id="cantidadactual-label">Cantidad Actual</label>
+                                    </td> 
+                                    <td style="width: 16%">
+                                        <input readonly="" id="cantidadactual-input" maxlength="45" class="just-number" onkeypress='' value=''></input>
+                                    </td>                                                                          
                                 </tr>
-                                <tr style="width: 100%">
-									
+                                <tr>
                                     <td style="width: 16%">
-                                        <label for="nombreusuariocaja-modal" id="nombreusuariocaja-modal-idioma">Usuario Caja</label>
+                                        <label for="cantidadbaja-label" id="cantidadbaja-label">Cantidad Baja</label>
                                     </td> 
                                     <td style="width: 16%">
-                                        <input readonly="" id="nombreusuariocaja-modal" maxlength="45" class="input-block-level" onkeypress='' value=''></input>
-                                    </td>
-									
+                                        <input  id="cantidadbaja-input" maxlength="45" class="just-number" onkeypress='' value=''></input>
+                                    </td>   
                                     <td style="width: 16%">
-                                        <label for="fechaaperturacaja-modal" id="fechaaperturacaja-modal-idioma">Apertura Caja</label>
+                                        <label for="observacionbaja-label" id="observacionbaja-label">Observacion Baja</label>
                                     </td> 
                                     <td style="width: 16%">
-                                        <input readonly="" id="fechaaperturacaja-modal" maxlength="45" class="input-block-level" onkeypress='' value=''></input>
-                                    </td>  
-
-                                    <td style="width: 16%">
-                                        <label for="montoaperturacaja-modal" id="montoaperturacaja-modal-idioma">Monto Apertura Caja</label>
-                                    </td> 
-                                    <td style="width: 16%">
-                                        <input id="montoaperturacaja-modal" maxlength="45" class="input-block-level" onkeypress=''></input>
-                                    </td> 									
+                                        <input  id="observacionbaja-input" maxlength="99" class="just-number" onkeypress='' value=''></input>
+                                    </td>                                     
                                 </tr>
                                 <tr>
                                     <td style="width: 16%">

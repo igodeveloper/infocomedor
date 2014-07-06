@@ -32,12 +32,14 @@ class Produccion_BajaStockController extends Zend_Controller_Action
         $db = Zend_Db_Table::getDefaultAdapter();
         $select = $db->select()
                 ->from(array('B' => 'baja_stock'), 
-                       array('P.cod_producto',
+                       array(
+                            'P.cod_producto',
                             'P.producto_desc',
                             'B.cantidad_baja',
                             'B.fecha_hora_baja',
                             'U.desc_unidad_medida',
-                            'B.observacion_mov'
+                            'B.observacion_mov',
+                            'B.cod_baja_stock'
                            ))
                 ->join(array('P' => 'producto'), 'B.cod_producto = P.cod_producto')
                 ->join(array('U' => 'unidad_medida'), 'U.cod_unidad_medida = P.cod_unidad_medida');
@@ -62,7 +64,9 @@ class Produccion_BajaStockController extends Zend_Controller_Action
                 $item['cantidad_baja'],
                 $item['desc_unidad_medida'],
                 $item['fecha_hora_baja'],                
-                $item['observacion_mov']                
+                $item['observacion_mov'],
+                $item['cod_baja_stock']   
+                    
             );
             $arrayDatos ['columns'] = array(
                 "modificar",
@@ -71,7 +75,8 @@ class Produccion_BajaStockController extends Zend_Controller_Action
                 "cantidad_baja",
                 "desc_unidad_medida",
                 "fecha_hora_baja",                
-                "observacion_mov"
+                "observacion_mov",
+                "cod_baja_stock"
             );
             array_push($pagina ['rows'], $arrayDatos);
         }
@@ -144,8 +149,8 @@ class Produccion_BajaStockController extends Zend_Controller_Action
         try{
                     $db = Zend_Db_Table::getDefaultAdapter();
                     $db->beginTransaction();
-                    $servCon = new Application_Model_DataService('Application_Model_DbTable_Caja');
-                    $servCon->deleteRowById(array("cod_caja"=>$id));
+                    $servCon = new Application_Model_DataService('Application_Model_DbTable_BajaStock');
+                    $servCon->deleteRowById(array("cod_baja_stock"=>$id));
                     $db->commit();
             echo json_encode(array("result" => "EXITO"));
         }catch( Exception $e ) {
@@ -158,7 +163,7 @@ class Produccion_BajaStockController extends Zend_Controller_Action
         $this->_helper->viewRenderer->setNoRender ( true );
         $json_rowData = $this->getRequest ()->getParam ( "parametros" );
         $rowData = json_decode($json_rowData);
-        $applicationModel = new Application_Model_Caja();
+        $applicationModel = new Application_Model_Bajastock();
         self::almacenardatos($applicationModel,$rowData);
     }
 
@@ -166,49 +171,24 @@ class Produccion_BajaStockController extends Zend_Controller_Action
         $this->_helper->viewRenderer->setNoRender ( true );
         $json_rowData = $this->getRequest ()->getParam ( "parametros" );
         $rowData = json_decode($json_rowData);
-        $rowClass = new Application_Model_Caja();
-        if($rowData->cod_caja != null){
-            $rowClass->setCod_caja($rowData->cod_caja);
+        $rowClass = new Application_Model_BajaStock();
+        if($rowData->cod_baja_stock != null){
+            $rowClass->setCod_baja_stock($rowData->cod_baja_stock);
         }
         self::almacenardatos($rowClass,$rowData);
     }
 
     public function almacenardatos($rowClass,$rowData){
         try{
-            $service = new Application_Model_DataService('Application_Model_DbTable_Caja');
+            $service = new Application_Model_DataService('Application_Model_DbTable_BajaStock');
             $db = Zend_Db_Table::getDefaultAdapter();
             $db->beginTransaction();
-                    if(isset($rowData->cod_usuario_caja) and isset($rowData->cod_caja))
-                            $rowClass->setCod_usuario_caja(trim(utf8_decode($rowData->cod_usuario_caja)));
-                    if(isset($rowData->fecha_hora_apertura))
-                            $rowClass->setFecha_hora_apertura(trim(utf8_decode($rowData->fecha_hora_apertura)));
-                    else
-                            $rowClass->setFecha_hora_apertura(date('Y-m-d h:i:s'));
-                    if(trim($rowData->cod_caja) <> '')
-                            $rowClass->setFecha_hora_cierre(date('Y-m-d h:i:s'));
-
-                    if(trim($rowData->cod_caja) <> ''){
-                        $entrada = 0;
-                        $salida  = 0;
-                        $entrada = $rowData->monto_caja_apertura +
-                                $rowData->monto_entrante;
-                        $salida = $rowData->monto_saliente; 
-                        $monto_diferencia = $entrada - $salida;
-                        $monto_diferencia_arqueo = $monto_diferencia - $rowData->monto_caja_cierre;
-                        $rowClass->setMonto_diferencia_arqueo($monto_diferencia_arqueo);
-                        $rowClass->setArqueo_caja('S');
-                    }
-                    if(isset($rowData->monto_caja_apertura))
-                            $rowClass->setMonto_caja_apertura(trim(utf8_decode($rowData->monto_caja_apertura)));
-                    if(isset($rowData->monto_caja_cierre) and trim($rowData->cod_caja) <> '')
-                            $rowClass->setMonto_caja_cierre(trim(utf8_decode($rowData->monto_caja_cierre)));
-                    if(isset($rowData->monto_diferencia_arqueo))
-                            $rowClass->setMonto_diferencia_arqueo(trim(utf8_decode($rowData->monto_diferencia_arqueo)));
-                    if(isset($rowData->arqueo_caja))
-                            $rowClass->setArqueo_caja(trim(utf8_decode($rowData->arqueo_caja)));
-//print_r($rowClass);
-//die();
-                $result = $service->saveRow($rowClass);
+                $rowClass->setCod_producto(trim(utf8_decode($rowData->cod_producto)));
+                $rowClass->setCod_unidad_medida(trim(utf8_decode($rowData->cod_unidad_medida)));
+                $rowClass->setCantidad_baja(trim(utf8_decode($rowData->cantidad_baja)));                
+                $rowClass->setFecha_hora_baja(date('Y-m-d h:i:s'));
+                $rowClass->setObservacion_mov(trim(utf8_decode($rowData->observacion_mov)));
+                $result = $service->saveRow($rowClass);                
             $db->commit();
             echo json_encode(array("result" => "EXITO"));
         }catch( Exception $e ) {
@@ -216,117 +196,45 @@ class Produccion_BajaStockController extends Zend_Controller_Action
             $db->rollBack();
         }
     }
-    public function usuariocajadataAction()
-    {
-//      $this->_helper->layout->disableLayout();
-            $this->_helper->viewRenderer->setNoRender(true);
-            $result = '';
-            $parametrosNamespace = new Zend_Session_Namespace ( 'parametros' );
-            $cod_usuario = $parametrosNamespace->cod_usuario;
-            try {
-                $db = Zend_Db_Table::getDefaultAdapter();
-                $select = $db->select()
-                        ->from(array('C' => 'usuario'), 
-                               array('C.cod_usuario',
-                                     'C.nombre_apellido',
-                                     'now() as fechaaperturacaja'))
-                        ->where("cod_usuario = ".$cod_usuario);               
-                $result = $db->fetchAll($select);
-                foreach ($result as $arr) {
-                    $htmlResultado = json_encode(array("cod_usuario" => $arr["cod_usuario"],"nombre_apellido" => $arr["nombre_apellido"],
-                        "fechaaperturacaja" => $arr["fechaaperturacaja"]));
-                }
-            } catch (Exception $e) {
-                    $htmlResultado = "error";
-            }
-            echo $htmlResultado;
-    }
     public function creartablasAction()
     {        
         $table = new Zend_ModelCreator('baja_stock','infocomedor');
     }    
-    public function cajaabiertadataAction()
+    public function cargarunidadproductostockAction()
     {
 //      $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender(true);
         $result = '';
         $parametrosNamespace = new Zend_Session_Namespace ( 'parametros' );
-        $cod_usuario = $parametrosNamespace->cod_usuario;
-        $jsonResultado = json_encode(array("resultado" => 'cerrado'));      
+        $json_rowData = $this->getRequest ()->getParam ( "parametros" );
+        $rowData = json_decode($json_rowData);        
+        $cod_producto = $rowData->producto;
+        $jsonResultado = json_encode(array("resultado" => 'EXITO',
+            "cod_unidad_medida" => null,
+            "desc_unidad_medida" => '',
+            "desc_unidad_medida" => null));      
         try {
             $db = Zend_Db_Table::getDefaultAdapter();
             $select = $db->select()
-                    ->from(array('C' => 'usuario'), 
-                           array('C.cod_usuario',
-                                 'C.nombre_apellido',
-                                 'D.fecha_hora_apertura'))
-                    ->join(array('D' => 'caja'), 'D.cod_usuario_caja = C.cod_usuario')
-                    ->where("fecha_hora_cierre is null and cod_usuario_caja = ".$cod_usuario);  
+                    ->from(array('C' => 'unidad_medida'), 
+                           array('C.cod_unidad_medida',
+                                 'C.desc_unidad_medida',
+                                 'S.saldo_stock'))
+                    ->join(array('P'=>'producto'),'P.cod_unidad_medida = C.cod_unidad_medida')
+                    ->join(array('S'=>'stock'),'S.cod_producto = P.cod_producto')
+                    ->where("P.cod_producto = ".$cod_producto);                  
             $result = $db->fetchAll($select);
-//die($select);         
             foreach ($result as $arr) {
-                $jsonResultado = json_encode(array("resultado" => 'abierto',"cod_usuario" => $arr["cod_usuario"],"nombre_apellido" => $arr["nombre_apellido"],
-                    "fecha_hora_apertura" => $arr["fecha_hora_apertura"]));
+                $jsonResultado = json_encode(array("resultado" => 'EXITO',
+                    "cod_unidad_medida" => $arr["cod_unidad_medida"],
+                    "desc_unidad_medida" => $arr["desc_unidad_medida"],
+                    "saldo_stock" => $arr["saldo_stock"]));                 
             }
         } catch (Exception $e) {
                 $jsonResultado = json_encode(array("resultado" => 'error'));
         }
         echo $jsonResultado;
     }
-    public function cierrecajadataAction()
-    {
-//      $this->_helper->layout->disableLayout();
-        $this->_helper->viewRenderer->setNoRender(true);
-        $result = '';
-                $json_rowData = $this->getRequest ()->getParam ( "parametros" );
-                $rowData = json_decode($json_rowData);
-                $cod_caja = $rowData->cod_caja;
-        $jsonResultado = json_encode(array("resultado" => 'cerrado'));      
-        try {
-            $db = Zend_Db_Table::getDefaultAdapter();
-            $select = $db->select()
-                    ->from(array('C' => 'usuario'), 
-                           array(                                
-                                 'C.nombre_apellido',
-                                 'now() as fechahoracierre'
-                                 ))
-                    ->join(array('D' => 'caja'), 'D.cod_usuario_caja = C.cod_usuario',array('D.cod_caja',
-                                                                'D.cod_usuario_caja',
-                                 'D.fecha_hora_apertura',
-                                 'D.monto_caja_apertura',))
-                    ->joinLeft(array('M' => 'mov_caja'), 'M.cod_caja = D.cod_caja',array('total_monto_mov' =>'SUM(M.monto_mov)'))
-                    ->joinLeft(array('T' => 'tipo_movimiento'), 'T.cod_tipo_mov = M.cod_tipo_mov',array('T.tipo_mov'))
-                    ->where("D.cod_caja = ".$cod_caja)
-                                        ->group('C.nombre_apellido')
-                                        ->group('D.cod_caja')
-                                        ->group('D.cod_usuario_caja')
-                                        ->group('D.fecha_hora_apertura')
-                                        ->group('D.monto_caja_apertura')
-                                       ->group('T.tipo_mov');   
-//die($select);                   
-            $result = $db->fetchAll($select);           
-            $monto_entrante = 0;
-            $monto_saliente = 0;
-            foreach ($result as $arr) {
-                if($arr['tipo_mov'] == 'R')
-                    $monto_saliente = $arr['total_monto_mov'];
-                if($arr['tipo_mov'] == 'S')
-                    $monto_entrante = $arr['total_monto_mov'];                
-                $jsonResultado = json_encode(array("resultado" => 'abierto',
-                    "cod_caja" => $arr["cod_caja"],
-                    "cod_usuario_caja" => $arr["cod_usuario_caja"],
-                    "fecha_hora_apertura" => $arr["fecha_hora_apertura"],
-                    "fecha_hora_cierre" => $arr["fechahoracierre"],
-                    "monto_caja_apertura" => $arr["monto_caja_apertura"],
-                    "nombre_apellido" => $arr["nombre_apellido"],
-                    "monto_entrante" => $monto_entrante,
-                    "monto_saliente" => $monto_saliente));
-            }
-        } catch (Exception $e) {
-                $jsonResultado = json_encode(array("resultado" => 'error'));
-        }
-        echo $jsonResultado;
-    }  
     public function cargarproductostockAction() {
         $this->_helper->viewRenderer->setNoRender ( true );
         $db = Zend_Db_Table::getDefaultAdapter();
