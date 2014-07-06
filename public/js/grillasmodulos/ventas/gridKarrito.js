@@ -49,11 +49,11 @@ function cargarGrillaRegistro() {
                         title: false,
                         name: 'COD_KARRITO',
                         label: 'COD KARRITO',
-                        id: 'COD_KARRITO',
+                        id: 'COD_KARRITO',  
                         align: 'right',
                         width: 10,
                         formatter: 'number',
-                formatoptions:{thousandsSeparator: ".", decimalPlaces:0},
+                        formatoptions:{thousandsSeparator: ".", decimalPlaces:0},
                         hidden: false
                     },
                     {

@@ -1016,6 +1016,9 @@ function selectFormaPago(formaPago) {
          $("#montoPago-modal-pagos").attr("disabled", false);
          $("#vuelto-modal-pagos").attr("disabled", true);
          $("#vuelto-modal-pagos").val(0);
+         $("#vuelto-modal-pagos").hide();
+         $("#vuelto-modal-pagos-idioma").hide();
+
     } else if(formaPago =='efectivo'){
         $('.cheque').hide();
         $("#modalBuscarEgreso").hide();
@@ -1026,6 +1029,8 @@ function selectFormaPago(formaPago) {
          $("#montoPago-modal-pagos").attr("disabled", false);
          $("#vuelto-modal-pagos").attr("disabled", true);
          $("#vuelto-modal-pagos").val(0);
+         $("#vuelto-modal-pagos").hide();
+         $("#vuelto-modal-pagos-idioma").hide();
     } else if (formaPago == 'egreso'){
         cargartipoegreso();
         cargarGrillaEgreso();
@@ -1124,6 +1129,12 @@ function obtenerMontoPago() {
         addrequiredattr('banco-modal-pagos',focus);
         addrequiredattr('cheque-modal-pagos',focus++);
     }
+    if(!$('input[name=formaPagoCheque]').is(':checked') && !$('input[name=formaPagoEfectivo]').is(':checked') && !$('input[name=formaPagoEgreso]').is(':checked'))
+    {
+        mensaje+= ' | Seleccione una forma de pago';
+    }
+
+    console.log($('input[name=formaPagoCheque]').is(':checked') +"-"+$('input[name=formaPagoCheque]').is(':checked')+"-"+$('input[name=formaPagoCheque]').is(':checked'))
     if(mensaje !=''){
         mensaje+= ' |';
         mostarVentana("warning-pagos", mensaje);
