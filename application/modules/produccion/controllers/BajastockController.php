@@ -1,6 +1,6 @@
 <?php
 
-class Caja_CajaController extends Zend_Controller_Action
+class Produccion_BajaStockController extends Zend_Controller_Action
 {
 
 
@@ -31,18 +31,17 @@ class Caja_CajaController extends Zend_Controller_Action
 
         $db = Zend_Db_Table::getDefaultAdapter();
         $select = $db->select()
-                ->from(array('C' => 'caja'), 
-                       array('C.cod_caja',
-                            'C.cod_usuario_caja',
-                            'C.fecha_hora_apertura',
-                            'C.fecha_hora_cierre',
-                            'C.monto_caja_apertura',
-                            'C.monto_caja_cierre',
-                            'C.monto_diferencia_arqueo',
-                            'C.arqueo_caja',
-                            'U.nombre_apellido'
+                ->from(array('B' => 'baja_stock'), 
+                       array('P.cod_producto',
+                            'P.producto_desc',
+                            'B.cantidad_baja',
+                            'B.fecha_hora_baja',
+                            'U.desc_unidad_medida',
+                            'B.observacion_mov'
                            ))
-                ->join(array('U' => 'usuario'), 'U.cod_usuario = C.cod_usuario_caja');
+                ->join(array('P' => 'producto'), 'B.cod_producto = P.cod_producto')
+                ->join(array('U' => 'unidad_medida'), 'U.cod_unidad_medida = P.cod_unidad_medida');
+//die($select);        
         $result = $db->fetchAll($select);
         $this->view->headScript()->appendFile($this->view->baseUrl() . '/js/bootstrap.js');
         $this->view->headScript()->appendFile($this->view->baseUrl() . '/js/gridCaja.js');
@@ -55,37 +54,24 @@ class Caja_CajaController extends Zend_Controller_Action
         $this->_paginator->setItemCountPerPage($cantidadFilas);
         $this->_paginator->setCurrentPageNumber($page);
         $pagina ['rows'] = array();
-        foreach ($this->_paginator as $item) {
-            if(trim($item['arqueo_caja']) == '')
-                $arqueo_caja = 'No';
-            else
-                $arqueo_caja = 'Si';
+        foreach ($this->_paginator as $item) {          
             $arrayDatos ['cell'] = array(
                 null,
-                $item['cod_caja'],
-                $item['cod_usuario_caja'],
-                $item['nombre_apellido'],
-                $item['fecha_hora_apertura'],
-                $item['fecha_hora_cierre'],
-                $item['monto_caja_apertura'],
-                $item['monto_caja_cierre'],
-                $item['monto_diferencia_arqueo'],
-                $arqueo_caja,
-                $item['arqueo_caja']
-                
+                $item['cod_producto'],
+                $item['producto_desc'],
+                $item['cantidad_baja'],
+                $item['desc_unidad_medida'],
+                $item['fecha_hora_baja'],                
+                $item['observacion_mov']                
             );
             $arrayDatos ['columns'] = array(
                 "modificar",
-                "cod_caja",
-                "cod_usuario_caja",
-                "nombre_apellido",
-                "fecha_hora_apertura",
-                "fecha_hora_cierre",
-                "monto_caja_apertura",
-                "monto_caja_cierre",
-                "monto_diferencia_arqueo",
-                "desc_arqueo_caja",
-                "arqueo_caja"
+                "cod_producto",
+                "producto_desc",
+                "cantidad_baja",
+                "desc_unidad_medida",
+                "fecha_hora_baja",                
+                "observacion_mov"
             );
             array_push($pagina ['rows'], $arrayDatos);
         }
@@ -340,6 +326,20 @@ class Caja_CajaController extends Zend_Controller_Action
                 $jsonResultado = json_encode(array("resultado" => 'error'));
         }
         echo $jsonResultado;
-    }   
+    }  
+    public function cargarproductostockAction() {
+        $this->_helper->viewRenderer->setNoRender ( true );
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $select = $db->select()
+                 ->from(array('A' => 'stock'), array('distinct(A.cod_producto)', 'D.producto_desc'))
+                ->join(array('D' => 'producto'), 'D.cod_producto = A.cod_producto')
+                 ->order(array('D.producto_desc'));
+        $result = $db->fetchAll($select);
+        $htmlResult = '<option value="-1">---Seleccione---</option>';
+        foreach ($result as $arr) {
+             $htmlResult .= '<option value="'.$arr["cod_producto"].'">' .trim(utf8_decode($arr["producto_desc"])).'</option>';	
+        }
+        echo  $htmlResult;
+     }     
 }
 

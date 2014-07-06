@@ -11,7 +11,7 @@ class Zend_ModelCreator
     {
     	if($_schema == null){
 //	    	$_schema = 'DBCONEX1';
-	    	$_schema = 'vsullow_factura';
+	    	$_schema = 'infocomedor';
     		
     	}
     	$this->_contenido = '';
@@ -36,8 +36,8 @@ class Zend_ModelCreator
     }
         public function crearArch($_contenido, $_contenidoTab, $_nombre ){
         	
- 	      	$_carpetaTabla = 'C:\Users\Ivan\Documents\Dropbox\Proyectos\infocomedor\application\models\DbTable\ ';
-    		$_carpetaFilaTabla = 'C:\Users\Ivan\Documents\Dropbox\Proyectos\infocomedor\application\models\ ';
+ 	      	$_carpetaTabla = 'C:\xampp\htdocs\infocomedorv1\application\models\DbTable\ ';
+    		$_carpetaFilaTabla = 'C:\xampp\htdocs\infocomedorv1\application\models\ ';
     		$_filename = trim($_carpetaFilaTabla) . trim( ucfirst(strtolower($_nombre))). ".php"; 
     		$_filenameTab = trim($_carpetaTabla) . trim( ucfirst(strtolower($_nombre))). ".php"; 
     		$_archivo = fopen($_filename, "w");
