@@ -162,8 +162,6 @@ function cargarGrillaRegistro() {
                         id: 'DESC_UNIDAD_MEDIDA',
                         align: 'left',
                         width: 20,
-                        formatter: 'number',
-                formatoptions:{thousandsSeparator: ".", decimalPlaces: 0},
                         hidden: false
                     },
                     {

@@ -165,12 +165,14 @@ class Parametricos_ProductoController extends Zend_Controller_Action
     public function eliminarAction(){
 		$this->_helper->viewRenderer->setNoRender ( true );
 		$id = $this->getRequest ()->getParam ( "id" );
-                $parametrosNamespace = new Zend_Session_Namespace ( 'parametros' );
+                // $parametrosNamespace = new Zend_Session_Namespace ( 'parametros' );
 		try{
                     $db = Zend_Db_Table::getDefaultAdapter();
                     $db->beginTransaction();
-                    $servCon = new Application_Model_DataService('Application_Model_DbTable_Producto');
-                    $servCon->deleteRowById(array("COD_PRODUCTO"=>$id));
+                    $where = $db->quoteInto('COD_PRODUCTO = ?', $id);
+                    $db->delete('PRODUCTO', $where);
+                    // $servCon = new Application_Model_DataService('Application_Model_DbTable_Producto');
+                    // $servCon->deleteRowById(array("COD_PRODUCTO"=>$id));
                     $db->commit();
 		    echo json_encode(array("result" => "EXITO"));
 	    }catch( Exception $e ) {

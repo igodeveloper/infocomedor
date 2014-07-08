@@ -39,7 +39,7 @@
             <div class="row-fluid">
                 <div class="span10">
                  <div  class="titulo-cabecera" style="text-align: left">
-                    <nav id="colorNav" >
+                     <nav id="colorNav" >
                         <ul>
                             <li class="menu">
                                 <a href="<?php echo $this->baseUrl() ."/parametricos/menu";?>" class="">MENU</a>
@@ -49,6 +49,7 @@
                                 <ul>
                                     <li><a href="<?php echo $this->baseUrl() ."/parametricos/proveedor";?>">Proveedor</a></li>
                                     <li><a href="<?php echo $this->baseUrl() ."/compras/compra2";?>">Compras - Pagos</a></li>
+                                    <li><a href="<?php echo $this->baseUrl() ."/compras/pagos";?>">Pagos</a></li>
 
                                 </ul>
                             </li>
@@ -77,6 +78,7 @@
                                 <ul>
                                      <li><a href="<?php echo $this->baseUrl() ."/produccion/inventario";?>">Inventario</a></li>
                                      <li><a href="<?php echo $this->baseUrl() ."/produccion/ajusteinventario";?>">Ajuste</a></li>
+                                     <li><a href="<?php echo $this->baseUrl() ."/produccion/bajastock";?>">Baja Stock</a></li>
                                 </ul>
                             </li>
                             <li class="purple">
@@ -98,7 +100,7 @@
                         <h1 id="cabecera-titulo">Receta</h1>
 
                     </div>
-                    <!-- LISTADO --->
+                    
                     <div>
                         <div class="alert alert-block hide" id="warning-block-title">
                             <div id="warning-message-title"></div>
@@ -124,7 +126,6 @@
                         </div>
                         <div  id="tab-content">
                             <div id="contenedor" align=center>
-<!--                                <a id="backmenu"  class="btn btn-info" href="/parametricos/menu"><img src="<?= $this->baseUrl() . "/css/images/home.png"; ?>"  title="VOLVER AL MENU"/></a>-->
                                 <a id="buscar-registro"  class="btn btn-info"><img src="<?= $this->baseUrl() . "/css/images/buscar.png"; ?>" id="buscar-img" title="Buscar"  style="cursor: hand;"/></a>
                                 <a id="nuevo-registro"  class="btn btn-info" <?php echo $this->guardar ?>><img src="<?= $this->baseUrl() . "/css/images/nuevo.png"; ?>" id="nuevo-img" title="Nuevo"  style="cursor: hand;"/></a>
                                 

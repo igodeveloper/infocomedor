@@ -186,11 +186,11 @@ function ocultarWarningBlock(){
 }
 
 function ocultarWarningBlockTitle(){
-	$("#warning-block-registro-listado").hide(500);
+	$("#warning-block-title").hide(500);
 }
 
 function ocultarSuccessBlockTitle(){
-	$("#success-block-registro-listado").hide(500);
+	$("#success-block-title").hide(500);
 }
 
 function ocultarWarningRegistroBlock(){
@@ -205,12 +205,12 @@ function mostarVentana(box,mensaje){
 		$("#warning-block").show();
 		setTimeout("ocultarWarningBlock()",5000);
 	} else if(box == "warning-registro-listado") {
-		$("#warning-message-registro-listado").text(mensaje);
-		$("#warning-block-registro-listado").show();
+		$("#warning-message-title").text(mensaje);
+		$("#warning-block-title").show();
 		setTimeout("ocultarWarningBlockTitle()",5000);
 	} else if(box == "success-registro-listado") {
-		$("#success-message-registro-listado").text(mensaje);
-		$("#success-block-registro-listado").show();
+		$("#success-block-title").text(mensaje);
+		$("#success-block-title").show();
 		setTimeout("ocultarSuccessBlockTitle()",5000);
 	} else if(box == "warning-registro") {
 		$("#warning-message").text(mensaje);

@@ -243,12 +243,15 @@ function borrar(){
 	        dataType: 'json',
 	        async : false,
 	        success: function(data){
+	        	console.log(data);
 	        	if(data.result == "ERROR"){
-                                if(data.mensaje == 23504) {
-                                        mostarVentana("warning-registro-listado","No se puede eliminar el Registro por que esta siendo utilizado");
-			        } else {
-			        	mostarVentana("warning-registro-listado","Ha ocurrido un error");
-				    }
+                    if(data.mensaje == 23504) {
+                            mostarVentana("warning-registro-listado","No se puede eliminar el Registro por que esta siendo utilizado");
+        			} else {
+        				console.log("no muestra");
+        				mostarVentana("warning-registro-listado","Ha ocurrido un error");
+	    			}
+	    			console.log(data);
 				} else {
 					mostarVentana("success-registro-listado","Los datos han sido eliminados exitosamente");
 				    $("#grillaRegistro").trigger("reloadGrid");
@@ -256,7 +259,7 @@ function borrar(){
 	        },
 	        error: function(event, request, settings){
 	            $.unblockUI();
-	            alert("Ha ocurrido un error");
+	            // alert("Ha ocurrido un error");
 	        }
 	    });
 	}
