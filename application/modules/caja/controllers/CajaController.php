@@ -202,14 +202,22 @@ class Caja_CajaController extends Zend_Controller_Action
                             $rowClass->setFecha_hora_cierre(date('Y-m-d h:i:s'));
 
                     if(trim($rowData->cod_caja) <> ''){
-                        $entrada = 0;
-                        $salida  = 0;
-                        $entrada = $rowData->monto_caja_apertura +
-                                $rowData->monto_entrante;
-                        $salida = $rowData->monto_saliente; 
-                        $monto_diferencia = $entrada - $salida;
-                        $monto_diferencia_arqueo = $monto_diferencia - $rowData->monto_caja_cierre;
-                        $rowClass->setMonto_diferencia_arqueo($monto_diferencia_arqueo);
+                        $entrada_efectivo = 0;
+                        $salida_efectivo  = 0;
+                        $entrada_cheque = 0;
+                        $salida_cheque  = 0;						
+                        $entrada_efectivo = $rowData->monto_caja_apertura + $rowData->monto_entrante_efectivo;
+                        $salida_efectivo = $rowData->monto_saliente_efectivo; 
+                        $monto_diferencia_efectivo = $entrada_efectivo - $salida_efectivo;
+                        $monto_diferencia_arqueo_efectivo = $monto_diferencia_efectivo - $rowData->monto_caja_cierre_efectivo;
+                        $rowClass->setMonto_diferencia_arqueo($monto_diferencia_arqueo_efectivo);
+						
+                        $entrada_cheque = $rowData->monto_entrante_cheque;
+                        $salida_cheque = $rowData->monto_saliente_cheque; 
+                        $monto_diferencia_cheque = $entrada_cheque - $salida_cheque;
+                        $monto_diferencia_arqueo_cheque = $monto_diferencia_cheque - $rowData->monto_caja_cierre_cheque;
+                        //$rowClass->setMonto_diferencia_arqueo($monto_diferencia_arqueo_cheque);
+						
                         $rowClass->setArqueo_caja('S');
                     }
                     if(isset($rowData->monto_caja_apertura))
@@ -308,7 +316,8 @@ class Caja_CajaController extends Zend_Controller_Action
                                                                 'D.cod_usuario_caja',
                                  'D.fecha_hora_apertura',
                                  'D.monto_caja_apertura',))
-                    ->joinLeft(array('M' => 'mov_caja'), 'M.cod_caja = D.cod_caja',array('total_monto_mov' =>'SUM(M.monto_mov)'))
+                    ->joinLeft(array('M' => 'mov_caja'), 'M.cod_caja = D.cod_caja',array('total_monto_mov' =>'SUM(M.monto_mov)',
+					'tipo_forma_pago' =>'M.tipo_mov'))
                     ->joinLeft(array('T' => 'tipo_movimiento'), 'T.cod_tipo_mov = M.cod_tipo_mov',array('T.tipo_mov'))
                     ->where("D.cod_caja = ".$cod_caja)
                                         ->group('C.nombre_apellido')
@@ -316,16 +325,23 @@ class Caja_CajaController extends Zend_Controller_Action
                                         ->group('D.cod_usuario_caja')
                                         ->group('D.fecha_hora_apertura')
                                         ->group('D.monto_caja_apertura')
-                                       ->group('T.tipo_mov');   
+                                       ->group('T.tipo_mov')
+									   ->group('M.tipo_mov');   
 //die($select);                   
             $result = $db->fetchAll($select);           
-            $monto_entrante = 0;
-            $monto_saliente = 0;
+            $monto_entrante_efectivo = 0;
+            $monto_saliente_efectivo = 0;
+            $monto_entrante_cheque = 0;
+            $monto_saliente_cheque = 0;			
             foreach ($result as $arr) {
-                if($arr['tipo_mov'] == 'R')
-                    $monto_saliente = $arr['total_monto_mov'];
-                if($arr['tipo_mov'] == 'S')
-                    $monto_entrante = $arr['total_monto_mov'];                
+                if($arr['tipo_mov'] == 'R' and $arr['tipo_forma_pago'] == 'EFECTIVO')
+                    $monto_saliente_efectivo = $arr['total_monto_mov'];
+                if($arr['tipo_mov'] == 'S' and $arr['tipo_forma_pago'] == 'EFECTIVO')
+                    $monto_entrante_efectivo = $arr['total_monto_mov'];                
+                if($arr['tipo_mov'] == 'R' and $arr['tipo_forma_pago'] == 'CHEQUE')
+                    $monto_saliente_cheque = $arr['total_monto_mov'];
+                if($arr['tipo_mov'] == 'S' and $arr['tipo_forma_pago'] == 'CHEQUE')
+                    $monto_entrante_cheque = $arr['total_monto_mov'];                					
                 $jsonResultado = json_encode(array("resultado" => 'abierto',
                     "cod_caja" => $arr["cod_caja"],
                     "cod_usuario_caja" => $arr["cod_usuario_caja"],
@@ -333,8 +349,10 @@ class Caja_CajaController extends Zend_Controller_Action
                     "fecha_hora_cierre" => $arr["fechahoracierre"],
                     "monto_caja_apertura" => $arr["monto_caja_apertura"],
                     "nombre_apellido" => $arr["nombre_apellido"],
-                    "monto_entrante" => $monto_entrante,
-                    "monto_saliente" => $monto_saliente));
+                    "monto_entrante_efectivo" => $monto_entrante_efectivo,
+                    "monto_saliente_efectivo" => $monto_saliente_efectivo,
+                    "monto_entrante_cheque" => $monto_entrante_cheque,
+                    "monto_saliente_cheque" => $monto_saliente_cheque));
             }
         } catch (Exception $e) {
                 $jsonResultado = json_encode(array("resultado" => 'error'));

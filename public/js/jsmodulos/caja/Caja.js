@@ -187,8 +187,14 @@ function obtenerJsonFormulario() {
     }
 	if(($.trim($('#codcaja-modal').attr("value")) != '' || $('#codcaja-modal').attr("value").length != 0) &&
 		($('#montocierrecaja-modal').attr("value") == null || $('#montocierrecaja-modal').attr("value").length == 0 )){
-		mensaje+= ' | Ingrese un monto de cierre | ';
+		mensaje+= ' | Ingrese un monto de cierre efectivo| ';
 		$('#montocierrecaja-modal').attr("required", "required");
+		error = 1;
+    }	
+	if(($.trim($('#codcaja-modal').attr("value")) != '' || $('#codcaja-modal').attr("value").length != 0) &&
+		($('#montocierrecheque-modal').attr("value") == null || $('#montocierrecheque-modal').attr("value").length == 0 )){
+		mensaje+= ' | Ingrese un monto de cierre cheque| ';
+		$('#montocierrecheque-modal').attr("required", "required");
 		error = 1;
     }	
     if(error == 1){
@@ -199,9 +205,12 @@ function obtenerJsonFormulario() {
 		jsonObject.cod_caja = $('#codcaja-modal').attr("value");
 		jsonObject.cod_usuario_caja = $('#codigousuariocaja-modal').attr("value");
 		jsonObject.monto_caja_apertura = $('#montoaperturacaja-modal').attr("value");	
-		jsonObject.monto_caja_cierre = $('#montocierrecaja-modal').attr("value");
-                jsonObject.monto_entrante = $('#montoentrantecaja-modal').attr("value");
-                jsonObject.monto_saliente = $('#montosalientecaja-modal').attr("value");
+		jsonObject.monto_caja_cierre_efectivo = $('#montocierrecaja-modal').attr("value");
+		jsonObject.monto_caja_cierre_cheque = $('#montocierrecheque-modal').attr("value");
+		jsonObject.monto_entrante_efectivo = $('#montoentranteefectivo-modal').attr("value");
+		jsonObject.monto_saliente_efectivo = $('#montosalienteefectivo-modal').attr("value");
+		jsonObject.monto_entrante_cheque = $('#montoentrantecheque-modal').attr("value");
+		jsonObject.monto_saliente_cheque = $('#montosalientecheque-modal').attr("value");		
 		return jsonObject;
 	}
     
@@ -340,8 +349,8 @@ function limpiarFormulario(){
 	$("#fechaaperturacaja-modal").attr("value",null);
 	$("#montoaperturacaja-modal").attr("value",null);
 	$("#montocierrecaja-modal").attr("value",null);
-        $("#montoentrantecaja-modal").attr("value",null);
-        $("#montosalientecaja-modal").attr("value",null);
+	$("#montoentrantecaja-modal").attr("value",null);
+	$("#montosalientecaja-modal").attr("value",null);
 }
 
 
@@ -428,10 +437,14 @@ function cargarCierreCaja(){
 				$("#montoaperturacaja-modal").attr("value",respuesta.monto_caja_apertura);
 				$("#fechacierrecaja-modal").attr("value",respuesta.fecha_hora_cierre);
 				$('#montoaperturacaja-modal').attr("readonly", true);	
-                                $("#montoentrantecaja-modal").attr("value",respuesta.monto_entrante);
-                                $("#montosalientecaja-modal").attr("value",respuesta.monto_saliente);
-                                $('#montoentrantecaja-modal').attr("readonly", true);
-                                $('#montosalientecaja-modal').attr("readonly", true);
+				$("#montoentranteefectivo-modal").attr("value",respuesta.monto_entrante_efectivo);
+				$("#montosalienteefectivo-modal").attr("value",respuesta.monto_saliente_efectivo);
+				$('#montoentranteefectivo-modal').attr("readonly", true);
+				$('#montosalienteefectivo-modal').attr("readonly", true);
+				$("#montoentrantecheque-modal").attr("value",respuesta.monto_entrante_cheque);
+				$("#montosalientecheque-modal").attr("value",respuesta.monto_saliente_cheque);
+				$('#montoentrantecheque-modal').attr("readonly", true);
+				$('#montosalientecheque-modal').attr("readonly", true);				
         	}
         },
         error: function(event, request, settings){
