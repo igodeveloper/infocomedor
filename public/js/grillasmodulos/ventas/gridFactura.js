@@ -192,7 +192,7 @@ function cargarGrillaFacturasModal() {
 					                    {
                         title: false,
                         name: 'COD_KARRITO',
-                        label: 'COD_KARRITO',
+                        label: 'COD PEDIDO',
                         id: 'COD PEDIDO',
                         align: 'right',
                         width: 10,
@@ -411,7 +411,7 @@ function cargarGrillaFacturasModalKarrito() {
                     {
                         title: false,
                         name: 'COD_KARRITO',
-                        label: 'COD_KARRITO',
+                        label: 'COD PEDIDO',
                         id: 'COD_KARRITO',
                         align: 'right',
                         width: 10,
@@ -420,7 +420,7 @@ function cargarGrillaFacturasModalKarrito() {
                     {
                         title: false,
                         name: 'KAR_FECH_MOV',
-                        label: 'KAR_FECH_MOV',
+                        label: 'FECHA',
                         id: 'KAR_FECH_MOV',
                         align: 'center',
                         width: 25,
@@ -429,7 +429,7 @@ function cargarGrillaFacturasModalKarrito() {
                     {
                         title: false,
                         name: 'COD_CLIENTE',
-                        label: 'COD_CLIENTE',
+                        label: 'COD CLIENTE',
                         id: 'COD_CLIENTE',
                         align: 'right',
                         width: 20,
@@ -438,7 +438,7 @@ function cargarGrillaFacturasModalKarrito() {
                     {
                         title: false,
                         name: 'CLIENTE_DES',
-                        label: 'CLIENTE_DES',
+                        label: 'CLIENTE',
                         id: 'CLIENTE_DES',
                         align: 'left',
                         width: 40,
@@ -447,7 +447,7 @@ function cargarGrillaFacturasModalKarrito() {
                     {
                         title: false,
                         name: 'COD_MESA',
-                        label: 'COD_MESA',
+                        label: 'MESA',
                         id: 'COD_MESA',
                         align: 'center',
                         width: 10,
@@ -456,7 +456,7 @@ function cargarGrillaFacturasModalKarrito() {
                     {
                         title: false,
                         name: 'COD_PRODUCTO',
-                        label: 'COD_PRODUCTO',
+                        label: 'COD PRODUCTO',
                         id: 'COD_PRODUCTO',
                         align: 'right',
                         width: 10,
@@ -465,7 +465,7 @@ function cargarGrillaFacturasModalKarrito() {
                     {
                         title: false,
                         name: 'PRODUCTO_DESC',
-                        label: 'PRODUCTO_DESC',
+                        label: 'PRODUCTO',
                         id: 'PRODUCTO_DESC',
                         align: 'left',
                         width: 40,
@@ -474,25 +474,29 @@ function cargarGrillaFacturasModalKarrito() {
                     {
                         title: false,
                         name: 'KAR_CANT_PRODUCTO',
-                        label: 'KAR_CANT_PRODUCTO',
+                        label: 'CANTIDAD',
                         id: 'KAR_CANT_PRODUCTO',
                         align: 'right',
                         width: 10,
+                        formatter: 'number',
+                formatoptions:{thousandsSeparator: ".", decimalPlaces:0},
                         hidden: false
                     },
                     {
                         title: false,
                         name: 'KAR_PRECIO_PRODUCTO',
-                        label: 'KAR_PRECIO_PRODUCTO',
+                        label: 'PRECIO',
                         id: 'KAR_PRECIO_PRODUCTO',
                         align: 'right',
+                        formatter: 'number',
+                formatoptions:{thousandsSeparator: ".", decimalPlaces:0},
                         width: 20,
                         hidden: false
                     },
                     {
                         title: false,
                         name: 'COD_MOZO',
-                        label: 'COD_MOZO',
+                        label: 'MOZO',
                         id: 'COD_MOZO',
                         align: 'left',
                         width: 10,
@@ -501,7 +505,7 @@ function cargarGrillaFacturasModalKarrito() {
                     {
                         title: false,
                         name: 'FACT_NRO',
-                        label: 'FACT_NRO',
+                        label: 'FACT NRO',
                         id: 'FACT_NRO',
                         align: 'right',
                         width: 10,
@@ -573,7 +577,7 @@ function cargarGrillaRegistroPagoVenta() {
                     },
                     {
                         name: 'CODIGO_CAJA',
-                        label: 'CODIGO_CAJA',
+                        label: 'COD CAJA',
                         id: "CODIGO_CAJA",
                         hidden: true,
                         width: 5,
@@ -583,7 +587,7 @@ function cargarGrillaRegistroPagoVenta() {
                     },
                     {
                         name: 'USUARIO_CAJA',
-                        label: 'USUARIO_CAJA',
+                        label: 'USUARIO',
                         id: "USUARIO_CAJA",
                         hidden: true,
                         width: 5,
@@ -595,7 +599,9 @@ function cargarGrillaRegistroPagoVenta() {
                         id: "MONTO_PAGO",
                         hidden: false,
                         width: 5,
-                        sorttype: "int",
+                        formatter: 'number',
+                formatoptions:{thousandsSeparator: ".", decimalPlaces:0},
+                        
                         align: 'right'
 
                     },
@@ -614,6 +620,8 @@ function cargarGrillaRegistroPagoVenta() {
                         id: 'NRO_CHEQUE',
                         align: "right",
                         hidden: false,
+                        formatter: 'number',
+                formatoptions:{thousandsSeparator: ".", decimalPlaces:0},
                         width: 5
 
                     }

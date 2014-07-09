@@ -176,7 +176,7 @@
                                 <td style="width:11%">
                                 	<label for="codproducto-title" id="factura-title-idioma">C&oacuted Producto</label>
                                     <div class="btn-confirmar" style="width: 80%">
-                                        <input id="codproducto-item"  maxlength="10" class="input-block-level" onchange="" 
+                                        <input id="codproducto-item"  maxlength="10" class="input-block-level just-number" onchange="" 
                                                style="width: 80%" placeholder="Ingresa el codigo" >
                                         <button class="btn-compra" onclick="productvalidation('cod');"><img src="<?= $this->baseUrl() . "/css/Icons/thumbails/_0007_Tick.png"; ?>"/></button>
                                     </div>
@@ -195,7 +195,7 @@
                                 </td>
                                 <td style="width: 5%; text-align: center;">
                                 	<label for="cantidad-title" id="factura-title-idioma">Cantidad</label>
-                                    <input id="cantidad-item"  maxlength="10" class="input-block-level" >
+                                    <input id="cantidad-item"  maxlength="10" class="input-block-level just-number" value="0.000" type="number" step="0.1">
                                 </td>
                                 
                             

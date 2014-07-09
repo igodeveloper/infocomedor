@@ -1,6 +1,16 @@
 var pathname = window.location.pathname;
 var table = pathname;
 $().ready(function() {
+         jQuery('.just-number').keypress(function(tecla) {
+        console.log(tecla.charCode);
+        if(tecla.charCode < 48 || tecla.charCode > 57){
+            if(tecla.charCode == 0 || tecla.charCode == 46){
+                return true;
+            } else{
+                return false;
+            }
+        } 
+    });
 	loadAutocompleteProducto();
 	loadAutocompleteClient();
 //	$("#clientzone").css("border","1px solid #6da8dc");

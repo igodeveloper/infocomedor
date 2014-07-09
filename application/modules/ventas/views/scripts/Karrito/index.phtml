@@ -117,7 +117,7 @@
                                 <tr>
                                     <td style="width: 8%; text-align: right;">C&oacutedigo Cliente</td>
                                     <td style="width: 10%">
-                                        <input id="codcliente-filtro"  class="input-block-level" >
+                                        <input id="codcliente-filtro"  class="input-block-level just-number" >
                                     </td>
                                    <td style="width: 8%; text-align: right;">Nombre Cliente</td>
                                     <td style="width: 18%">
@@ -126,7 +126,7 @@
 
                                     <td style="width: 8%; text-align: right;">C&oacutedigo Mesa</td>
                                     <td style="width: 10%">
-                                        <input id="codmesa-filtro"  maxlength="10" class="input-block-level" >
+                                        <input id="codmesa-filtro"  maxlength="10" class="input-block-level just-number" >
                                     </td>
                                        <td style="width: 8%; text-align: right;">Estado</td>
 
@@ -188,7 +188,7 @@
                          	<tr>
                          			<td style="width:11%">
                                 	<div class="btn-confirmar" style="width: 80%">
-                                		<input id="clientecod"  maxlength="10" class="input-block-level" disabled="disabled" style="display: none" >
+                                		<input id="clientecod"  maxlength="10" class="input-block-level just-number" disabled="disabled" style="display: none" >
                                         RUC  
                                         <input id="clienteruc"  maxlength="10" class="input-block-level" onchange="" 
                                                style="width: 80%"  >
@@ -209,7 +209,7 @@
                                 	 Mesa
                                     <div class="btn-confirmar" style="width: 80%">
                                        
-                                        <input id="numeromesa"  maxlength="10" class="input-block-level" onchange="" 
+                                        <input id="numeromesa"  maxlength="10" class="input-block-level just-number" onchange="" 
                                                style="width: 50%; float: right;"  >
 <!--                                        <button class="btn-compra" style="float: right;" onclick="clientevalidation('mesa');"><img src="<?= $this->baseUrl() . "/css/Icons/thumbails/_0007_Tick.png"; ?>"/></button>-->
                                     </div>
@@ -227,7 +227,7 @@
                                 <td style="width:8%">
                                 	<label for="codproducto-title" id="factura-title-idioma">C&oacuted Producto</label>
                                     <div class="btn-confirmar" style="width: 80%">
-                                        <input id="codproducto-item"  maxlength="10" class="input-block-level" onchange="" 
+                                        <input id="codproducto-item"  maxlength="10" class="input-block-level just-number" onchange="" 
                                                style="width: 80%" >
                                         <button class="btn-compra" onclick="productvalidation('cod');"><img src="<?= $this->baseUrl() . "/css/Icons/thumbails/_0007_Tick.png"; ?>"/></button>
                                     </div>
@@ -246,15 +246,15 @@
                                 </td>
                                 <td style="width: 4%; text-align: center;">
                                 	<label for="precio-title" id="precio-title-idioma">Precio</label>
-                                    <input id="precio-item"   class="input-block-level"  value="0.000" type="number" step="0.1"  >
+                                    <input id="precio-item"   class="input-block-level just-number"  value="0" type="number" step="100"  >
                                 </td>
                                 <td style="width: 2%; text-align: center;">
                                 	<label for="cant-title" id="cant-title-idioma">Cant</label>
-                                    <input id="cant-item"   class="input-block-level" value="0.000" type="number" step="0.1" >
+                                    <input id="cant-item"   class="input-block-level just-number" value="0.000" type="number" step="0.1" >
                                 </td>
                                 <td style="width: 4%; text-align: center;">
                                 	<label for="total-title" id="total-title-idioma">Total</label>
-                                    <input id="total-item"  class="input-block-level"  value="0.000" type="number" step="0.1" >
+                                    <input id="total-item"  class="input-block-level"  value="0" type="number" step="100" >
                                 </td>
                             
                                 <td style="width: 4%">

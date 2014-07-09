@@ -23,6 +23,16 @@ idCamposGrilla = new Array(
 
 $().ready(function() {
 	
+         jQuery('.just-number').keypress(function(tecla) {
+        console.log(tecla.charCode);
+        if(tecla.charCode < 48 || tecla.charCode > 57){
+            if(tecla.charCode == 0 || tecla.charCode == 46){
+                return true;
+            } else{
+                return false;
+            }
+        } 
+    });
     $("#buscarregistro").click(function() {
         buscarRegistros();
     });
