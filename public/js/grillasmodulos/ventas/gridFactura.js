@@ -1,5 +1,6 @@
 var pathname = window.location.pathname;
 var table = pathname;
+var cantidad_pendiente = 0;
 $(document).ready(function() {
     cargarGrillaFacturas();
     cargarGrillaFacturasModal();
@@ -188,6 +189,33 @@ function cargarGrillaFacturasModal() {
                 pager: '#paginadorComprasModal',
                 multiselect: false,
                 autowidth: true,
+                cellEdit: true,
+                cellsubmit : 'clientArray',
+                editurl: 'clientArray',
+                closeOnEscape: true,
+                beforeEditCell: function (rowid, name, val, iRow, iCol) {
+
+                    cantidad_pendiente = parseFloat($("#grillaComprasModal").jqGrid('getCell', rowid, 'KAR_CANT_FACTURAR'));
+                },
+                afterSaveCell: function(rowid, name,val,iRow,iCol){
+
+                       var precio =  parseInt($("#grillaComprasModal").jqGrid('getCell', rowid, 'KAR_PRECIO_PRODUCTO'));
+                       var cantidad = parseFloat($("#grillaComprasModal").jqGrid('getCell', rowid, 'KAR_CANT_PRODUCTO'));
+                       var precio_unitario = parseFloat(precio/cantidad);
+                       var cantidad_facturar = parseFloat($("#grillaComprasModal").jqGrid('getCell', rowid, 'KAR_CANT_FACTURAR'));
+                       console.log(cantidad_facturar+"fac-pend"+cantidad_pendiente);
+                       if(cantidad_facturar<=cantidad_pendiente){
+                            var precio_facturar = parseFloat(precio_unitario*cantidad_facturar);
+                            $("#grillaComprasModal").jqGrid('setRowData',rowid,{KAR_PRECIO_FACTURAR: precio_facturar});
+                       }else{
+                            mostarVentana("warning", "El valor que desea ingresar supera el monto pendiente");
+                            $("#grillaComprasModal").jqGrid('setRowData',rowid,{KAR_CANT_FACTURAR: cantidad_pendiente});
+                       }
+                       
+                        
+                    // alert($("#grillaComprasModal").jqGrid('getCell', rowid, 'KAR_CANT_FACTURAR'));
+
+                    },
                 colModel: [
 					                    {
                         title: false,
@@ -204,7 +232,7 @@ function cargarGrillaFacturasModal() {
                         label: 'FECHA',
                         id: 'KAR_FECH_MOV',
                         align: 'center',
-                        width: 25,
+                        width: 20,
                         hidden: false
                     },
                     {
@@ -222,16 +250,16 @@ function cargarGrillaFacturasModal() {
                         label: 'CLIENTE',
                         id: 'CLIENTE_DES',
                         align: 'left',
-                        width: 40,
+                        width: 30,
                         hidden: false
                     },
                     {
                         title: false,
                         name: 'COD_MESA',
-                        label: 'COD MESA',
+                        label: 'MESA',
                         id: 'COD_MESA',
                         align: 'center',
-                        width: 10,
+                        width: 5,
                         hidden: false
                     },
                     {
@@ -249,7 +277,7 @@ function cargarGrillaFacturasModal() {
                         label: 'PRODUCTO',
                         id: 'PRODUCTO_DESC',
                         align: 'left',
-                        width: 40,
+                        width: 30,
                         hidden: false
                     },
                     {
@@ -258,9 +286,21 @@ function cargarGrillaFacturasModal() {
                         label: 'CANTIDAD',
                         id: 'KAR_CANT_PRODUCTO',
                         align: 'right',
+                        formatter: 'number',
+                formatoptions:{thousandsSeparator: ".", decimalPlaces:2},
                         width: 10,
-                        hidden: false,
-                        formatter:"number"                                  
+                        hidden: false
+                    },
+                    {
+                        title: false,
+                        name: 'KAR_CANT_FACTURAR',
+                        label: 'CANT FACTURAR',
+                        id: 'KAR_CANT_FACTURAR',
+                        align: 'right',
+                        formatter: 'number',
+                formatoptions:{thousandsSeparator: ".", decimalPlaces:2},
+                        width: 20,
+                        hidden: false
                     },
                     {
                         title: false,
@@ -268,7 +308,20 @@ function cargarGrillaFacturasModal() {
                         label: 'PRECIO',
                         id: 'KAR_PRECIO_PRODUCTO',
                         align: 'right',
-                        width: 20,
+                        width: 15,
+                        formatter: 'number',
+                formatoptions:{thousandsSeparator: ".", decimalPlaces:0},
+                        hidden: false
+                    },
+                    {
+                        title: false,
+                        name: 'KAR_PRECIO_FACTURAR',
+                        label: 'PRECIO FACTURAR',
+                        id: 'KAR_PRECIO_FACTURAR',
+                        align: 'right',
+                        width: 25,
+                        formatter: 'number',
+                formatoptions:{thousandsSeparator: ".", decimalPlaces:0},
                         hidden: false
                     },
                     {
@@ -423,7 +476,7 @@ function cargarGrillaFacturasModalKarrito() {
                         label: 'FECHA',
                         id: 'KAR_FECH_MOV',
                         align: 'center',
-                        width: 25,
+                        width: 20,
                         hidden: false
                     },
                     {
@@ -441,7 +494,7 @@ function cargarGrillaFacturasModalKarrito() {
                         label: 'CLIENTE',
                         id: 'CLIENTE_DES',
                         align: 'left',
-                        width: 40,
+                        width: 30,
                         hidden: false
                     },
                     {
@@ -450,7 +503,7 @@ function cargarGrillaFacturasModalKarrito() {
                         label: 'MESA',
                         id: 'COD_MESA',
                         align: 'center',
-                        width: 10,
+                        width: 5,
                         hidden: false
                     },
                     {
@@ -468,7 +521,7 @@ function cargarGrillaFacturasModalKarrito() {
                         label: 'PRODUCTO',
                         id: 'PRODUCTO_DESC',
                         align: 'left',
-                        width: 40,
+                        width: 30,
                         hidden: false
                     },
                     {
@@ -479,7 +532,18 @@ function cargarGrillaFacturasModalKarrito() {
                         align: 'right',
                         width: 10,
                         formatter: 'number',
-                formatoptions:{thousandsSeparator: ".", decimalPlaces:0},
+                formatoptions:{thousandsSeparator: ".", decimalPlaces:2},
+                        hidden: false
+                    },
+                    {
+                        title: false,
+                        name: 'KAR_CANT_FACTURAR',
+                        label: 'CANT FACTURAR',
+                        id: 'KAR_CANT_FACTURAR',
+                        align: 'right',
+                        width: 15,
+                        formatter: 'number',
+                formatoptions:{thousandsSeparator: ".", decimalPlaces:2},
                         hidden: false
                     },
                     {
@@ -487,6 +551,17 @@ function cargarGrillaFacturasModalKarrito() {
                         name: 'KAR_PRECIO_PRODUCTO',
                         label: 'PRECIO',
                         id: 'KAR_PRECIO_PRODUCTO',
+                        align: 'right',
+                        formatter: 'number',
+                formatoptions:{thousandsSeparator: ".", decimalPlaces:0},
+                        width: 15,
+                        hidden: false
+                    },
+                    {
+                        title: false,
+                        name: 'KAR_PRECIO_FACTURAR',
+                        label: 'PRECIO FACTURAR',
+                        id: 'KAR_PRECIO_FACTURAR',
                         align: 'right',
                         formatter: 'number',
                 formatoptions:{thousandsSeparator: ".", decimalPlaces:0},
@@ -499,7 +574,7 @@ function cargarGrillaFacturasModalKarrito() {
                         label: 'MOZO',
                         id: 'COD_MOZO',
                         align: 'left',
-                        width: 10,
+                        width: 5,
                         hidden: true
                     },
                     {
@@ -543,6 +618,7 @@ function eliminarItem(){
         
         var rows = jQuery("#grillaRegistroKarrito").jqGrid('getRowData');
         if(rows.length > 0){
+            
             jQuery("#grillaRegistroKarrito").jqGrid('addRowData', (rows.length) + 1, rowdata);
         }
         $('#grillaComprasModal').jqGrid('delRowData',id);
@@ -621,7 +697,7 @@ function cargarGrillaRegistroPagoVenta() {
                         align: "right",
                         hidden: false,
                         formatter: 'number',
-                formatoptions:{thousandsSeparator: ".", decimalPlaces:0},
+                        
                         width: 5
 
                     }

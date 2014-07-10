@@ -14,6 +14,7 @@ $().ready(function() {
     formatearFechas();
     $("#cargar-karrito").click(function() {
         loadAutocompleteProducto();
+        $("#buscar-karrito").attr("disabled", true);
         $("#cabecera-factura").show();
     	$("#addProductos").show();
     	
@@ -37,6 +38,7 @@ $().ready(function() {
     });
     
     $("#buscar-karrito").click(function() {
+        $("#cargar-karrito").attr("disabled", true);
     	$("#addProductos").hide();
     	$("#modalKarrito").show();
 //    	cargarGrillaFacturasModalKarrito();
@@ -98,6 +100,9 @@ $().ready(function() {
             }
     		$("#grillaRegistroKarrito").trigger("reloadGrid");	
     	}
+        //hacemos editable las grillas
+        jQuery("#grillaComprasModal").setColProp('KAR_CANT_FACTURAR',{editable:true});
+        // jQuery("#grillaComprasModal").setColProp('KAR_PRECIO_FACTURAR',{editable:true});
         
         $('#cabecera-factura').show();
         $('#modalKarrito').hide();
@@ -264,6 +269,7 @@ function finditems(data){
                 $("#grillaRegistroKarrito").jqGrid("clearGridData", true);
                 for (var i = 0; i < respuesta.length; i++) {
                     var rows = jQuery("#grillaRegistroKarrito").jqGrid('getRowData');
+                    console.log(respuesta[i]);
                     jQuery("#grillaRegistroKarrito").jqGrid('addRowData', (rows.length) + 1, respuesta[i]);    
                 }
             }
@@ -453,7 +459,9 @@ function obtenerJsonDetalles() {
     jsonObject.COD_PRODUCTO = $('#codproducto-item').attr("value");
     jsonObject.PRODUCTO_DESC = $('#descripcionproducto-item').attr("value");
     jsonObject.KAR_CANT_PRODUCTO = parseFloat($('#cant-item').attr("value"));
+    jsonObject.KAR_CANT_FACTURAR = parseFloat($('#cant-item').attr("value"));
     jsonObject.KAR_PRECIO_PRODUCTO =  parseInt($("#total-item").attr("value"));
+    jsonObject.KAR_PRECIO_FACTURA =  parseInt($("#total-item").attr("value"));
     jsonObject.COD_MOZO = 1;  
     jsonObject.FACT_NRO = 0;  
     jsonObject.ESTADO = 'PE';  
@@ -1128,10 +1136,13 @@ function verificarCaja(){
 
 function levantamodal(){
     $("#guardar-registro").html("Guardar");
+
         $("#cabecera-factura").hide();
         $(".btn-compra").show();
         $("#buscar-karrito").show();
         $("#cargar-karrito").show();
+        $("#buscar-karrito").attr("disabled",false);
+        $("#cargar-karrito").attr("disabled",false);
         $("#editar-nuevo").html("Nuevo Registro");
         $("#numeroFacturaLb").css("display", "none");
         $("#numeroFacturaIn").css("display", "none");
@@ -1147,6 +1158,8 @@ function levantamodal(){
         bloqueamosCeldas('desbloqueamos');
         CleanFormItems();
         formatearFechas();
+        jQuery("#grillaComprasModal").setColProp('KAR_CANT_FACTURAR',{editable:false});
+        jQuery("#grillaComprasModal").setColProp('KAR_PRECIO_FACTURAR',{editable:false});
         $('#modalEditar').show();
 }
 

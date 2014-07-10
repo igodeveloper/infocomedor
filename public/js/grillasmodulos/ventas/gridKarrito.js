@@ -126,9 +126,31 @@ function cargarGrillaRegistro() {
                     },
                     {
                         title: false,
+                        name: 'KAR_CANT_FACTURAR',
+                        label: 'CANT FACTURAR',
+                        id: 'KAR_CANT_FACTURAR',
+                        align: 'right',
+                        formatter: 'number',
+                formatoptions:{thousandsSeparator: ".", decimalPlaces:2},
+                        width: 10,
+                        hidden: false
+                    },
+                    {
+                        title: false,
                         name: 'KAR_PRECIO_PRODUCTO',
                         label: 'PRECIO',
                         id: 'KAR_PRECIO_PRODUCTO',
+                        align: 'right',
+                        width: 20,
+                        formatter: 'number',
+                formatoptions:{thousandsSeparator: ".", decimalPlaces:0},
+                        hidden: false
+                    },
+                    {
+                        title: false,
+                        name: 'KAR_PRECIO_FACTURAR',
+                        label: 'PRECIO FACTURAR',
+                        id: 'KAR_PRECIO_FACTURAR',
                         align: 'right',
                         width: 20,
                         formatter: 'number',
