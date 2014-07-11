@@ -216,16 +216,19 @@ class Caja_CajaController extends Zend_Controller_Action
                         $salida_cheque = $rowData->monto_saliente_cheque; 
                         $monto_diferencia_cheque = $entrada_cheque - $salida_cheque;
                         $monto_diferencia_arqueo_cheque = $monto_diferencia_cheque - $rowData->monto_caja_cierre_cheque;
-                        //$rowClass->setMonto_diferencia_arqueo($monto_diferencia_arqueo_cheque);
+                        $rowClass->setMonto_diferencia_arqueo_cheque($monto_diferencia_arqueo_cheque);
 						
                         $rowClass->setArqueo_caja('S');
                     }
                     if(isset($rowData->monto_caja_apertura))
                             $rowClass->setMonto_caja_apertura(trim(utf8_decode($rowData->monto_caja_apertura)));
-                    if(isset($rowData->monto_caja_cierre) and trim($rowData->cod_caja) <> '')
-                            $rowClass->setMonto_caja_cierre(trim(utf8_decode($rowData->monto_caja_cierre)));
-                    if(isset($rowData->monto_diferencia_arqueo))
-                            $rowClass->setMonto_diferencia_arqueo(trim(utf8_decode($rowData->monto_diferencia_arqueo)));
+                    
+                    if(isset($rowData->monto_caja_cierre_efectivo) and trim($rowData->cod_caja) <> '')
+                            $rowClass->setMonto_caja_cierre(trim(utf8_decode($rowData->monto_caja_cierre_efectivo)));
+                    
+                   // if(isset($rowData->monto_diferencia_arqueo))
+                   //         $rowClass->setMonto_diferencia_arqueo(trim(utf8_decode($rowData->monto_diferencia_arqueo)));
+                    
                     if(isset($rowData->arqueo_caja))
                             $rowClass->setArqueo_caja(trim(utf8_decode($rowData->arqueo_caja)));
 //print_r($rowClass);
@@ -265,7 +268,7 @@ class Caja_CajaController extends Zend_Controller_Action
     }
     public function creartablasAction()
     {        
-        $table = new Zend_ModelCreator('mov_caja','infocomedor');
+        $table = new Zend_ModelCreator('caja','infocomedor');
     }    
     public function cajaabiertadataAction()
     {
