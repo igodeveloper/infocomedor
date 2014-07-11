@@ -1,6 +1,6 @@
 var pathname = window.location.pathname;
 var table = pathname;
-var cantidad_pendiente = 0;
+
 $(document).ready(function() {
     cargarGrillaFacturas();
     cargarGrillaFacturasModal();
@@ -193,17 +193,13 @@ function cargarGrillaFacturasModal() {
                 cellsubmit : 'clientArray',
                 editurl: 'clientArray',
                 closeOnEscape: true,
-                beforeEditCell: function (rowid, name, val, iRow, iCol) {
-
-                    cantidad_pendiente = parseFloat($("#grillaComprasModal").jqGrid('getCell', rowid, 'KAR_CANT_FACTURAR'));
-                },
                 afterSaveCell: function(rowid, name,val,iRow,iCol){
-
                        var precio =  parseInt($("#grillaComprasModal").jqGrid('getCell', rowid, 'KAR_PRECIO_PRODUCTO'));
-                       var cantidad = parseFloat($("#grillaComprasModal").jqGrid('getCell', rowid, 'KAR_CANT_PRODUCTO'));
-                       var precio_unitario = parseFloat(precio/cantidad);
+                       // esto pasa porque en cant_producto se carga el valor pendiente de la base de datos
+                       var cantidad_pendiente = parseFloat($("#grillaComprasModal").jqGrid('getCell', rowid, 'KAR_CANT_PRODUCTO'));
+                       var precio_unitario = parseFloat(precio/cantidad_pendiente);
                        var cantidad_facturar = parseFloat($("#grillaComprasModal").jqGrid('getCell', rowid, 'KAR_CANT_FACTURAR'));
-                       console.log(cantidad_facturar+"fac-pend"+cantidad_pendiente);
+                      
                        if(cantidad_facturar<=cantidad_pendiente){
                             var precio_facturar = parseFloat(precio_unitario*cantidad_facturar);
                             $("#grillaComprasModal").jqGrid('setRowData',rowid,{KAR_PRECIO_FACTURAR: precio_facturar});
@@ -221,7 +217,7 @@ function cargarGrillaFacturasModal() {
                         title: false,
                         name: 'COD_KARRITO',
                         label: 'COD PEDIDO',
-                        id: 'COD PEDIDO',
+                        id: 'COD_KARRITO',
                         align: 'right',
                         width: 10,
                         hidden: true
@@ -723,4 +719,88 @@ function cargarGrillaRegistroPagoVenta() {
            
         }
     });
+}
+
+function cargarGrillaFacturasDetalle() {
+    jQuery("#grillaDetalleFactura").jqGrid(
+            {
+                datatype: "local",
+                beforeRequest: bloquearPantalla,
+                loadComplete: function() {
+                    $.unblockUI();
+                },
+                serializeGridData: function() {
+                },
+                refresh: true,
+                formatter: null,
+                ExpandColumn: true,
+                width: null,
+                height: "180",
+                gridview: false,
+                scrollerbar:true,
+                rowList: [],        // disable page size dropdown
+                pgbuttons: false,     // disable page control like next, back button
+                pgtext: null,         // disable pager text like 'Page 0 of 10'
+                viewrecords: false,   // disable current view record text like 'View 1-10 of 100' 
+                // pager: '#paginadorComprasModal',
+                colModel: [
+                                        {
+                        title: false,
+                        name: 'FAC_DET_ITEM',
+                        label: 'ITEM',
+                        id: 'FAC_DET_ITEM',
+                        align: 'right',
+                        width: 10,
+                        hidden: true
+                    },
+                    {
+                        title: false,
+                        name: 'COD_PRODUCTO',
+                        label: 'PRODUCTO',
+                        id: 'COD_PRODUCTO',
+                        align: 'center',
+                        width: 20,
+                        hidden: false
+                    },
+                    {
+                        title: false,
+                        name: 'PRODUCTO_DESC',
+                        label: 'PRODUCTO',
+                        id: 'PRODUCTO_DESC',
+                        align: 'left',
+                        width: 30,
+                        hidden: false
+                    },
+                    {
+                        title: false,
+                        name: 'FAC_DET_CANTIDAD',
+                        label: 'CANTIDAD',
+                        id: 'FAC_DET_CANTIDAD',
+                        align: 'right',
+                        formatter: 'number',
+                formatoptions:{thousandsSeparator: ".", decimalPlaces:2},
+                        width: 10,
+                        hidden: false
+                    }
+                    ,
+                    {
+                        title: false,
+                        name: 'FAC_DET_TOTAL',
+                        label: 'MONTO',
+                        id: 'FAC_DET_TOTAL',
+                        align: 'right',
+                        width: 25,
+                        formatter: 'number',
+                formatoptions:{thousandsSeparator: ".", decimalPlaces:0},
+                        hidden: false
+                    }
+                
+                ]
+
+            });
+
+//  $("#grillaComprasModal").setGridWidth('100%');
+    $("#grillaDetalleFactura").jqGrid('setGridWidth', widthOfGrid(), true);
+ 
+
 }

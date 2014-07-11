@@ -112,6 +112,8 @@ $().ready(function() {
     
     $("#nuevoCompra").click(function() {
         verificarCaja();
+    $("#gbox_grillaComprasModal").show();
+    $("#gbox_grillaDetalleFactura").hide();
     });
 
     $("#addItem").click(function() {
@@ -141,7 +143,7 @@ $().ready(function() {
         var data = obtenerGrid();
         if (data) {
             // $.blockUI();
-            console.log(data);
+            
             cargarGrillaRegistroPagoVenta();
             $('#modalFormaPago').show();
             $('#modalEditar').hide();
@@ -461,7 +463,7 @@ function obtenerJsonDetalles() {
     jsonObject.KAR_CANT_PRODUCTO = parseFloat($('#cant-item').attr("value"));
     jsonObject.KAR_CANT_FACTURAR = parseFloat($('#cant-item').attr("value"));
     jsonObject.KAR_PRECIO_PRODUCTO =  parseInt($("#total-item").attr("value"));
-    jsonObject.KAR_PRECIO_FACTURA =  parseInt($("#total-item").attr("value"));
+    jsonObject.KAR_PRECIO_FACTURAR =  parseInt($("#total-item").attr("value"));
     jsonObject.COD_MOZO = 1;  
     jsonObject.FACT_NRO = 0;  
     jsonObject.ESTADO = 'PE';  
@@ -802,6 +804,8 @@ function editarRegistro(parametros) {
     
     $("#buscar-karrito").hide();
     $("#cargar-karrito").hide();
+        $("#gbox_grillaComprasModal").hide();
+   
     
     $("#modalEditar").show();
     $("#editar-nuevo").html("Ver Registro");
@@ -821,7 +825,11 @@ function editarRegistro(parametros) {
     $('#FechaVencimiento-modal').attr("value", parametros.FAC_FECH_VTO);
     $("#guardar").hide();
     $("#addProductos").hide();
+
+
     BlockProveedorData("editar");
+    cargarGrillaFacturasDetalle();
+     $("#gbox_grillaDetalleFactura").show();
     loadGridDetails(parametros.FAC_NRO);
    
 }
@@ -836,11 +844,23 @@ function loadGridDetails(factura){
 	        dataType: 'json',
 	        async: false,
 	        success: function(respuesta) {
-	        	$("#grillaComprasModal").jqGrid("clearGridData");
-	        	  for (var i = 0; i < respuesta.length; i++) {
-	                var rows = jQuery("#grillaComprasModal").jqGrid('getRowData');
-	                jQuery("#grillaComprasModal").jqGrid('addRowData', (rows.length) + 1, respuesta[i]);
-	            }
+
+                if(respuesta.result == 'void'){
+                    mostarVentana("warning-block-karrito", "No se encontraron pedidos con lo datos ingresados");
+                } else {
+                    $("#grillaDetalleFactura").jqGrid("clearGridData", true);
+                    for (var i = 0; i < respuesta.length; i++) {
+                        var rows = jQuery("#grillaDetalleFactura").jqGrid('getRowData');
+                        console.log(respuesta[i]);
+                        jQuery("#grillaDetalleFactura").jqGrid('addRowData', (rows.length) + 1, respuesta[i]);    
+                     }
+                }
+
+	        	// $("#grillaComprasModal").jqGrid("clearGridData");
+	        	//   for (var i = 0; i < respuesta.length; i++) {
+	         //        var rows = jQuery("#grillaComprasModal").jqGrid('getRowData');
+	         //        jQuery("#grillaComprasModal").jqGrid('addRowData', (rows.length) + 1, respuesta[i]);
+	         //    }
 	            $.unblockUI();
 	        },
 	        error: function(event, request, settings) {
@@ -933,7 +953,8 @@ function obtenerGrid() {
 
     //Calculamos el precio total
     for (var i = 0; i < dataObjectVentaDetalle.length; i++) {
-        montoTotal = montoTotal + parseInt(dataObjectVentaDetalle[i].KAR_PRECIO_PRODUCTO);
+        // montoTotal = montoTotal + parseInt(dataObjectVentaDetalle[i].KAR_PRECIO_PRODUCTO); // ya no se usa se usa el precio_facturar
+        montoTotal = montoTotal + parseInt(dataObjectVentaDetalle[i].KAR_PRECIO_FACTURAR);
 
     }
     

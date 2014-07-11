@@ -242,9 +242,9 @@ private function obtenerPaginas($result, $cantidadFilas, $page) {
 								'COD_MESA'=> $value ['COD_MESA'],
 								'COD_PRODUCTO'=> $value ['COD_PRODUCTO'],
 								'PRODUCTO_DESC'=> $value ['PRODUCTO_DESC'],
-                                'KAR_CANT_PRODUCTO'=> $value ['KAR_CANT_PRODUCTO'],
+                                'KAR_CANT_PRODUCTO'=> $value ['KAR_CANT_FACTURAR'],
 								'KAR_CANT_FACTURAR'=> $value ['KAR_CANT_FACTURAR'],
-                                'KAR_PRECIO_PRODUCTO'=> $value ['KAR_PRECIO_PRODUCTO'],
+                                'KAR_PRECIO_PRODUCTO'=> $value ['KAR_PRECIO_FACTURAR'],
 								'KAR_PRECIO_FACTURAR'=> $value ['KAR_PRECIO_FACTURAR'],
 								'COD_MOZO'=> $value ['COD_MOZO'],
 								'FACT_NRO'=> $value ['FACT_NRO'],
@@ -343,13 +343,15 @@ public function guardarAction() {
 	            );
 	            $insert = $db->insert('FACTURA', $data);
 	            $factura_nro = $db->lastInsertId();
-	            $i = 0;
+	            
                 foreach ($dataVentaDetalle as $fila) {
+                    $i = 0;
                  	$data = array(
 		                'FAC_NRO'=>$factura_nro,
 						'FAC_DET_ITEM'=>$i++,
 						'COD_PRODUCTO'=>$fila->COD_PRODUCTO,
-						'FAC_DET_TOTAL'=>$fila->KAR_PRECIO_PRODUCTO
+                        'FAC_DET_CANTIDAD' =>$fila->KAR_CANT_FACTURAR,
+						'FAC_DET_TOTAL'=>$fila->KAR_PRECIO_FACTURAR
 		            );
 		            $insertDetalle = $db->insert('FACTURA_DETALLE', $data);
                     
@@ -361,8 +363,10 @@ public function guardarAction() {
 							'COD_CLIENTE'=>$dataVenta->codcliente,
 							'COD_MESA'=>1,
 							'COD_PRODUCTO'=>$fila->COD_PRODUCTO,
-							'KAR_CANT_PRODUCTO'=>$fila->KAR_CANT_PRODUCTO,
-							'KAR_PRECIO_PRODUCTO'=>$fila->KAR_PRECIO_PRODUCTO,
+                            'KAR_CANT_PRODUCTO'=>$fila->KAR_CANT_PRODUCTO,
+							'KAR_CANT_FACTURAR'=>$fila->KAR_CANT_PRODUCTO,
+                            'KAR_PRECIO_PRODUCTO'=>$fila->KAR_PRECIO_PRODUCTO,
+							'KAR_PRECIO_FACTURAR'=>$fila->KAR_PRECIO_PRODUCTO,
 							'COD_MOZO'=>1,
 							'FACT_NRO'=>$factura_nro,
 							'ESTADO'=>'PA'
@@ -390,14 +394,31 @@ public function guardarAction() {
                             $where = "COD_PRODUCTO= " . $fila->COD_PRODUCTO;
                             $upd = $db->update('STOCK', $data, $where);
                         }
-		            } else {
+		            } else if($fila->KAR_CANT_FACTURAR==$fila->KAR_CANT_PRODUCTO){
+
+                        $saldo_cant_facturar=($fila->KAR_CANT_PRODUCTO - $fila->KAR_CANT_FACTURAR);
+                        $saldo_precio_facturar=($fila->KAR_PRECIO_PRODUCTO - $fila->KAR_PRECIO_FACTURAR);
 		            	$dataKarrito = array(
+
 			                'FACT_NRO'=>$factura_nro,
-	                		'ESTADO'=>'PA'
+	                		'KAR_CANT_FACTURAR'=>$saldo_cant_facturar,
+                            'KAR_PRECIO_FACTURAR'=>$saldo_precio_facturar,
+                            'ESTADO'=>'PA'
 		           	 	);
 		            	$where = "COD_KARRITO= " . $fila->COD_KARRITO;
 		            	$updatekarrito = $db->update('KARRITO', $dataKarrito, $where);  
-		            }
+		            }else{
+                        //si no se cancela el item se calcula la diferencia 
+                        $saldo_cant_facturar=($fila->KAR_CANT_PRODUCTO - $fila->KAR_CANT_FACTURAR);
+                        $saldo_precio_facturar=($fila->KAR_PRECIO_PRODUCTO - $fila->KAR_PRECIO_FACTURAR);
+                        $dataKarrito = array(
+                            'KAR_CANT_FACTURAR'=>$saldo_cant_facturar,
+                            'KAR_PRECIO_FACTURAR'=>$saldo_precio_facturar
+                            
+                        );
+                        $where = "COD_KARRITO= " . $fila->COD_KARRITO;
+                        $updatekarrito = $db->update('KARRITO', $dataKarrito, $where);  
+                    }
                 	  
                 }
 
@@ -429,33 +450,37 @@ public function modaleditarAction() {
 //        $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender(true);
 
-        $getNumeroInterno = json_decode($this->getRequest()->getParam("NumeroInterno"));
+        $getNumeroInterno = ($this->getRequest()->getParam("NumeroInterno"));
 //        $getNumeroInterno = trim($NumeroInterno["NumeroInterno"]);
 
         $db = Zend_Db_Table::getDefaultAdapter();
         $select = $db->select()
-                ->from(array('K' => 'KARRITO'), 
-                array(	'K.COD_KARRITO',
-						'K.KAR_FECH_MOV',
-						'K.COD_CLIENTE',
-                		'C.CLIENTE_DES',
-						'K.COD_MESA',
-						'K.COD_PRODUCTO',
-                		'P.PRODUCTO_DESC',
-                        'K.KAR_CANT_PRODUCTO',
-						'K.KAR_CANT_FACTURAR',
-                        'K.KAR_PRECIO_PRODUCTO',
-						'K.KAR_PRECIO_FACTURAR',
-						'K.COD_MOZO',
-						'K.FACT_NRO',
-						'K.ESTADO'))
-               	->joinInner(array('P' => 'PRODUCTO'), 'K.COD_PRODUCTO = P.COD_PRODUCTO')
-                ->joinInner(array('C' => 'CLIENTE'), 'C.COD_CLIENTE = K.COD_CLIENTE')
-                ->where("K.FACT_NRO = ?", $getNumeroInterno);
+                ->from(array('C' => 'FACTURA_DETALLE'), 
+                      array('C.FAC_DET_ITEM',
+                            'C.COD_PRODUCTO',
+                            'M.PRODUCTO_DESC',
+                            'C.FAC_DET_CANTIDAD',
+                            'C.FAC_DET_TOTAL'
+                           ))
+                ->join(array('M' => 'PRODUCTO'), 'C.COD_PRODUCTO = M.COD_PRODUCTO')
+                ->where("C.FAC_NRO = ?", $getNumeroInterno);
 //        print_r($select);
 //        die();
         $result = $db->fetchAll($select);
-        echo json_encode($result);
+        $option = array();
+        foreach ($result as $value) {
+            $option1 = array(   'FAC_DET_ITEM'=> $value ['FAC_DET_ITEM'],
+                                'COD_PRODUCTO'=> $value ['COD_PRODUCTO'],
+                                'COD_PRODUCTO'=> $value ['COD_PRODUCTO'],
+                                'PRODUCTO_DESC'=> $value ['PRODUCTO_DESC'],
+                                'FAC_DET_CANTIDAD'=> $value ['FAC_DET_CANTIDAD'],
+                                'FAC_DET_TOTAL'=> $value ['FAC_DET_TOTAL']);
+            array_push($option, $option1);
+            }
+            if(!$option){
+                $option = array('result'=>'void'); 
+            }           
+            echo json_encode($option);
     }
 
     public function anularventaAction(){

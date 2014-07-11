@@ -175,6 +175,7 @@ class Ventas_KarritoController extends Zend_Controller_Action {
                 	  		'M.PRODUCTO_DESC',
                             'C.KAR_CANT_PRODUCTO',
 							'C.KAR_CANT_FACTURAR',
+                            'C.KAR_PRECIO_PRODUCTO',
 							'C.KAR_PRECIO_FACTURAR',
 							'C.COD_MOZO',
 							'C.FACT_NRO',
