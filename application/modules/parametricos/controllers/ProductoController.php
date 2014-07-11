@@ -212,8 +212,7 @@ class Parametricos_ProductoController extends Zend_Controller_Action
                 $resultado_select = $db->fetchAll($select);
                 
                 $existe = ($resultado_select[0]['COD_PRODUCTO'] <> null)?$resultado_select[0]['COD_PRODUCTO']:0;
-                $saldo_producto = ($resultado_select[0]['SALDO_STOCK']>0)?$resultado_select[0]['SALDO_STOCK']:0;
-                    $data = array(
+               
                         'COD_PRODUCTO' => $codigoInsertado,
                         'SALDO_STOCK' => 0,
                         'STOCK_FECHA_ACTUALIZA' => ( date("Y-m-d H:i:s"))

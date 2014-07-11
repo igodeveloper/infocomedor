@@ -62,6 +62,14 @@ $().ready(function() {
         cleanFormModalHide("exit");
         blockclientdata('clear');
     });
+    $("#cerrar-detalle").click(function() {
+        $('#modalDetalleFactura').hide();
+        
+    });
+     $("#cancelar-detalle").click(function() {
+        $('#modalDetalleFactura').hide();
+        
+    });
 
     $("#cancelar-bot").click(function() {
         $('#modalEditar').hide();
@@ -112,8 +120,8 @@ $().ready(function() {
     
     $("#nuevoCompra").click(function() {
         verificarCaja();
-    $("#gbox_grillaComprasModal").show();
-    $("#gbox_grillaDetalleFactura").hide();
+    // $("#gbox_grillaComprasModal").show();
+    // $("#gbox_grillaDetalleFactura").hide();
     });
 
     $("#addItem").click(function() {
@@ -540,9 +548,10 @@ function validacliente(data, what) {
     dataString.value = "vacio";
     dataString.reference = data;
     var pago = "";
-    if (what === "pago") {
-        pago = "-pagos";
+    if (what === "Detalle") {
+        pago = "Detalle";
     } 
+    console.log(pago+"--"+data);
     switch (data) {
         case 'cod':
             {
@@ -579,7 +588,7 @@ function validacliente(data, what) {
                     $("#codigocliente-modal" + pago).attr("value", respuesta.cod);
                     $("#ruc-modal" + pago).attr("value", respuesta.ruc);
                     $("#razonsocial-modal" + pago).attr("value", respuesta.name);
-                    blockclientdata('block');
+                    blockclientdata('block','Detalle');
                 } else {
                     mostarVentana("warning", 'No se encontro el valor');    
                 }
@@ -594,11 +603,12 @@ function validacliente(data, what) {
     }
 
 }
-function blockclientdata(action) {
+function blockclientdata(action,what) {
+    var detalle = what;
 	if(action == 'block'){
-		 $("#codigocliente-modal").attr("disabled", true);
-	     $("#ruc-modal").attr("disabled", true);
-	     $("#razonsocial-modal").attr("disabled", true);
+		 $("#codigocliente-modal"+detalle).attr("disabled", true);
+	     $("#ruc-modal"+detalle).attr("disabled", true);
+	     $("#razonsocial-modal"+detalle).attr("disabled", true);
 	    // $("#codcliente-karrito").attr("disabled", true);
         // $("#namecliente-karrito").attr("disabled", true);
          //$("#reloadFilter").attr("disabled", true);
@@ -799,37 +809,20 @@ function buscar() {
 
 
 function editarRegistro(parametros) {
-    cleanFormModalHide("edit");
+    $("#modalDetalleFactura").show();
+    $('#factura-modalDetalle').attr("value", parametros.FAC_NRO);
     
-    
-    $("#buscar-karrito").hide();
-    $("#cargar-karrito").hide();
-        $("#gbox_grillaComprasModal").hide();
-   
-    
-    $("#modalEditar").show();
-    $("#editar-nuevo").html("Ver Registro");
-    $('#numeroFacturaLb').show();
-    $('#numeroFacturaIn').show();
-    $('#factura-modal').attr("value", parametros.FAC_NRO);
-    
-    $('#codigocliente-modal').attr("value", parametros.COD_CLIENTE);
-    validacliente('cod', 'edit')
+    $('#codigocliente-modalDetalle').attr("value", parametros.COD_CLIENTE);
+    validacliente('cod','Detalle');
     var control_1 = parametros.CONTROL_FISCAL.substr(0, 3);
     var control_2 = parametros.CONTROL_FISCAL.substr(4, 3);
     var control_3 = parametros.CONTROL_FISCAL.substr(8, (parametros.CONTROL_FISCAL.length - 8));
-    $('#controlfiscal-modal_1').attr("value", control_1);
-    $('#controlfiscal-modal_2').attr("value", control_2);
-    $('#controlfiscal-modal_3').attr("value", control_3);
-    $('#FechaFactura-modal').attr("value", parametros.FAC_FECHA_EMI);
-    $('#FechaVencimiento-modal').attr("value", parametros.FAC_FECH_VTO);
-    $("#guardar").hide();
-    $("#addProductos").hide();
-
-
-    BlockProveedorData("editar");
+    $('#controlfiscal-modalDetalle_1').attr("value", control_1);
+    $('#controlfiscal-modalDetalle_2').attr("value", control_2);
+    $('#controlfiscal-modalDetalle_3').attr("value", control_3);
+    $('#FechaFactura-modalDetalle').attr("value", parametros.FAC_FECHA_EMI);
+    $('#FechaVencimiento-modalDetalle').attr("value", parametros.FAC_FECH_VTO);
     cargarGrillaFacturasDetalle();
-     $("#gbox_grillaDetalleFactura").show();
     loadGridDetails(parametros.FAC_NRO);
    
 }
@@ -846,7 +839,7 @@ function loadGridDetails(factura){
 	        success: function(respuesta) {
 
                 if(respuesta.result == 'void'){
-                    mostarVentana("warning-block-karrito", "No se encontraron pedidos con lo datos ingresados");
+    
                 } else {
                     $("#grillaDetalleFactura").jqGrid("clearGridData", true);
                     for (var i = 0; i < respuesta.length; i++) {
@@ -855,12 +848,6 @@ function loadGridDetails(factura){
                         jQuery("#grillaDetalleFactura").jqGrid('addRowData', (rows.length) + 1, respuesta[i]);    
                      }
                 }
-
-	        	// $("#grillaComprasModal").jqGrid("clearGridData");
-	        	//   for (var i = 0; i < respuesta.length; i++) {
-	         //        var rows = jQuery("#grillaComprasModal").jqGrid('getRowData');
-	         //        jQuery("#grillaComprasModal").jqGrid('addRowData', (rows.length) + 1, respuesta[i]);
-	         //    }
 	            $.unblockUI();
 	        },
 	        error: function(event, request, settings) {
@@ -1087,7 +1074,7 @@ function cleanFormModalHide(from) {
     $('#FechaFactura-modal').attr("value", new Date());
     $("#grillaComprasModal").jqGrid("clearGridData");
     if (from === "exit") {
-        $("#grillaCompras").trigger("reloadGrid");
+        $("#grillaComprasModal").trigger("reloadGrid");
         $("#codigocliente-modal").attr("disabled", false);
         $("#ruc-modal").attr("disabled", false);
         $("#razonsocial-modal").attr("disabled", false);

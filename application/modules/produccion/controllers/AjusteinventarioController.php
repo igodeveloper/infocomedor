@@ -290,7 +290,7 @@ public function modalinventarioAction() {
                     $resultado_select = $db->fetchAll($select);
                             
                     $existe = ($resultado_select[0]['COD_PRODUCTO'] <> null)?$resultado_select[0]['COD_PRODUCTO']:0;
-                    $saldo_producto = ($resultado_select[0]['SALDO_STOCK']>0)?$resultado_select[0]['SALDO_STOCK']:0;
+                    $saldo_producto = $resultado_select[0]['SALDO_STOCK'];
                     if((float)$fila->saldos == 0){
                         $fila->DIFERENCIA = 0;
                         $fila->saldo = 0;

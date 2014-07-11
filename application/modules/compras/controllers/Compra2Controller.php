@@ -418,7 +418,7 @@ class Compras_Compra2Controller extends Zend_Controller_Action {
                 $resultado_select = $db->fetchAll($select);
                 
                 $existe = ($resultado_select[0]['COD_PRODUCTO'] <> null)?$resultado_select[0]['COD_PRODUCTO']:0;
-                $saldo_producto = ($resultado_select[0]['SALDO_STOCK']>0)?$resultado_select[0]['SALDO_STOCK']:0;
+                $saldo_producto = $resultado_select[0]['SALDO_STOCK'];
         		$data = array(
 	                'COD_PRODUCTO' => $fila["codproducto"],
 	                'SALDO_STOCK' => ($saldo_producto+$fila["cantidad"]),

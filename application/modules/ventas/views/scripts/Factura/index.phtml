@@ -336,10 +336,10 @@
 
                     </div>
 <!--                    <div id="contenedormodal" > -->
-                            <table id="grillaComprasModal" class="hide"></table>
-                            <div id="paginadorComprasModal"class="hide"></div>
+                            <table id="grillaComprasModal" ></table>
+                            <div id="paginadorComprasModal"></div>
 
-                             <table id="grillaDetalleFactura" class="hide"></table>
+                             <!-- <table id="grillaDetalleFactura" class="hide"></table> -->
                            
 <!--                    </div>-->
                     <div class="modal-footer" id="modal-footer-ventas">
@@ -348,7 +348,93 @@
                     </div>
                 </div>
 
-                
+                <!-- MODAL VER DETALLE -->
+
+                <div class="modal hide" id="modalDetalleFactura">
+                    <div class="modal-header">
+
+                        <div id="cabeceraModal" class="btn btn-info">
+                            <h3 id="" style="color:white; display: inline;">Detalle Factura</h3>
+                            <button data-dismiss="modal" class="close" type="button" id="cerrar-detalle" style="display: inline">X</button>
+                        </div>
+                       
+                    </div>
+
+                    <div class="modal-body">
+                        <!-- datos del cliente-->
+                        <div id="cabecera-factura-modalDetalle">
+                         <table id="datos-clientes-modalDetalle" class="well form-inline"> 
+                            <tr>    
+                                <td style="width: 10%">
+                                    <label for="codigocliente-modalDetalle" id="codigocliente-modalDetalle-idioma">C&oacutedigo</label>
+                                </td>
+                               
+                                <td style="width: 10%">
+                                    <input id="codigocliente-modalDetalle"  maxlength="10" class="input-block-level just-number" 
+                                           onchange="" >
+                                </td>
+
+                                <td style="width: 10%">
+                                    <label for="ruc-modalDetalle" id="clienteRuc-modalDetalle-idioma">RUC</label>
+                                </td>
+                               
+                                <td style="width: 15%">
+                                    <input id="ruc-modalDetalle"  maxlength="10" class="input-block-level" onchange="" placeholder=""  >
+                                </td>
+
+                                <td style="width: 15%">
+                                    <label for="razonsocial-modalDetalle" id="razonsocial-modalDetalle-idioma">Raz&oacuten Social</label>
+                                </td>
+                             
+                                <td style="width: 40%">
+                          
+                                    <input id="razonsocial-modalDetalle"  type="text" class="input-block-level" placeholder="" >
+                                </td>
+
+
+                            </tr>
+                        </table>
+
+                        <!-- datos de la factura-->
+                        <table id="datos-facturas-modalDetalle" class="well form-inline">
+                            <tr>
+                                <td id="numeroFacturaLbDetalle" style="width: 6%">
+                                    <label for="factura-modalDetalle" id="factura-modalDetalle-idioma">N&uacutemero Factura</label>
+                                </td>
+                                <td id="numeroFacturaInDetalle"style="width: 10%">
+                                    <input id="factura-modalDetalle"  maxlength="10" class="input-block-level just-number" onchange="" placeholder="Autogenerado" >
+                                </td>
+                                </td>
+                                <td style="width: 5%">
+                                    <label for="controlfiscal-modalDetalle" id="controlfiscal-modalDetalle-idioma">Control Fiscal</label>
+                                </td>
+                                <td style="width: 15%">
+                                    <input id="controlfiscal-modalDetalle_1"  class="input-block-level" maxlength="3" value="001" style="width: 20%"  >
+                                    <input id="controlfiscal-modalDetalle_2"  maxlength="10" class="input-block-level" max="3" value="001" style="width: 20%"  >
+                                    <input id="controlfiscal-modalDetalle_3"  maxlength="10" class="input-block-level just-number" style="width: 50%" placeholder="Nro Factura"  >
+
+                                </td>
+                                <td style="width: 6%"> 
+                                    <label for="FechaFactura-modalDetalle" id="FechaFactura-modal-idioma">Fechas Factura</label>
+                                </td>
+                                <td style="width: 10%;" >
+                                    <input id="FechaFactura-modalDetalle"  maxlength="10" class="input-block-level" onchange=""  >
+                                </td>
+                               
+                            </tr>
+
+                        </table>
+
+                       </div> <!-- Cierra div que contiene cabecera-factura-->
+                       
+
+                    </div>
+                    <table id="grillaDetalleFactura" ></table>
+                    <div class="modal-footer" id="modal-footer-Detalle">
+                        <a data-dismiss="modal" class="btn" id="cancelar-detalle"><?php echo 'Cancelar'; ?></a>
+                       
+                    </div>
+                </div>
                 <!--    MODAL KARRITO     -->
                 <div class="modal hide" id="modalKarrito">   
                     <div class="modal-header">
