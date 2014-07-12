@@ -55,7 +55,7 @@ class Caja_ReportearqueocajaController extends Zend_Controller_Action
         $format='A4';
         
         if(!isset($pdf))
-          $pdf= new PDFActa($orientation,$unit,$format,$json_rowData);
+          $pdf= new PDFReportearqueocaja($orientation,$unit,$format,$json_rowData);
         $pdf->AliasNbPages();
         $pdf->AddPage();
         $pdf->Body($json_rowData);
@@ -66,32 +66,7 @@ class Caja_ReportearqueocajaController extends Zend_Controller_Action
         $pdf->Output($path_tmp.$file, 'F');
         $pdf->close();
         unset($pdf);
-
-        try {
-            $db = Zend_Db_Table::getDefaultAdapter();
-            $db->beginTransaction();
-                        $data = array(
-                            'impreso'  => 'S'
-                        );
-                        $where = "codfacul = '".$rowData->codfacul."' and 
-                                 codcarsec = '".$rowData->codcarsec."' and
-                                  codcurso = '".$rowData->codcurso."' and
-                                  codasign = '".$rowData->codasign."' and
-                                      anho = '".$rowData->anho."' and
-                                     turno = '".$rowData->turno."' and
-                                   seccion = '".$rowData->seccion."' and
-                              convocatoria = '".$rowData->convocatoria."' and
-                                   periodo = '".$rowData->periodo."' and
-                                  tipoexam = '".$rowData->tipoexam."'";
-                        $upd = $db->update('notas_finales_cab', $data, $where);  
-
-            $db->commit();
-            echo json_encode(array("result" => "EXITO","archivo" => $file));
-       } catch (Exception $e) {
-            $db->rollBack();
-            echo json_encode(array("result" => "ERROR", "code" => $e->getCode(),"mensaje" => $e->getMessage()));            
-       }        
-
+        echo json_encode(array("result" => "EXITO","archivo" => $file));
        // echo json_encode(array("result" => "EXITO","archivo" => $file));
         //echo "<script>  window.open('".$path_tmp.$file."');  </script>";                      
     }	

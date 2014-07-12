@@ -12,16 +12,18 @@
             $conection['dbpass']="2011usuario2288";	   
             $conection['database']="academico";  
 */           
-/*            
+            
             $conection['server']="localhost";  
             $conection['dbuser']="root";       
             $conection['dbpass']="";	   
-            $conection['database']="academico";  
-*/
+            $conection['database']="infocomedor";  
+
+/*            
             $conection['server']="10.16.210.70";  
             $conection['dbuser']="fcano";       
             $conection['dbpass']="B0rr4d0r";	   
-            $conection['database']="academico";              
+            $conection['database']="academico"; 
+*/            
 	    // crea la conexion pasandole el servidor , usuario y clave
 	    $conect= mysql_connect($conection['server'],$conection['dbuser'],$conection['dbpass']);
 

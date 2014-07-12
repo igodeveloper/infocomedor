@@ -69,9 +69,9 @@ function imprimirArqueoCaja(){
 			success: function(respuesta) {
 
 				if (respuesta == null) {
-					mostarVentana("error", "TIMEOUT");
+                                    mostarVentana("error", "TIMEOUT");
 				} else if (respuesta.result == "EXITO") {
-					window.open('../../tmp/'+respuesta.archivo);
+                                    window.open('../tmp/'+respuesta.archivo);
 				}                                        
 				$.unblockUI();
 			},
