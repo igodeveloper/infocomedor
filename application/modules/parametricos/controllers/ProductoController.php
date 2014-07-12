@@ -6,6 +6,13 @@ class Parametricos_ProductoController extends Zend_Controller_Action
     public function init()
     {
         /* Initialize action controller here */
+         $parametrosNamespace = new Zend_Session_Namespace('parametros');
+        $parametrosNamespace->unlock();
+            if(!$parametrosNamespace->username){
+                $r = Zend_Controller_Action_HelperBroker::getStaticHelper('redirector');
+                $r->gotoUrl('/menus/menu')->redirectAndExit();
+            }
+        $parametrosNamespace->lock();
     }
 
     public function indexAction()
@@ -212,7 +219,7 @@ class Parametricos_ProductoController extends Zend_Controller_Action
                 $resultado_select = $db->fetchAll($select);
                 
                 $existe = ($resultado_select[0]['COD_PRODUCTO'] <> null)?$resultado_select[0]['COD_PRODUCTO']:0;
-               
+               $data=array(
                         'COD_PRODUCTO' => $codigoInsertado,
                         'SALDO_STOCK' => 0,
                         'STOCK_FECHA_ACTUALIZA' => ( date("Y-m-d H:i:s"))

@@ -7,6 +7,8 @@ class Menus_MenuController extends Zend_Controller_Action
     public function init()
     {
         /* Initialize action controller here */
+    $parametrosNamespace = new Zend_Session_Namespace ( 'parametros' );    
+    $parametrosNamespace->unsetAll();
     }
 
     public function indexAction()

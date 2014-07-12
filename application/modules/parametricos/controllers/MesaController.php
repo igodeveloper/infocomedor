@@ -6,6 +6,13 @@ class Parametricos_MesaController extends Zend_Controller_Action
     public function init()
     {
         /* Initialize action controller here */
+         $parametrosNamespace = new Zend_Session_Namespace('parametros');
+        $parametrosNamespace->unlock();
+            if(!$parametrosNamespace->username){
+                $r = Zend_Controller_Action_HelperBroker::getStaticHelper('redirector');
+                $r->gotoUrl('/menus/menu')->redirectAndExit();
+            }
+        $parametrosNamespace->lock();
     }
 
     public function indexAction()

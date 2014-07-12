@@ -3,7 +3,13 @@
 class Produccion_RecetaController extends Zend_Controller_Action {
 
     public function init() {
-        
+         $parametrosNamespace = new Zend_Session_Namespace('parametros');
+        $parametrosNamespace->unlock();
+            if(!$parametrosNamespace->username){
+                $r = Zend_Controller_Action_HelperBroker::getStaticHelper('redirector');
+                $r->gotoUrl('/menus/menu')->redirectAndExit();
+            }
+        $parametrosNamespace->lock();
     }
 
     public function indexAction() {

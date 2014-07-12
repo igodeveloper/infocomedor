@@ -6,6 +6,10 @@ class Compras_Compra2Controller extends Zend_Controller_Action {
         /* Initialize action controller here */
         $parametrosNamespace = new Zend_Session_Namespace('parametros');
         $parametrosNamespace->unlock();
+         if(!$parametrosNamespace->username){
+            $r = Zend_Controller_Action_HelperBroker::getStaticHelper('redirector');
+            $r->gotoUrl('/menus/menu')->redirectAndExit();
+        }
         $parametrosNamespace->cantidadFilas = null;
         $parametrosNamespace->Application_Model_DbTable = "Application_Model_DbTable_Compra";
         $parametrosNamespace->lock();
