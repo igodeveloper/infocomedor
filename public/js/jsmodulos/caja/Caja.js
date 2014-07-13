@@ -37,15 +37,23 @@ $().ready(function() {
                     return;                                
                 }
 		limpiarFormulario();
-		cargarUsuarioCaja();                
-                $('#tr_cierre1').hide();
-                $('#tr_cierre2').hide();
-                $('#tr_cierre3').hide();                
+		cargarUsuarioCaja();                                
 		$('#modalEditar').show();
-                $('#montoentrantecaja-modal-idioma').hide();
-                $('#montoentrantecaja-modal').hide();
-                $('#montosalientecaja-modal-idioma').hide();
-                $('#montosalientecaja-modal').hide();
+                $('#montoentrantecaja-modal-idioma').css("display", "none");
+                $('#montoentranteefectivo-modal').css("display", "none");
+                $('#montosalientecaja-modal-idioma').css("display", "none");
+                $('#montosalienteefectivo-modal').css("display", "none");
+                $('#montoentrantecheque-label').css("display", "none");
+                $('#montoentrantecheque-modal').css("display", "none");
+                $('#montosalientecheque-label').css("display", "none");
+                $('#montosalientecheque-modal').css("display", "none");
+                $('#fechacierrecaja-modal-idioma').css("display", "none");
+                $('#fechacierrecaja-modal').css("display", "none");
+                $('#montocierrecaja-modal-idioma').css("display", "none");
+                $('#montocierrecaja-modal').css("display", "none");
+                $('#montocierrecheque-modal-idioma').css("display", "none");
+                $('#montocierrecheque-modal').css("display", "none");
+                
 		$("#contenedorcierrecaja-modal").css("display", "none");
 		//ID de registro
 		$('#codigotipoproducto-modal').attr("value",null);
@@ -328,17 +336,26 @@ function editarRegistro(parametros){
             mostarVentana("warning-block-title","La caja ya se encuentra arqueada!!");
             return;
         }
+        $('#montoentrantecaja-modal-idioma').css("display", "block");
+        $('#montoentranteefectivo-modal').css("display", "block");
+        $('#montosalientecaja-modal-idioma').css("display", "block");
+        $('#montosalienteefectivo-modal').css("display", "block");
+        $('#montoentrantecheque-label').css("display", "block");
+        $('#montoentrantecheque-modal').css("display", "block");
+        $('#montosalientecheque-label').css("display", "block");
+        $('#montosalientecheque-modal').css("display", "block");
+        $('#fechacierrecaja-modal-idioma').css("display", "block");
+        $('#fechacierrecaja-modal').css("display", "block");
+        $('#montocierrecaja-modal-idioma').css("display", "block");
+        $('#montocierrecaja-modal').css("display", "block");
+        $('#montocierrecheque-modal-idioma').css("display", "block");
+        $('#montocierrecheque-modal').css("display", "block");
+        
 	$("#modalEditar").show();
 	$("#editar-nuevo").html("Cierre de Caja");
 	$("#codcaja-modal").attr("value",parametros.cod_caja);
 	cargarCierreCaja();
-	$("#guardar-registro").html("Cerrar Caja");
-	$("#contenedorcierrecaja-modal").css("display", "block");
-        
-        $('#montoentrantecaja-modal-idioma').css("display", "block");
-        $('#montoentrantecaja-modal').css("display", "block");
-        $('#montosalientecaja-modal-idioma').css("display", "block");
-        $('#montosalientecaja-modal').css("display", "block");
+	$("#guardar-registro").html("Cerrar Caja");        
 }
 
 function limpiarFormulario(){
