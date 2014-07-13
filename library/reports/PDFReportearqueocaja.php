@@ -26,165 +26,206 @@
                 $this->HREF='';
                 
             }
-            //Cabecera de p�gina
-            function Header()
+        //Cabecera de p�gina
+        function Header()
+        {
+            $sql="select c.NOMBRE_APELLIDO,a.fecha_hora_apertura,a.fecha_hora_cierre,
+                a.monto_caja_apertura,a.monto_caja_cierre,a.monto_diferencia_arqueo,a.monto_diferencia_arqueo_cheque,
+                a.arqueo_caja
+                from caja a
+                inner join usuario c on
+                c.COD_USUARIO = a.cod_usuario_caja
+                where a.cod_caja = ".$this->parametros->nro_caja;
+            //die($sql);               
+            //echo $sql."<br>";                              
+            $dtDatos = $this->Conn->query($sql);
+            while($row = mysql_fetch_assoc($dtDatos))
             {
-                //Logo
-                $x = 0;
-                $y = 0;
-                //$this->Image("./images/central.jpg",10,10,25,25);
-                $this->Image("./css/images/infocomedor.jpg",10,5,50,30);
-				$this->Ln(15);
-                //Arial bold 15
-                $this->SetFont('Arial','B',12);
-                $this->SetX(80+$x);
-                $this->Cell(80,10,utf8_decode("Reporte de Arqueo de Caja"),0,0,'L');
-                $this->Ln(10);//Salto de l�nea
-                $this->SetFont('Arial','B',9);
-                $this->Cell(80,10,  utf8_decode("Nro. de Caja "),0,0,'L');
-                $this->SetX(30+$y);
-                $this->SetFont('Arial','',9);
-                $this->Cell(80,10,  utf8_decode(': '.$this->parametros->nro_caja),0,0,'L');
-                $this->SetX(120+$y);    
-                $this->SetFont('Arial','B',9);
-                $this->Cell(80,10,  utf8_decode("Fecha Reporte "),0,0,'L');
-                $this->SetX(145+$y);   
-                $this->SetFont('Arial','',9);
-                $this->Cell(80,10,  utf8_decode(': '.date('d/m/Y H:i:s')),0,0,'L');                
-                $this->Ln(5);//Salto de l�nea
-                $this->SetFont('Arial','B',9);
-                $this->Cell(80,10,  utf8_decode("Usuario "),0,0,'L');               
-                $this->SetX(30+$y); 
-                $this->SetFont('Arial','',9);
-                $this->Cell(80,10,  utf8_decode(": "),0,0,'L');
-                $this->Ln(7);//Salto de l�nea   
+                 $nombre_apellido                   = $row['NOMBRE_APELLIDO'];
+                 $fecha_hora_apertura               = $row['fecha_hora_apertura'];
+                 $fecha_hora_cierre                 = $row['fecha_hora_cierre'];
+                 $monto_caja_apertura               = $row['monto_caja_apertura'];
+                 $monto_caja_cierre                 = $row['monto_caja_cierre'];
+                 $monto_diferencia_arqueo           = $row['monto_diferencia_arqueo'];
+                 $monto_diferencia_arqueo_cheque    = $row['monto_diferencia_arqueo_cheque'];
+                 $arqueo_caja                       = $row['arqueo_caja'];
+                 if(trim($arqueo_caja) <> '')
+                     $arqueo_caja = 'Si';
+                 else $arqueo_caja = 'No';   
+                 if(trim($fecha_hora_cierre) == '')
+                     $fecha_hora_cierre = 'Abierto';
+            }                
+            //Logo
+            $x = 0;
+            $y = 0;
+            //$this->Image("./images/central.jpg",10,10,25,25);
+            $this->Image("./css/images/infocomedor.jpg",10,5,50,30);
+                            $this->Ln(15);
+            //Arial bold 15
+            $this->SetFont('Arial','B',12);
+            $this->SetX(80+$x);
+            $this->Cell(80,10,utf8_decode("Reporte de Arqueo de Caja"),0,0,'L');
+            $this->Ln(10);//Salto de l�nea
+            $this->SetFont('Arial','B',9);
+            $this->Cell(80,10,  utf8_decode("Nro. de Caja "),0,0,'L');
+            $this->SetX(30+$y);
+            $this->SetFont('Arial','',9);
+            $this->Cell(80,10,  utf8_decode(': '.$this->parametros->nro_caja),0,0,'L');
+            $this->SetX(120+$y);    
+            $this->SetFont('Arial','B',9);
+            $this->Cell(80,10,  utf8_decode("Fecha Reporte "),0,0,'L');
+            $this->SetX(145+$y);   
+            $this->SetFont('Arial','',9);
+            $this->Cell(80,10,  utf8_decode(': '.date('d/m/Y H:i:s')),0,0,'L');                
+            $this->Ln(5);//Salto de l�nea
+            $this->SetFont('Arial','B',9);
+            $this->Cell(80,10,  utf8_decode("Usuario Caja "),0,0,'L');               
+            $this->SetX(30+$y); 
+            $this->SetFont('Arial','',9);
+            $this->Cell(80,10,  utf8_decode(": ".$nombre_apellido),0,0,'L');
+            $this->SetX(120+$y);    
+            $this->SetFont('Arial','B',9);
+            $this->Cell(80,10,  utf8_decode("Apertura caja "),0,0,'L');
+            $this->SetX(145+$y);   
+            $this->SetFont('Arial','',9);
+            $this->Cell(80,10,  utf8_decode(': '.$fecha_hora_apertura),0,0,'L');  
 
+            $this->Ln(5);//Salto de l�nea
+            $this->SetFont('Arial','B',9);
+            $this->Cell(80,10,  utf8_decode("Monto Pertura "),0,0,'L');               
+            $this->SetX(32+$y); 
+            $this->SetFont('Arial','',9);
+            $this->Cell(80,10,  utf8_decode(": ".$monto_caja_apertura),0,0,'L');
+            $this->SetX(120+$y);    
+            $this->SetFont('Arial','B',9);
+            $this->Cell(80,10,  utf8_decode("Cierre caja "),0,0,'L');
+            $this->SetX(145+$y);   
+            $this->SetFont('Arial','',9);
+            $this->Cell(80,10,  utf8_decode(': '),0,0,'L');      
+            $this->SetX(147+$y); 
+            if(trim($fecha_hora_cierre) == 'Abierto')
+                $this->SetTextColor(255,0,0);
+            $this->Cell(80,10,  utf8_decode($fecha_hora_cierre),0,0,'L');      
+            $this->SetTextColor(0,0,0);
+            $this->Ln(10);//Salto de l�nea   
+
+            $x=-2;
+            $this->SetX(11+$x);
+            $this->SetFont('Arial','B',9);
+            $this->SetX(10);
+            $this->Cell(24,10,"Nro.",0,0,'L');                
+            $this->SetX(20);
+            $this->Cell(17,10,"Fecha hora movimiento",0,0,'L');
+            $this->SetX(60);
+            $this->Cell(18,10,"Monto movimiento",0,0,'L');
+            $this->SetX(90);
+            $this->Cell(25,10,"Tipo movimiento",0,0,'L');
+            $this->SetX(150);
+            $this->Cell(19,10,"Nro. Factura",0,0,'L');
+            $this->printLine(63);
+            $this->Ln(10);          
+        }
+
+        function Body()
+        {          
+            $sql="select 
+             b.fecha_hora_mov,b.monto_mov,d.desc_tipo_mov,d.tipo_mov,b.factura_mov,b.tipo_factura_mov,b.tipo_mov as tipo,
+             a.monto_caja_apertura,a.monto_caja_cierre,a.monto_caja_cierre_cheque
+             ,a.monto_diferencia_arqueo,a.monto_diferencia_arqueo_cheque
+             from caja a
+             inner join mov_caja b on
+             a.cod_caja = b.cod_caja
+             inner join usuario c on
+             c.COD_USUARIO = a.cod_usuario_caja
+             inner join tipo_movimiento d on
+             d.cod_tipo_mov = b.cod_tipo_mov
+             where a.cod_caja = ".$this->parametros->nro_caja."
+             order by b.fecha_hora_mov desc";
+            die($sql);               
+            //echo $sql."<br>";                              
+            $dtDatos = $this->Conn->query($sql); 
+            $count = 1;
+            while($row = mysql_fetch_assoc($dtDatos))
+            {
+                $fecha_hora_mov     = $row['fecha_hora_mov'];
+                $monto_mov          = $row['monto_mov'];
+                $desc_tipo_mov      = $row['desc_tipo_mov'];
+                $tipo_mov           = $row['tipo_mov'];
+                $factura_mov        = $row['factura_mov'];
+                $tipo_factura_mov   = $row['tipo_factura_mov'];
+                $tipo               = $row['tipo'];
+                $monto_caja_apertura= $row['monto_caja_apertura'];
+                $monto_caja_cierre  = $row['monto_caja_cierre'];
+                $monto_caja_cierre_cheque  = $row['monto_caja_cierre_cheque'];
+                $monto_diferencia_arqueo    = $row['monto_diferencia_arqueo'];
+                $monto_diferencia_arqueo_cheque = $row['monto_diferencia_arqueo_cheque'];
+                if(trim($factura_mov) <> '' and $factura_mov > 0){                    
+                    if($tipo_factura_mov == 'C')
+                        $tipo_factura_mov = 'Compra';
+                    if($tipo_factura_mov == 'V')
+                        $tipo_factura_mov = 'Venta';              
+                    $factura = $factura_mov.'('.$tipo_factura_mov.')';
+                }
+                else $factura = '';
                 $x=-2;
                 $this->SetX(11+$x);
-                $this->SetFont('Arial','B',9);
-                $this->SetX(10);
-                $this->Cell(24,10,"Nro.",0,0,'L');                
-                $this->SetX(20);
-                $this->Cell(17,10,"Fecha hora movimiento",0,0,'L');
-                $this->SetX(60);
-                $this->Cell(18,10,"Monto movimiento",0,0,'L');
-                $this->SetX(120);
-                $this->Cell(25,10,"Tipo movimiento",0,0,'L');
-                $this->SetX(150);
-                $this->Cell(19,10,"Nro. Factura",0,0,'L');
-                //$this->printLine(50);
-                $this->Ln(10);          
-            }
-            //Pie de p�gina
-            function Footer()
-            {
                 $this->SetFont('Arial','',9);
-                $this->SetY(-32);
-                $this->Cell(80,10,  utf8_decode("Prof. Ing. Gabriel E. Fleitas Ferrari"),0,0,'L');
-                $this->SetX(70);
-                $this->Cell(80,10,  utf8_decode("_____________________"),0,0,'L');                            
-                $this->Ln(5);//Salto de l�nea
                 $this->SetX(10);
-                $this->Cell(80,10,  utf8_decode("OBSERVACIÓN:"),0,0,'L');
-                $this->SetX(35);
-                $this->Cell(80,10,  utf8_decode("______________________________________________________________________________________________"),0,0,'L');                
-                $this->Ln(3);//Salto de l�nea   
-                $this->Cell(80,10,  utf8_decode("____________________________________________________________________________________________________________"),0,0,'L');                                
-                $this->Ln(3);//Salto de l�nea   
-                $this->Cell(80,10,  utf8_decode("____________________________________________________________________________________________________________"),0,0,'L');                                                                                        
-                
-                $this->SetY(-15);
-                $this->Cell(-2);
-                $this->SetFont('Arial','B',6);
-                $this->Cell(25,10,utf8_decode("Estado del documento: Cerrado definitivamente y habilitado para impresión de acta"),0,0,'L');                
-                $this->printLine(290);
-                $this->Ln(5);
-                $this->Cell(-2);
-                $this->Cell(50,10,utf8_decode("Sistema de Gestión Docente"),0,0,'L');
+                $this->Cell(24,10,$this->fila,0,0,'L');                
+                $this->SetX(20);
+                $this->Cell(17,10,$fecha_hora_mov,0,0,'L');
+                $this->SetX(60);
+                $this->Cell(18,10,$monto_mov,0,0,'L');
+                $this->SetX(90);
+                $this->Cell(25,10,$desc_tipo_mov.'('.$tipo_mov.')',0,0,'L');
                 $this->SetX(150);
-                $this->Cell(50,10,utf8_decode("Facultad de Ingeniería - UNA"),0,0,'L');
+                $this->Cell(19,10,$factura,0,0,'L');
+                $this->fila++;
+                $count++;
+                $this->Ln(5);                  
             }
-            function Body($parametros)
-            {
-                
-            }
-        function cabecera($nroacta,$anho,$codcarsec,$codcurso,$codasign,
-                $seccion,$nrodocumento,$convocatoria,$periodo,$descripcion_carrera,
-                $desc_curso_semestre,$desc_asignatura,$tipoexam)                    
-        {
-             switch (trim($tipoexam)) {
-                 case '1F':
-                     $letra_tipoexam = $periodo.' (PRIMER FINAL)';
-                     break;
-                 case '2F':
-                     $letra_tipoexam = $periodo.'( SEGUNDO FINAL)';
-                     break;
-                 case '3F':
-                     $letra_tipoexam = $periodo.' (TERCER FINAL)';
-                     break;                 
-             }                           
-            $this->SetFont('Arial','B',12);
-            $this->SetY(23);
-            $this->SetX(140);
-            $this->Cell(150,15,utf8_decode($nroacta),100,100,'L');                     
-            $this->SetFont('Arial','',9); 
+           
+            $this->Ln(10);
+            $this->SetX(11+$x);
+            $this->SetFont('Arial','',9);
+            $this->SetX(10);
+            $this->Cell(24,10,"Apertura Caja",0,0,'L');                
+            $this->SetX(45);
+            $this->Cell(17,10,': '.$monto_caja_apertura,0,0,'L');
             $this->Ln(5);
-            $this->SetY(32);
-            $this->SetX(36);
-            $this->Cell(150,15,utf8_decode(' : '.$anho),0,0,'L');
-            $this->SetX(165);
-            $this->Cell(150,15,utf8_decode(' : '.$letra_tipoexam),0,0,'L');                   
-            $this->SetY(38);
-            $this->SetX(36);
-            $this->Cell(150,15,utf8_decode(' : '.$descripcion_carrera.'( '.$codcarsec.' )'),0,0,'L');
-            $this->SetX(165);
-            $this->Cell(150,15,utf8_decode(' : '.$convocatoria),0,0,'L');            
-            $letra_codcurso = '';
-             switch ($codcurso) {
-                 case '1':
-                     $letra_codcurso = '(PRIMER SEMESTRE)';
-                     break;
-                 case '2':
-                     $letra_codcurso = '(SEGUNDO SEMESTRE)';
-                     break;
-                 case '3':
-                     $letra_codcurso = '(TERCER SEMESTRE)';
-                     break;             
-                 case '4':
-                     $letra_codcurso = '(CUARTO SEMESTRE)';
-                     break;               
-                 case '5':
-                     $letra_codcurso = '(QUINTO SEMESTRE)';
-                     break;                        
-                 case '6':
-                     $letra_codcurso = '(SEXTO SEMESTRE)';
-                     break;                        
-                 case '7':
-                     $letra_codcurso = '(SEPTIMO SEMESTRE)';
-                     break;
-                 case '8':
-                     $letra_codcurso = '(OCTAVO SEMESTRE)';
-                     break;                        
-                 case '9':
-                     $letra_codcurso = '(NOVENO SEMESTRE)';
-                     break;                        
-                 case '10':
-                     $letra_codcurso = '(DECIMO SEMESTRE)';
-                     break;                        
-             }                   
-            $this->SetY(43);
-            $this->SetX(36);
-            $this->Cell(150,15,utf8_decode(' : '.$codcurso.' ('.$desc_curso_semestre.')'),0,0,'L');                    
-            $this->SetY(48);
-            $this->SetX(36);
-            $this->Cell(150,15,utf8_decode(' : '.$desc_asignatura." ( ".$codasign." )"),0,0,'L');                   
-            $this->SetY(53);
-            $this->SetX(36);
-            $this->Cell(150,15,utf8_decode(' : '."UNICO ( ".$seccion." )"),0,0,'L');  
-            $this->SetX(102);
-            $this->Cell(150,15,utf8_decode(' : '.$nrodocumento),0,0,'L');                 
+            $this->SetX(10);
+            $this->Cell(18,10,"Cierre Caja efectivo",0,0,'L');
+            $this->SetX(45);
+            $this->Cell(25,10,': '.$monto_caja_cierre,0,0,'L');
+            $this->SetX(100);
+            $this->Cell(18,10,"Cierre Caja cheque",0,0,'L');
+            $this->SetX(135);
+            $this->Cell(25,10,': '.$monto_caja_cierre_cheque,0,0,'L');    
+            $this->Ln(5);
+            $this->SetX(10);
+            $this->Cell(18,10,"Diferencia Caja efectivo",0,0,'L');
+            $this->SetX(45);
+            $this->Cell(25,10,': '.$monto_diferencia_arqueo,0,0,'L'); 
+            $this->SetX(100);
+            $this->Cell(18,10,"Diferencia Caja cheque",0,0,'L');
+            $this->SetX(135);
+            $this->Cell(25,10,': '.$monto_diferencia_arqueo_cheque,0,0,'L'); 
         }
-        
+        //Pie de p�gina
+        function Footer()
+        {
+            $this->SetY(-15);
+            $this->Cell(-2);
+            $this->SetFont('Arial','B',6); 
+            $this->SetX(9);
+            $this->printLine(290);
+            $this->Ln(5);
+            $this->Cell(-2);
+            $this->SetX(9);
+            $this->Cell(50,10,utf8_decode("Infocomedor - Sistema de Gestión de Comedor"),0,0,'L');
+            $this->SetX(177);
+            $this->Cell(50,10,utf8_decode("Facultad Politecnica - UNA"),0,0,'L');
+        }                
         function esqueleto(){
             $x = 0;
             $y = 0;
