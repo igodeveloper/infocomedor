@@ -38,51 +38,40 @@
                 //Arial bold 15
                 $this->SetFont('Arial','B',12);
                 $this->SetX(80+$x);
-                $this->Cell(80,10,utf8_decode("ACTA DE EXAMEN FINAL Nº"),0,0,'L');
+                $this->Cell(80,10,utf8_decode("Reporte de Arqueo de Caja"),0,0,'L');
                 $this->Ln(10);//Salto de l�nea
                 $this->SetFont('Arial','B',9);
-                $this->Cell(80,10,  utf8_decode("Año Académico "),0,0,'L');
-                $this->SetX(140+$y);
-                $this->Cell(80,10,  utf8_decode("Periodo "),0,0,'L');
-                $this->Ln(5);//Salto de l�nea       
-                $this->Cell(80,10,  utf8_decode("Carrera "),0,0,'L');
-                $this->SetX(140+$y);
-                $this->Cell(80,10,  utf8_decode("Convocatoria "),0,0,'L');                 
-                $this->Ln(5);//Salto de l�nea                    
-                $this->Cell(80,10,  utf8_decode("Curso/Semestre"),0,0,'L');               
-                $this->Ln(5);//Salto de l�nea                         
-                $this->Cell(80,10,  utf8_decode("Asignatura "),0,0,'L');
-                $this->Ln(5);//Salto de l�nea                                   
-                $this->Cell(80,10,  utf8_decode("Turno/Sección "),0,0,'L');
-                $this->SetX(80+$y);
-                $this->Cell(80,10,  utf8_decode("Nro. Interno "),0,0,'L');                 
-                $this->Ln(7);//Salto de l�nea   
+                $this->Cell(80,10,  utf8_decode("Nro. de Caja "),0,0,'L');
+                $this->SetX(30+$y);
                 $this->SetFont('Arial','',9);
-                $this->Cell(80,10,  utf8_decode("Se hace constar que se ha tomado examen de la asignatura arriba indicada, a los alumnos cuya nómina se expresa y que los mismos han"),0,0,'L');
-                $this->Ln(5);//Salto de l�nea   
-                $this->Cell(80,10,  utf8_decode("merecido las respectivas calificaciones anotadas a continuación de sus respectivos nombres, todos de conformidad con las Leyes y"),0,0,'L');
-                $this->Ln(5);//Salto de l�nea   
-                $this->Cell(80,10,  utf8_decode("Reglamentos vigentes."),0,0,'L');
-                
-                $this->SetFont('Arial','B',9);                
-                $this->Ln(2);                
-                $this->SetX(160);
-                $this->Cell(19,10,utf8_decode("CALIFICACIÓN"),0,0,'L');                
-                $this->Ln(5);
-                //$this->printLine(40);
+                $this->Cell(80,10,  utf8_decode(': '.$this->parametros->nro_caja),0,0,'L');
+                $this->SetX(120+$y);    
+                $this->SetFont('Arial','B',9);
+                $this->Cell(80,10,  utf8_decode("Fecha Reporte "),0,0,'L');
+                $this->SetX(145+$y);   
+                $this->SetFont('Arial','',9);
+                $this->Cell(80,10,  utf8_decode(': '.date('d/m/Y H:i:s')),0,0,'L');                
+                $this->Ln(5);//Salto de l�nea
+                $this->SetFont('Arial','B',9);
+                $this->Cell(80,10,  utf8_decode("Usuario "),0,0,'L');               
+                $this->SetX(30+$y); 
+                $this->SetFont('Arial','',9);
+                $this->Cell(80,10,  utf8_decode(": "),0,0,'L');
+                $this->Ln(7);//Salto de l�nea   
+
                 $x=-2;
                 $this->SetX(11+$x);
                 $this->SetFont('Arial','B',9);
                 $this->SetX(10);
                 $this->Cell(24,10,"Nro.",0,0,'L');                
-                $this->SetX(30);
-                $this->Cell(17,10,"DOCUMENTO",0,0,'L');
+                $this->SetX(20);
+                $this->Cell(17,10,"Fecha hora movimiento",0,0,'L');
                 $this->SetX(60);
-                $this->Cell(18,10,"APELLIDOS Y NOMBRES",0,0,'L');
-                $this->SetX(170);
-                $this->Cell(25,10,"Nro.",0,0,'L');
-                $this->SetX(180);
-                $this->Cell(19,10,"LETRA",0,0,'L');
+                $this->Cell(18,10,"Monto movimiento",0,0,'L');
+                $this->SetX(120);
+                $this->Cell(25,10,"Tipo movimiento",0,0,'L');
+                $this->SetX(150);
+                $this->Cell(19,10,"Nro. Factura",0,0,'L');
                 //$this->printLine(50);
                 $this->Ln(10);          
             }
@@ -116,7 +105,9 @@
                 $this->Cell(50,10,utf8_decode("Facultad de Ingeniería - UNA"),0,0,'L');
             }
             function Body($parametros)
-            {}
+            {
+                
+            }
         function cabecera($nroacta,$anho,$codcarsec,$codcurso,$codasign,
                 $seccion,$nrodocumento,$convocatoria,$periodo,$descripcion_carrera,
                 $desc_curso_semestre,$desc_asignatura,$tipoexam)                    

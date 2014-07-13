@@ -32,7 +32,6 @@ function imprimirArqueoCaja(){
 		}
                        
         var dataString = JSON.stringify(jsonObject);      
-		alert(dataString);
         var existendatos = 0;
         $.ajax({
              url: table+'/existecaja',
