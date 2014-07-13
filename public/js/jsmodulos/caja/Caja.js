@@ -38,6 +38,9 @@ $().ready(function() {
                 }
 		limpiarFormulario();
 		cargarUsuarioCaja();                
+                $('#tr_cierre1').hide();
+                $('#tr_cierre2').hide();
+                $('#tr_cierre3').hide();                
 		$('#modalEditar').show();
                 $('#montoentrantecaja-modal-idioma').hide();
                 $('#montoentrantecaja-modal').hide();
@@ -351,6 +354,7 @@ function limpiarFormulario(){
 	$("#montocierrecaja-modal").attr("value",null);
 	$("#montoentrantecaja-modal").attr("value",null);
 	$("#montosalientecaja-modal").attr("value",null);
+        $("#montocierrecheque-modal").attr("value",null);        
 }
 
 

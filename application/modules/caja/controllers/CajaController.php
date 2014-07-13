@@ -47,7 +47,9 @@ class Caja_CajaController extends Zend_Controller_Action
                             'C.monto_caja_cierre',
                             'C.monto_diferencia_arqueo',
                             'C.arqueo_caja',
-                            'U.nombre_apellido'
+                            'U.nombre_apellido',
+                            'C.monto_caja_cierre_cheque',
+                            'C.monto_diferencia_arqueo_cheque',
                            ))
                 ->join(array('U' => 'usuario'), 'U.cod_usuario = C.cod_usuario_caja');
         $result = $db->fetchAll($select);
@@ -76,10 +78,11 @@ class Caja_CajaController extends Zend_Controller_Action
                 $item['fecha_hora_cierre'],
                 $item['monto_caja_apertura'],
                 $item['monto_caja_cierre'],
+                $item['monto_caja_cierre_cheque'],
                 $item['monto_diferencia_arqueo'],
+                $item['monto_diferencia_arqueo_cheque'],
                 $arqueo_caja,
-                $item['arqueo_caja']
-                
+                $item['arqueo_caja']                
             );
             $arrayDatos ['columns'] = array(
                 "modificar",
@@ -89,10 +92,12 @@ class Caja_CajaController extends Zend_Controller_Action
                 "fecha_hora_apertura",
                 "fecha_hora_cierre",
                 "monto_caja_apertura",
-                "monto_caja_cierre",
+                "monto_caja_cierre",                
+                "monto_caja_cierre_cheque",
                 "monto_diferencia_arqueo",
+                "monto_diferencia_arqueo_cheque",
                 "desc_arqueo_caja",
-                "arqueo_caja"
+                "arqueo_caja"                
             );
             array_push($pagina ['rows'], $arrayDatos);
         }
@@ -221,9 +226,12 @@ class Caja_CajaController extends Zend_Controller_Action
 						
                         $entrada_cheque = $rowData->monto_entrante_cheque;
                         $salida_cheque = $rowData->monto_saliente_cheque; 
-                        $monto_diferencia_cheque = $entrada_cheque - $salida_cheque;
+                        //$monto_diferencia_cheque = $entrada_cheque - $salida_cheque;
+                        $monto_diferencia_cheque = $entrada_cheque;
                         $monto_diferencia_arqueo_cheque = $monto_diferencia_cheque - $rowData->monto_caja_cierre_cheque;
                         $rowClass->setMonto_diferencia_arqueo_cheque($monto_diferencia_arqueo_cheque);
+                        $rowClass->setMonto_caja_cierre_cheque($rowData->monto_caja_cierre_cheque);
+                        
 						
                         $rowClass->setArqueo_caja('S');
                     }

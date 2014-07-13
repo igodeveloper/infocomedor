@@ -136,8 +136,19 @@ function cargarGrillaRegistro() {
        	  {
 	       		"title" : false,
 	       		"name" : "monto_caja_cierre",
-	       		"label" : "MONTO CIERRE",
+	       		"label" : "MONTO CIERRE EFECTIVO",
 	       		"id" : "monto_caja_cierre",
+	       		"search" : false,
+	       		"remove" : false,
+	       		"width" : 150,
+	       		"align":"right",
+	       		"sortable" : false,
+	       		"hidden" : false
+       		},{
+	       		"title" : false,
+	       		"name" : "monto_caja_cierre_cheque",
+	       		"label" : "MONTO CIERRE CHEQUE",
+	       		"id" : "monto_caja_cierre_cheque",
 	       		"search" : false,
 	       		"remove" : false,
 	       		"width" : 150,
@@ -148,8 +159,19 @@ function cargarGrillaRegistro() {
        	  {
 	       		"title" : false,
 	       		"name" : "monto_diferencia_arqueo",
-	       		"label" : "MONTO DIFERENCIA CIERRE",
+	       		"label" : "MONTO DIF. CIERRE EFEC.",
 	       		"id" : "monto_diferencia_arqueo",
+	       		"search" : false,
+	       		"remove" : false,
+	       		"width" : 170,
+	       		"align":"right",
+	       		"sortable" : false,
+	       		"hidden" : false
+       		}, {
+	       		"title" : false,
+	       		"name" : "monto_diferencia_arqueo_cheque",
+	       		"label" : "MONTO DIF. CIERRE CHEQUE",
+	       		"id" : "monto_diferencia_arqueo_cheque",
 	       		"search" : false,
 	       		"remove" : false,
 	       		"width" : 170,
@@ -250,9 +272,11 @@ function cargarLinkModificar ( cellvalue, options, rowObject )
 	parametros.fecha_hora_cierre = rowObject[5];
 	parametros.monto_caja_apertura = rowObject[6];
 	parametros.monto_caja_cierre = rowObject[7];
-	parametros.monto_diferencia_arqueo = rowObject[8];
-	parametros.desc_arqueo_caja = rowObject[9];
-	parametros.arqueo_caja = rowObject[10];
+        parametros.monto_caja_cierre_cheque = rowObject[8];
+	parametros.monto_diferencia_arqueo = rowObject[9];
+        parametros.monto_diferencia_arqueo_cheque = rowObject[10];
+	parametros.desc_arqueo_caja = rowObject[11];
+	parametros.arqueo_caja = rowObject[12];
 	json = JSON.stringify(parametros);
 	return "<a><img title='Cierre de Caja' src='../../css/images/edit.png' data-toggle='modal'  onclick='editarRegistro("+json+");'/></a>";
 }
