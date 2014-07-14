@@ -18,10 +18,12 @@ set_include_path(implode(PATH_SEPARATOR, array(
 //require_once 'Zend/Application.php';
 require_once '../library/Zend/Application.php';
 require_once '../library/fpdf/fpdf.php';
+require_once '../library/reports/db_operation.php';
 require_once '../library/reports/PDFReportearqueocaja.php';
 require_once '../library/reports/PDFReporteclientes.php';
 require_once '../library/reports/PDFReportecompras.php';
-require_once '../library/reports/db_operation.php';
+require_once '../library/reports/PDFReportepagos.php';
+
 
 // Create application, bootstrap, and run
 $application = new Zend_Application(
