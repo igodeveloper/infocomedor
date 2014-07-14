@@ -1,24 +1,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//ES" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" >
-
+<html>
     <?php
-    $titulo = "Listado de Usuario";
-    $labelDescripcion = "Nombre del usuario";
-    $labelsGrillas = array('Nombre','Apellido','Password');
-    $apliGrillaJs = "/js/grillasmodulos/parametricos/gridUsuario.js";
-    $apliCss = "/css/cssmodulos/parametricos/Usuario.css";
-    $apliCssGeneral = "/css/cssmodulos/CssGeneral.css";
-    $apliJs = "/js/jsmodulos/parametricos/Usuario.js";
-    $idCamposGrilla = array("id-registro","nombreBusqueda-modal","apellido-modal","password-modal");
-
     echo $this->headScript()->
             appendFile($this->baseUrl() . "/js/jquery-1.7.1.js")->
             appendFile($this->baseUrl() . "/js/jquery-ui-1.8.17.custom.min.js")->
             appendFile($this->baseUrl() . '/js/i18n/grid.locale-es.js')->
             appendFile($this->baseUrl() . '/js/jquery.jqGrid.min.js')->
             appendFile($this->baseUrl() . "/js/bootstrap.js")->
-            appendFile($this->baseUrl() . $apliJs)->
-            appendFile($this->baseUrl() . $apliGrillaJs)->
+            appendFile($this->baseUrl() . "/js/jsmodulos/parametricos/usuario.js")->
+            appendFile($this->baseUrl() . "/js/grillasmodulos/parametricos/gridUsuario.js")->
             appendFile($this->baseUrl() . "/js/jquery.tablescroll.js")->
             appendFile($this->baseUrl() . "/js/jquery.blockUI.js");
 
@@ -26,79 +16,30 @@
             ->setIndent('  ')
             ->prependStylesheet($this->baseUrl() . "/css/cssgenerico/generico.css")
             ->prependStylesheet($this->baseUrl() . "/css/cssgenerico/ui.datepicker.css")
-            ->prependStylesheet($this->baseUrl() . "/css/cssgenerico/bootstrap.css")
+            ->prependStylesheet($this->baseUrl() . "/jquery-ui-1.10.3.custom/css/ui-lightness/jquery-ui-1.10.3.custom.css")
             ->prependStylesheet($this->baseUrl() . "/css/cssgenerico/jquery-ui-1.8.17.custom.css")
-            ->prependStylesheet($this->baseUrl() . "/css/cssgenerico/bootstrap.css")
             ->prependStylesheet($this->baseUrl() . "/css/cssgenerico/ui.jqgrid.css")
+            ->prependStylesheet($this->baseUrl() . "/css/cssgenerico/bootstrap.css")
+            ->prependStylesheet($this->baseUrl() . "/css/cssgenerico/bootstrap-responsive.css")
             ->prependStylesheet($this->baseUrl() . "/css/cssgenerico/default.css")
+            ->prependStylesheet($this->baseUrl() . "/css/cssgenerico/contenedor.css")
+            ->prependStylesheet($this->baseUrl() . "/css/cssmodulos/CssGeneral.css")
+            ->prependStylesheet($this->baseUrl() . "/css/cssgenerico/ui.jqgrid.css")
             ->prependStylesheet($this->baseUrl() . "/css/cssmodulos/parametricos/menucss3/css/cool_nav.css")
-            ->prependStylesheet($this->baseUrl() . $apliCss)
-            ->prependStylesheet($this->baseUrl() . $apliCssGeneral)
-            ->prependStylesheet($this->baseUrl() . "/css/cssgenerico/contenedor.css");
     ?>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+        <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" >
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>Infocomedor</title>
+    </head>
+    <body>
 
-    <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
-
-        <body>
-            <CENTER>
-
-                <div class="modal hide fade in" id="modalEditar">
-                    <div class="modal-header">
-                        <button data-dismiss="modal" class="close" type="button" id="cerrar-bot">�</button>
-                        <div id="cabeceraModal" class="btn btn-info">
-                            <h3 id="editar-nuevo"></h3>
-                        </div>
-
-                        <div class="alert alert-block hide" id="warning-block-registro">
-                            <div id="warning-message-registro"></div>
-                        </div>
-                        <div class="alert alert-success hide" id="success-block-registro">
-                            Los datos han sido almacenados exitosamente
-                        </div>
-                        <div class="alert alert-error hide" id="error-block-modal">
-                        </div>
-                        <div class="alert alert-success hide" id="limpiar-block"></div>
-
-
-                    </div>
-
-                    <div class="modal-body">
-                        <div id="contenedor-modal">
-                            <table>
-                                <!-- AGREGAR CAMPOS AQUI-->
-                                <input type="hidden" id="<?php echo $idCamposGrilla[0]?>"></input>
-                                <tr>
-                                    <td><label for="<?php echo $idCamposGrilla[1]?>" id="<?php echo $idCamposGrilla[1].'-idioma'?>"><?php echo $labelsGrillas[0] ?><font style="color: red;">(*)</font></label></td>
-                                    <td><input id="<?php echo $idCamposGrilla[1]?>" maxlength="12" style="width:150px;" onkeypress='return validarNumerosLetrasPorcentageEspacio(event);'></input></td>
-                                </tr>
-                                <tr>
-                                    <td><label for="<?php echo $idCamposGrilla[2]?>" id="<?php echo $idCamposGrilla[2].'-idioma'?>"><?php echo $labelsGrillas[1] ?><font style="color: red;">(*)</font></label></td>
-                                    <td><input id="<?php echo $idCamposGrilla[2]?>" maxlength="12" style="width:100px;" onkeypress='return validarNumerosLetrasPorcentageEspacio(event);' ></input></td>
-                                </tr>
-                                <tr>
-                                    <td><label for="<?php echo $idCamposGrilla[3]?>" id="<?php echo $idCamposGrilla[3].'-idioma'?>"><?php echo $labelsGrillas[2] ?><font style="color: red;">(*)</font></label></td>
-                                    <td><input type="password" id="<?php echo $idCamposGrilla[3]?>" maxlength="12" style="width:150px;" onkeypress='return validarNumerosLetrasPorcentageEspacio(event);'  ></input></td>
-                                </tr>
-                            
-
-                            </table>
-                        </div>
-                        <div id="contenedor-modal" >
-                            <strong><font style="color: red;">(*)</font> Complete los campos marcados en el formulario para guardar el Registro</strong>
-                        </div>
-                    </div>
-
-                    <div class="modal-footer">
-                        <a data-dismiss="modal" class="btn" href="#" id="cancelar-bot">Cancelar</a>
-                        <a class="btn btn-info" id="guardar-registro" href="#">Guardar</a>
-                    </div>
-                </div>
-
-                <div class="container-fluid">
-                    <div class="row-fluid">
-                        <div class="span10" id="span10">
-                             <div  class="titulo-cabecera" style="text-align: left">
-                    <nav id="colorNav" >
+        <div class="container-fluid"> 
+            <div class="row-fluid">
+                <div class="span10">
+                <div  class="titulo-cabecera" style="text-align: left">
+                                        <nav id="colorNav" >
                         <ul>
                             <li class="menu">
                                 <a href="<?php echo $this->baseUrl() ."/parametricos/menu";?>" class="">MENU</a>
@@ -106,36 +47,45 @@
                             <li class="red">
                                 <a href="#" class="" title="COMPRAS">COMPRAS</a>
                                 <ul>
-                                    <li><a href="<?php echo $this->baseUrl() ."/parametricos/proveedor";?>">Proveedor</a></li>
-                                    <li><a href="<?php echo $this->baseUrl() ."/compras/compra2";?>">Compras - Pagos</a></li>
+                                <li><a href="<?php echo $this->baseUrl() ."/parametricos/proveedor";?>">Proveedor</a></li>
+                                <li><a href="<?php echo $this->baseUrl() ."/compras/compra2";?>">Compras - Pagos</a></li>
+                                <li><a href="<?php echo $this->baseUrl() ."/compras/pagos";?>">Pagos</a></li>
+                                <li><a href="<?php echo $this->baseUrl() ."/compras/Reportecompras";?>">Reporte Compras</a></li>
+                                <li><a href="<?php echo $this->baseUrl() ."/compras/Reportepagos";?>">Reporte Pagos</a></li>
 
-                                </ul>
+                              
+                            </ul>
                             </li>
                             <li class="green">
                                 <a href="#" class="" title="PRODUCCION">PRODUCCION</a>
                                 <ul>
-                                    <li><a href="<?php echo $this->baseUrl() ."/parametricos/tipoproducto";?>">Tipo Producto</a></li>
-                                    <li><a href="<?php echo $this->baseUrl() ."/parametricos/producto";?>">Producto</a></li>
-                                    <li><a href="<?php echo $this->baseUrl() ."/produccion/receta";?>">Recetas</a></li>
-                                    <li><a href="<?php echo $this->baseUrl() ."/produccion/productofinal";?>">Produccion</a></li>
+                                <li><a href="<?php echo $this->baseUrl() ."/parametricos/tipoproducto";?>">Tipo Producto</a></li>
+                                <li><a href="<?php echo $this->baseUrl() ."/parametricos/producto";?>">Producto</a></li>
+                                <li><a href="<?php echo $this->baseUrl() ."/produccion/receta";?>">Recetas</a></li>
+                                <li><a href="<?php echo $this->baseUrl() ."/produccion/productofinal";?>">Produccion</a></li>
+                                <li><a href="<?php echo $this->baseUrl() ."/produccion/Reporteproduccion";?>"> Reporte Produccion</a></li>
 
-                                </ul>
+                            </ul>
                             </li>
                             <li class="blue">
                                 <a href="#" class="" title="VENTAS">VENTAS</a>
                                 <ul>
-                                     <li><a href="<?php echo $this->baseUrl() ."/parametricos/empresa";?>">Empresa Clientes</a></li>
-                                     <li><a href="<?php echo $this->baseUrl() ."/parametricos/cliente";?>">Clientes</a></li>
-                                     <li><a href="<?php echo $this->baseUrl() ."/ventas/karrito";?>">Pedidos</a></li>
-                                     <li><a href="<?php echo $this->baseUrl() ."/ventas/factura";?>">Facturacion</a></li>
-
-                                </ul>
+                                <li><a href="<?php echo $this->baseUrl() ."/parametricos/empresa";?>">Empresa Clientes</a></li>
+                                 <li><a href="<?php echo $this->baseUrl() ."/parametricos/cliente";?>">Clientes</a></li>
+                                 <li><a href="<?php echo $this->baseUrl() ."/ventas/karrito";?>">Pedidos</a></li>
+                                 <li><a href="<?php echo $this->baseUrl() ."/ventas/factura";?>">Facturación</a></li>
+                                 <li><a href="<?php echo $this->baseUrl() ."/ventas/Reporteclientes";?>">Reporte Clientes</a></li>
+                                 <li><a href="<?php echo $this->baseUrl() ."/ventas/Reportefacturacion";?>">Reporte Facturación</a></li>
+                                 <li><a href="<?php echo $this->baseUrl() ."/ventas/Reportepedidos";?>">Reporte Pedidos</a></li>
+                                
+                            </ul>
                             </li>
                             <li class="yellow">
                                 <a href="#" class="" title="INVENTARIO">INVENTARIO</a>
                                 <ul>
                                      <li><a href="<?php echo $this->baseUrl() ."/produccion/inventario";?>">Inventario</a></li>
                                      <li><a href="<?php echo $this->baseUrl() ."/produccion/ajusteinventario";?>">Ajuste</a></li>
+                                     <li><a href="<?php echo $this->baseUrl() ."/produccion/bajastock";?>">Baja Stock</a></li>
                                 </ul>
                             </li>
                             <li class="purple">
@@ -144,7 +94,8 @@
                                     <li><a href="<?php echo $this->baseUrl() ."/caja/caja";?>">Caja</a></li>
                                     <li><a href="<?php echo $this->baseUrl() ."/caja/tipomovimiento";?>">Tipo Movimiento</a></li>
                                     <li><a href="<?php echo $this->baseUrl() ."/caja/movcaja";?>">Movimientos</a></li>
-                               </ul>
+                                   <li><a href="<?php echo $this->baseUrl() ."/caja/Reportearqueocaja";?>">Reporte Arqueo de caja</a></li>
+                                </ul>
                            </li>
                            <li class="">
                                 <a href="<?php echo $this->baseUrl() ."/menus/menu";?>">LogOut</a>
@@ -152,69 +103,114 @@
 
                         </ul>
                     </nav>
-	                </div> 
-                                <div id="cabeceraFormulario" class="btn btn-info" >
-                                    <h1 id="cabecera-titulo" align="center" ><?php echo $titulo ?></h1>
+                    <div  class="titulo-cabecera">
+                        <h1 id="cabecera-titulo">Usuarios</h1>
 
-                                    <div class="alert alert-block hide" id="warning-block-registro-listado">
-                                        <div id="warning-message-registro-listado"></div>
-                                    </div>
+                    </div>
+                    
 
-                                    <div class="alert alert-success hide" id="success-block-registro-listado">
-                                        <div id="success-message-registro-listado"></div>
-                                    </div>
+                    <div>
+                        <div class="alert alert-block hide" id="warning-block-title">
+                            <div id="warning-message-title"></div>
+                        </div>
+                        <div class="alert alert-success hide" id="success-block-title">
+                            <div id="success-message-title"></div>
+                        </div>
+                        <div class="alert alert-info hide" id="info-block-listado">
+                            <div id="info-message"></div>
+                        </div>
+                        <div id="contenedor" class="filtro" align=center>
+                            <table style="width: 90%; padding: 1%;">
+                                <tr>
+                                    <td style="width: 15%; text-align: right">
+                                       <label for="idusuario-filtro" id="idusuario-filtro-idioma">Identificador</label>
+                                    </td>
+                                   <td style="width: 14%">
+                                       <input id="idusuario-filtro" maxlength="20" class="input-block-level"></input>     
+                                   </td>
+                                   <td style="width: 15%; text-align: right">
+                                        <label for="descripcionusuario-filtro" id="descripcionusuario-filtro-idioma">Nombre Usuario </label>
+                                    </td>
+                                    <td style="width: 35%">
+                                        <input id="descripcionusuario-filtro"  maxlength="45" class="input-block-level" >
+                                    </td>
+                                </tr>
+                            </table>
+                           
+                        </div>
+                        <div  id="tab-content">
+                            <div id="contenedor" align=center>
 
-                                    <div class="alert alert-error hide" id="error-block-registro-listado">
-                                    </div>
-
-                                    <div class="alert alert-info hide" id="info-block-listado">
-                                        <div id="info-message"></div>
-                                    </div>
-
-
-
-                                </div>
-                                <div  id="clientes-div">
-                                    <div id="contenedor">
-                                        <fieldset>
-                                            <table border="0">
-                                                <tr>
-                                                    <td><label for="nombreBusqueda" id="nombreBusqueda-idioma"><?php echo $labelDescripcion ?></label></td>
-                                                    <td><input id="nombreBusqueda" maxlength="50" onkeypress='return validarNumerosLetrasPorcentageEspacio(event);'></input></td>
-                                                </tr>
-                                            </table>
-                                        </fieldset>
-
-                                    </div>
-                                </div>
-                                <div  id="tab-content">
-                                    <div id="contenedor" >
-                                        <a id="buscarregistro"  class="btn btn-info"><img src="<?= $this->baseUrl() . "/css/images/buscar.png"; ?>" id="buscar-img" title="Buscar"  style="cursor: hand;"/></a>
-                                        <a id="nuevoregistro"  class="btn btn-info"  data-toggle="modal"><img src="<?= $this->baseUrl() . "/css/images/nuevo.png"; ?>" id="nuevo-img" title="Nuevo"  style="cursor: hand;"/></a>
-                                    </div>
-                                </div>
-                                <div id="contenedor">
-                                    <fieldset>
-                                        <table border="0">
-                                            <tr>
-                                                <td>
-                                                    <div class="tab-content" id="tab-content">
-                                                        <!-- DATOS DE IMPUESTOS --->
-                                                        <div id="grillaPaginadorRegistro">
-                                                            <table id="grillaRegistro"></table>
-                                                            <div id="paginadorRegistro"></div>
-                                                        </div>
-
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </fieldset>
-                                </div>
-
+                                <a id="buscarregistro"  class="btn btn-info"><img src="<?= $this->baseUrl() . "/css/images/buscar.png"; ?>" id="buscar-img" title="Buscar"  style="cursor: hand;"/></a>
+                                <a id="nuevoregistro"  class="btn btn-info" <?php echo $this->guardar ?>><img src="<?= $this->baseUrl() . "/css/images/nuevo.png"; ?>" id="nuevo-img" title="Nuevo"  style="cursor: hand;"/></a>
+                            </div> 
+                        </div>
+                    </div>
+                    <div id="contenedor" >
+                        <div class="contenedor-grid">
+                            <table id="grillaRegistro"></table>
+                            <div id="paginadorRegistro"></div>
                         </div>
                     </div>
                 </div>
-            </CENTER>
-        </body>
-    </html>
+
+
+                <div class="modal hide" id="modalEditar">
+                    <div class="modal-header">
+
+                        <div id="cabeceraModal" class="btn btn-info">
+                            <h3 id="editar-nuevo" style="color:white; display: inline;"><?php echo 'Editar Cliente'; ?></h3>
+                            <button data-dismiss="modal" class="close" type="button" id="cerrar-bot" style="display: inline">x</button>
+                        </div>
+                        <div class="alert alert-block hide" id="warning-block-registro">
+                            <div id="warning-message-registro"></div>
+                        </div>
+                        <div class="alert alert-success hide" id="success-block"><?php echo 'Datos Almacenados Exitosamente'; ?></div>
+                        <div class="alert alert-error hide" id="error-block"></div>
+                        <div class="alert alert-success hide" id="limpiar-block"></div>
+                    </div>
+   <!-- NUEVO - EDITAR  -->
+                    <div class="modal-body">
+                        <div id="contenedor-modal"> <!--style="/*width: 100%;*/width:750px; padding:5px 0;border: 2px solid #C6E9FF;border-color: #BCE8F1;background: #D9EDF7;"-->
+                            <table class=" form-inline"style="width:50%">
+                                <!-- AGREGAR CAMPOS AQUI-->
+                                <input type="hidden" id="codigousuario-modal"></input>
+                                <tr style="width:100%">
+                                    <td style="width:30%">
+                                       <label for="idusuario-modal" id="idusuario-modal-idioma">Identificador</label>
+                                       <input id="idusuario-modal" maxlength="45" class="input-block-level"></input>
+                                   </td>
+                                    <td style="width:70%">
+                                        <label for="descripcionusuario-modal" id="descripcionusuario-modal-idioma">Nombre y apellido</label>
+                                        <input class="input-block-level" name="descripcionusuario-modal-idioma" id="descripcionusuario-modal" onchange=""></input>
+                                   </td>
+                              </tr>  
+                            </table>
+                            <table class=" form-inline" style="width:50%">
+                                <!-- AGREGAR CAMPOS AQUI-->
+                               
+                               <tr style="width:100%">
+                                  <td style="width:50%">
+                                        <label for="passwordusuario-modal" id="passwordusuario-modal-idioma">Password</label>
+                                        <input id="passwordusuario-modal" maxlength="8" class="input-block-level" type="password"></input>
+                                    </td>
+                                   <td style="width:50%">
+                                            <label for="passwordusuario2-modal" id="passwordusuario2-modal-idioma">Confirme el password</label>
+                                            <input id="passwordusuario2-modal" maxlength="20" class="input-block-level" type="password"></input>
+                                    </td>                                    
+                                </tr>
+                                
+                            </table>
+                        </div>
+                    </div>
+                        
+                       
+                    <div class="modal-footer">
+                        <a data-dismiss="modal" class="btn" id="cancelar-bot"><?php echo 'Cancelar'; ?></a>
+                        <a class="btn btn-info" id="guardar"><?php echo 'Guardar'; ?></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

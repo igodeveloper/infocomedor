@@ -2,8 +2,7 @@
 class Application_Model_Usuario extends ZendExt_Db_Table_Row_Abstract {
 	protected $_tableClass = "Application_Model_DbTable_Usuario";
 	protected $_cod_Usuario = null;
-        protected $_nombre_Usuario = null;
-	protected $_apellido_Usuario = null;
+	protected $_nombre_apellido = null;
 	protected $_password_Usuario = null;
 
 	public $_data = null;

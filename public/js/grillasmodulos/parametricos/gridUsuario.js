@@ -1,34 +1,21 @@
-agrupamientoGrids = "";
-primeraVez = true;
-//table = "/parametricos/Usuario/";
 var pathname = window.location.pathname;
 var table = pathname;
-campos = new Array('NOMBRE','APELLIDO','PASSWORD');
-camposId = new Array('NombreId','ApellidoId','PasswordId');
-
 $(document).ready(function(){
 	cargarGrillaRegistro();
 });
 
-/**
- * Carga un tooltip a la columna especificada
- *
- * @param grid grilla en la cual se desea insertar un tooltip a alguna de sus columnas
- * @param iColumn	id de la columna que se desea modificar
- * @param text	es el texto que se exhibe en el tooltip de la columna
- */
 function setTooltipsOnColumnHeader(grid, iColumn, text){
     var thd = jQuery("thead:first", grid[0].grid.hDiv)[0];
     jQuery("tr.ui-jqgrid-labels th:eq(" + iColumn + ")", thd).attr("title", text);
 }
 /**
- * Bloquea la pantalla a trav?s de un contenedor de tal manera que el usuario no pueda realizar ninguna acci?n
+ * Bloquea la pantalla a trav�s de un contenedor de tal manera que el usuario no pueda realizar ninguna acci�n
  */
 function bloquearPantalla() {
 	$.blockUI({message: "Aguarde un momento por favor"});
 }
 /**
- * Desbloquea la pantalla de tal manera que el usuario pueda realizar acci?nes o invocar eventos en la vista
+ * Desbloquea la pantalla de tal manera que el usuario pueda realizar acci�nes o invocar eventos en la vista
  */
 function desbloquearPantalla() {
     $.unblockUI();
@@ -38,8 +25,8 @@ function desbloquearPantalla() {
  */
 function cargarGrillaRegistro() {
 	jQuery("#grillaRegistro").jqGrid({
-		"url":table+'/listar',
-		"mtype" : "POST",
+        "url":table+'/buscar',
+        "mtype" : "POST",
        	"refresh": true,
        	"datatype" :"json",
        	"height" : "auto",
@@ -58,18 +45,7 @@ function cargarGrillaRegistro() {
         //"colNames":['modificar','nombre', 'sigla', 'porcentaje','montofijo','tipoaplicacion','empresa','sucursal'],
         "loadComplete": desbloquearPantalla,
        	"colModel":
-       	[ {
-       		"title" : false,
-       		"name" : "id",
-       		"label" : " ",
-       		"id" : "id",
-       		"sortable" : false,
-       		"align":"right",
-       		"search" : false,
-       		"remove" : false,
-       		"hidden" : true
-       	   },
-       	    {
+       	[{
        		"title" : false,
        		"name" : "modificar",
        		"label" : " ",
@@ -86,30 +62,49 @@ function cargarGrillaRegistro() {
        },
        {
 	       		"title" : false,
-	       		"name" : camposId[0],
-	       		"label" : campos[0],
-	       		"id" : camposId[0],
-	       		"width" : 90,
+	       		"name" : "COD_USUARIO",
+	       		"label" :"CODIGO",
+	       		"id" : "COD_USUARIO",
+	       		"width" : 10,
 	       		"sortable" : false,
-	       		"align":"left",
+	       		"align":"right",
 	       		"search" : false,
 	       		"remove" : false,
-	       		"hidden" : false
+	       		"hidden" : true
        	  },
        	  {
 	       		"title" : false,
-	       		"name" : camposId[1],
-	       		"label" : campos[1],
-	       		"id" : camposId[1],
+	       		"name" : "ID_USUARIO",
+	       		"label" : "IDENTIFICADOR",
+	       		"id" : "ID_USUARIO",
 	       		"search" : false,
 	       		"remove" : false,
-	       		"width" : 90,
+	       		"width" : 40,
+	       		"align":"left"
+       		},
+       	  {
+	       		"title" : false,
+	       		"name" : "NOMBRE_APELLIDO",
+	       		"label" : "NOMBRE Y APELLIDO",
+	       		"id" : "NOMBRE_APELLIDO",
+	       		"search" : false,
+	       		"remove" : false,
+	       		"width" : 30,
+	       		"align":"left"
+	       		
+       		},
+       	  {
+	       		"title" : false,
+	       		"name" : "USUARIO_PASSWORD",
+	       		"label" : "USUARIO_PASSWORD",
+	       		"id" : "USUARIO_PASSWORD",
+	       		"search" : false,
+	       		"remove" : false,
+	       		"width" : 30,
 	       		"align":"left",
 	       		"sortable" : false,
-	       		"hidden" : false
-       		}
-                
-       	  ]
+	       		"hidden" : true
+       		}]
     }).navGrid('#paginadorRegistro',{
         add:false,
         edit:false,
@@ -133,11 +128,11 @@ function cargarGrillaRegistro() {
  */
 function borrar(){
 	var id = $("#grillaRegistro").jqGrid('getGridParam','selrow');
-	id = $("#grillaRegistro").jqGrid('getCell', id, 'id');
+	id = $("#grillaRegistro").jqGrid('getCell', id, 'COD_USUARIO');
 	if( id == false ){
 		alert("Para eliminar un registro debe seleccionarlo previamente.");
 	}else{
-		if(!confirm("?Esta seguro de que desea eliminar el registro seleccionado?"))
+		if(!confirm("¿Esta seguro de que desea eliminar el registro seleccionado?"))
 			return;
 
 		$.ajax({
@@ -160,28 +155,22 @@ function borrar(){
 	        },
 	        error: function(event, request, settings){
 	            $.unblockUI();
-	            alert("Ha ocurrido un error");
+	            // alert("Ha ocurrido un error");
 	        }
 	    });
 	}
 	return false;
 }
 /**
- * M?todo que carga la funcionalidad de Edici?n de filas de la tabla visual del registro
+ * M�todo que carga la funcionalidad de Edici�n de filas de la tabla visual del registro
  */
 function cargarLinkModificar ( cellvalue, options, rowObject )
 {
 	var parametros = new Object();
-	parametros.idRegistro = rowObject[0];
-	parametros.nombreUsuario = rowObject[2];
-	parametros.apellidoUsuario = rowObject[3];
-	parametros.passwordUsuario = rowObject[4];
-       
+	parametros.COD_USUARIO = rowObject[1];
+	parametros.ID_USUARIO = rowObject[2];
+	parametros.NOMBRE_APELLIDO = rowObject[3];
+	parametros.USUARIO_PASSWORD = rowObject[4];
 	json = JSON.stringify(parametros);
 	return "<a><img title='Editar' src='../../css/images/edit.png' data-toggle='modal'  onclick='editarRegistro("+json+");'/></a>";
 }
-
-
-
-
-

@@ -6,168 +6,200 @@ class Parametricos_UsuarioController extends Zend_Controller_Action
     public function init()
     {
         /* Initialize action controller here */
-        
+        $parametrosNamespace = new Zend_Session_Namespace('parametros');
+        $parametrosNamespace->unlock();
+            if(!$parametrosNamespace->username){
+                $r = Zend_Controller_Action_HelperBroker::getStaticHelper('redirector');
+                $r->gotoUrl('/menus/menu')->redirectAndExit();
+            }
+        $parametrosNamespace->lock();
     }
 
     public function indexAction()
     {
-        $parametrosNamespace = new Zend_Session_Namespace ( 'parametros' );
-        $parametrosNamespace->unlock ();
-        $parametrosNamespace->parametrosBusqueda = null;
-        $parametrosNamespace->cantidadFilas = null;
-        $parametrosNamespace->jsGrip = '/js/grillasmodulos/parametricos/gridUsuario.js';
-        $parametrosNamespace->Application_Model_DbTable = "Application_Model_DbTable_Usuario";
-        $parametrosNamespace->busqueda = "USUARIO_NOMBRE";
-        $parametrosNamespace->lock ();
+//          echo 'hola';
     }
 
-    public function listarAction() {
-		$this->_helper->viewRenderer->setNoRender ( true );
 
-		$cantidadFilas = $this->getRequest ()->getParam ( "rows" );
-		if (! isset ( $cantidadFilas )) {
-			$cantidadFilas = 10;
-		}
-		$parametrosNamespace = new Zend_Session_Namespace ( 'parametros' );
-		$parametrosNamespace->unlock();
-		$parametrosNamespace->cantidadFilas = $cantidadFilas;
 
-		$page = $this->getRequest ()->getParam ( "page" );
-		if (! isset ( $page )) {
-			$page = 1 ;
-		}
+    private function obtenerPaginas($result,$cantidadFilas,$page){
+        $this->_paginator = Zend_Paginator::factory($result);
+        $this->_paginator->setItemCountPerPage($cantidadFilas);
+        $this->_paginator->setCurrentPageNumber($page);
+        $pagina ['rows'] = array();
+        foreach ($this->_paginator as $item) {
+            $arrayDatos ['cell'] = array(
+                null,
+                $item['COD_USUARIO'],
+                $item['ID_USUARIO'],
+                $item['NOMBRE_APELLIDO'],
+                $item['USUARIO_PASSWORD']
+                
+            );
+            $arrayDatos ['columns'] = array(
+                "modificar",
+                'COD_USUARIO',
+                'ID_USUARIO',
+                'NOMBRE_APELLIDO',
+                'USUARIO_PASSWORD'
+               
+            );
+            array_push($pagina ['rows'], $arrayDatos);
+        }
 
-		$this->view->headScript ()->appendFile ( $this->view->baseUrl () . '/js/bootstrap.js' );
-	 	$this->view->headScript ()->appendFile ( $this->view->baseUrl () . $parametrosNamespace->jsGrip );
+        if ($cantidadFilas == 0)
+            $cantidadFilas = 10;
 
-	 	$where = $parametrosNamespace->parametrosBusqueda;
-		$servCon = new Application_Model_DataService($parametrosNamespace->Application_Model_DbTable);
+        $pagina ['records'] = count($result);
+        $pagina ['page'] = $page;
+        $pagina ['total'] = ceil($pagina ['records'] / $cantidadFilas);
 
-		if($where !=null) {
-			$result = $servCon->getRowsByWhere($where);
-		} else {
-			$result = $servCon->getAllRowsOrdered(array($parametrosNamespace->busqueda));
-		}
-		$parametrosNamespace->lock();
-                $pagina = self::obtenerPaginas($result,$cantidadFilas,$page);
-		echo $this->_helper->json ( $pagina );
-	}
+        if ($pagina['records'] == 0) {
+            $pagina ['mensajeSinFilas'] = true;
+        }
 
-	private function obtenerPaginas($result,$cantidadFilas,$page){
-		$this->_paginator = Zend_Paginator::factory ($result);
-	 	$this->_paginator->setItemCountPerPage ( $cantidadFilas );
-	 	$this->_paginator->setCurrentPageNumber($page);
-		$pagina ['rows'] = array ();
-		foreach ( $this->_paginator as $item ) {
-			$arrayDatos ['cell'] = array($item["COD_USUARIO"],null,trim(utf8_encode($item["USUARIO_NOMBRE"])),trim(utf8_encode($item["USUARIO_APELLIDO"])),$item["USUARIO_PASSWORD"]);
-			$arrayDatos ['columns'] = array("id","modificar","nombre","apellido","password",);
-			array_push ( $pagina ['rows'],$arrayDatos);
-		}
-		$pagina ['records'] = count ( $result );
-		$pagina ['page'] = $page;
-		$pagina ['total'] = ceil ( $pagina ['records'] / $cantidadFilas );
-
-		if($pagina['records'] == 0){
-			$pagina ['mensajeSinFilas'] = true;
-		}
-
-		$parametrosNamespace = new Zend_Session_Namespace ( 'parametros' );
-		$parametrosNamespace->unlock ();
-		$parametrosNamespace->listadoImpuestos = $pagina ['rows'];
-		$parametrosNamespace->lock ();
-
-		return $pagina;
-	}
+        return $pagina;
+    }
 
     public function buscarAction(){
-        $this->_helper->viewRenderer->setNoRender ( true );
+         $this->_helper->viewRenderer->setNoRender(true);
+        $datos = $this->getRequest()->getParam("data");
+        $Obj = json_decode($datos);
+//        print_r($Obj);
+//        die();
+        $parametrosNamespace = new Zend_Session_Namespace('parametros');
+        $parametrosNamespace->unlock();
 
-        $parametrosNamespace = new Zend_Session_Namespace ( 'parametros' );
-        $parametrosNamespace->unlock ();
+        $cantidadFilas = $this->getRequest()->getParam("rows");
 
-        $cantidadFilas = $this->getRequest ()->getParam ( "rows" );
-        if (! isset ( $cantidadFilas )) {
-                $cantidadFilas = $parametrosNamespace->cantidadFilas;
-        }
-        $page = $this->getRequest ()->getParam ( "page" );
-        if (! isset ( $page )) {
-                $page = 1 ;
-        }
-
-        $json_rowData = $this->getRequest ()->getParam ("data");
-        $rowData = json_decode($json_rowData);
-
-        $servCon = new Application_Model_DataService($parametrosNamespace->Application_Model_DbTable);
-        $where =null;
-
-        if($rowData->descripcion != null){
-                $where.="UPPER($parametrosNamespace->busqueda) like '".strtoupper(trim($rowData->descripcion))."%'";
+        if (!isset($cantidadFilas)) {
+            $cantidadFilas = 30;
         }
 
-        $parametrosNamespace->parametrosBusqueda = $where;
-        $parametrosNamespace->lock ();
+        $parametrosNamespace->cantidadFilas = $cantidadFilas;
 
+        $page = $this->getRequest()->getParam("page");
+        if (!isset($page)) {
+            $page = 1;
+        }
+        $db = Zend_Db_Table::getDefaultAdapter();
+         $select = $db->select()
+                ->from(array('C' => 'USUARIO'), 
+                       array('C.COD_USUARIO',
+                             'C.ID_USUARIO',
+                             'C.NOMBRE_APELLIDO',
+                             'C.USUARIO_PASSWORD'));
 
-        $result = $servCon->getRowsByWhere($where);
-        $pagina = self::obtenerPaginas($result,$cantidadFilas,$page);
-        $jsondata = $this->_helper->json ( $pagina );
-        echo $jsondata;
+        if ($Obj != null) {
+            if ($Obj->ID_USUARIO != null) {
+                $select->where("upper(C.ID_USUARIO) like upper('%".$Obj->ID_USUARIO."%')");
+            }
+            if ($Obj->NOMBRE_APELLIDO != null) {
+                $select->where("upper(C.NOMBRE_APELLIDO) like upper('%".$Obj->NOMBRE_APELLIDO."%')");
+            }
+            $result = $db->fetchAll($select);
+        } else {
+            $result = $db->fetchAll($select);
+        }
+
+        $pagina = self::obtenerPaginas($result, $cantidadFilas, $page);
+        echo $this->_helper->json($pagina);
     }
 
     public function eliminarAction(){
-		$this->_helper->viewRenderer->setNoRender ( true );
-		$id = $this->getRequest ()->getParam ( "id" );
-                $parametrosNamespace = new Zend_Session_Namespace ( 'parametros' );
-		try{
-                    $db = Zend_Db_Table::getDefaultAdapter();
-                    $db->beginTransaction();
-                    $servCon = new Application_Model_DataService($parametrosNamespace->Application_Model_DbTable);
-                    $servCon->deleteRowById(array("COD_USUARIO"=>$id));
-                    $db->commit();
-		    echo json_encode(array("result" => "EXITO"));
-	    }catch( Exception $e ) {
-	    	echo json_encode(array("result" => "ERROR","mensaje"=>$e->getCode()));
-			$db->rollBack();
-		}
-	}
+    $this->_helper->viewRenderer->setNoRender(true);
+       $cod_Registro = json_decode($this->getRequest()->getParam("id"));
+       try {
+            $db = Zend_Db_Table::getDefaultAdapter();
+            $db->beginTransaction();
+                $where= array('COD_USUARIO = ?' => $cod_Registro);
+                $n = $db->delete('USUARIO', $where);
+             $db->commit();
+             echo json_encode(array("result" => "EXITO"));
+       } catch (Exception $e) {
+            $db->rollBack();
+            echo json_encode(array("result" => "ERROR", "code" => $e->getCode(),"mensaje" => $e->getMessage()));
+            
+        }
+    }
 
-	public function guardarAction(){
-            $this->_helper->viewRenderer->setNoRender ( true );
-            $json_rowData = $this->getRequest ()->getParam ( "parametros" );
-            $rowData = json_decode($json_rowData);
-            $applicationModel = new Application_Model_Usuario();
-            self::almacenardatos($applicationModel,$rowData);
-	}
+    public function guardarAction(){
+        $this->_helper->viewRenderer->setNoRender(true);
+        $json_rowData = $this->getRequest()->getParam("parametros");
+        $rowData = json_decode($json_rowData);
+        try {
 
-	public function modificarAction(){
-            $this->_helper->viewRenderer->setNoRender ( true );
-            $json_rowData = $this->getRequest ()->getParam ( "parametros" );
-            $rowData = json_decode($json_rowData);
-            $rowClass = new Application_Model_Usuario();
-		if($rowData->idRegistro != null){
-				$rowClass->setCod_Usuario($rowData->idRegistro);
-			}
-            self::almacenardatos($rowClass,$rowData);
-	}
-
-        public function almacenardatos($rowClass,$rowData){
-     	try{
-                $parametrosNamespace = new Zend_Session_Namespace ( 'parametros' );
-     		$service = new Application_Model_DataService($parametrosNamespace->Application_Model_DbTable);
-        	$db = Zend_Db_Table::getDefaultAdapter();
-        	$db->beginTransaction();
-                $rowClass->setNombre_Usuario(trim(utf8_decode($rowData->nombreUsuario)));
-                $rowClass->setApellido_Usuario(trim(utf8_decode($rowData->apellidoUsuario)));
-                $rowClass->setPassword_Usuario($rowData->passwordUsuario);
+            $db = Zend_Db_Table::getDefaultAdapter();
+            $db->beginTransaction();
+            $data = array(
+                'COD_USUARIO' => 0,
+                'ID_USUARIO' => $rowData->ID_USUARIO,
+                'NOMBRE_APELLIDO' => (trim($rowData->NOMBRE_APELLIDO)),
+                'USUARIO_PASSWORD' => (trim($rowData->USUARIO_PASSWORD))
                 
+                
+            );
+//            print_r($data);
+//            die();
+            $upd = $db->insert('USUARIO', $data);
+            $db->commit();
+            echo json_encode(array("result" => "EXITO"));
+        } catch (Exception $e) {
+            echo json_encode(array("result" => "ERROR", "code" => $e->getCode(), "mensaje" => $e->getMessage()));
+            $db->rollBack();
+        }
+    }
 
-                $result = $service->saveRow($rowClass);
-	    	$db->commit();
-	    	echo json_encode(array("result" => "EXITO"));
-        }catch( Exception $e ) {
-	    	echo json_encode(array("result" => "ERROR","mensaje"=>$e->getCode()));
-		$db->rollBack();
-	}
+    public function modificarAction() {
+        $this->_helper->viewRenderer->setNoRender(true);
+        $json_rowData = $this->getRequest()->getParam("parametros");
+        $rowData = json_decode($json_rowData);
+        try {
+
+            $db = Zend_Db_Table::getDefaultAdapter();
+             $db->beginTransaction();
+            $data = array(
+                'COD_USUARIO' => $rowData->COD_USUARIO,
+                'ID_USUARIO' => $rowData->ID_USUARIO,
+                'NOMBRE_APELLIDO' => (trim($rowData->NOMBRE_APELLIDO)),
+                'USUARIO_PASSWORD' => (trim($rowData->USUARIO_PASSWORD))
+                
+            );
+            $where = "COD_USUARIO= " . $rowData->COD_USUARIO;
+
+            $upd = $db->update('USUARIO', $data, $where);
+            $db->commit();
+            echo json_encode(array("result" => "EXITO"));
+        } catch (Exception $e) {
+            echo json_encode(array("result" => "ERROR", "code" => $e->getCode()));
+            $db->rollBack();
+        }
+    }
+   
+    
+    
+    
+    
+    public function empresaclienteAction()
+    {
+//      $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
+        $result = '';
+        try {
+             $db = Zend_Db_Table::getDefaultAdapter();
+             $select = $db->select()
+                ->from(array('E' => 'EMPRESA'), array('E.COD_EMPRESA', 'E.DES_EMPRESA'))
+                ->distinct(true);
+            $result = $db->fetchAll($select);
+            $htmlResultado = '<option value="0">Sin empresa</option>';
+            foreach ($result as $arr) {
+                $htmlResultado .= '<option value="' . $arr["COD_EMPRESA"] . '">' .
+                trim(utf8_encode($arr["DES_EMPRESA"])) . '</option>';
+            }
+        } catch (Exception $e) {
+            $htmlResultado = "error";
+        }
+        echo $htmlResultado;
     }
 
 

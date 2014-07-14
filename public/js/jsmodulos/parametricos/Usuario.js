@@ -1,10 +1,10 @@
-//table = "/parametricos/Usuario/";
 var pathname = window.location.pathname;
 var table = pathname;
-mensajeWarning = new Array("Complete el Nombre por favor","Complete el Apellido por favor","FALTA EL PASSWORD");
-idCamposGrilla = new Array("id-registro","nombreBusqueda-modal","apellido-modal","password-modal");
-
 $().ready(function() {
+
+
+    $('#idusuario-filtro').attr("value",null);
+    $('#descripcionusuario-filtro').attr("value",null);
 	$("#buscarregistro").click(function() {
 		 buscarRegistros();
 	 });
@@ -23,16 +23,17 @@ $().ready(function() {
 
 	$("#nuevoregistro").click(function() {
 		$('#modalEditar').show();
-                //ID de registro
-		$('#'+idCamposGrilla[0]).attr("value",null);
-		$("#guardar-registro").html("Guardar");
-		 $("#editar-nuevo").html("Nuevo Registro");
-		 limpiarFormulario();
+		limpiarFormulario();
+		$('#codigousuario-modal').attr("value",null);
+		$("#guardar").html("Guardar");
+		$("#editar-nuevo").html("Nuevo Registro");
+		 
+		
 	});
 
-	$('#guardar-registro').click(function() {
-		 if(!confirm("Esta seguro de que desea almacenar los datos?"))
-				return;
+	$('#guardar').click(function() {
+//		 if(!confirm("Esta seguro de que desea almacenar los datos?"))
+//				return;
 		 var data = obtenerJsonFormulario();
 		if(data != null){
 			enviarParametrosRegistro(data);
@@ -74,7 +75,7 @@ function enviarParametrosRegistro(data){
     });
 
 	var urlenvio = '';
-	if(data.idRegistro != null && data.idRegistro.length != 0){
+	if(data.COD_USUARIO !== null && data.COD_USUARIO.length !== 0){
 		urlenvio = table+'/modificar';
 	}else {
 		urlenvio = table+'/guardar';
@@ -93,43 +94,62 @@ function enviarParametrosRegistro(data){
         	} else if(respuesta.result == "EXITO") {
         		mostarVentana("success-registro-listado","Los datos han sido almacenados exitosamente");
         		$('#modalEditar').hide();
+        		limpiarFormulario();
         		$("#grillaRegistro").trigger("reloadGrid");
         	} else if(respuesta.result == "ERROR") {
         		if(respuesta.mensaje == 23505){
         			mostarVentana("warning-registro","Ya existe un registro con la descripcion ingresada");
         		} else {
-        			mostarVentana("error-modal","Ha ocurrido un error");
+//        			mostarVentana("error-modal","Ha ocurrido un error");
         		}
         	}
         	$.unblockUI();
         },
         error: function(event, request, settings){
-        	mostarVentana("error-registro-listado","Ha ocurrido un error");
+//        	mostarVentana("error-registro-listado","Ha ocurrido un error");
     		$.unblockUI();
         }
     });
 }
 
+function addrequiredattr(id,focus){
+	$('#'+id).attr("required", "required");
+	if(focus == 1)
+		$('#'+id).focus();
+}
 
 function obtenerJsonFormulario() {
 	var jsonObject = new Object();
-
-	if($('#'+idCamposGrilla[1]).attr("value") == null || $('#'+idCamposGrilla[1]).attr("value").length == 0){
-            mostarVentana("warning-registro",mensajeWarning[1]);
-	} else if($('#'+idCamposGrilla[2]).attr("value") == null || $('#'+idCamposGrilla[2]).attr("value").length == 0){
-		mostarVentana("warning-registro",mensajeWarning[2]);
-	} else if($('#'+idCamposGrilla[3]).attr("value") == null || $('#'+idCamposGrilla[3]).attr("value").length == 0){
-		mostarVentana("warning-registro",mensajeWarning[3]);
-        }
-        else {
-		jsonObject.idRegistro = $('#'+idCamposGrilla[0]).attr("value");
-                jsonObject.nombreUsuario = $('#'+idCamposGrilla[1]).attr("value");
-                jsonObject.apellidoUsuario = $('#'+idCamposGrilla[2]).attr("value");
-                jsonObject.passwordUsuario = $('#'+idCamposGrilla[3]).attr("value");
-     
-		return jsonObject;
+	var mensaje = 'Ingrese los campos: ';
+    var focus = 0;
+    
+	if($('#idusuario-modal').attr("value") == null || $('#idusuario-modal').attr("value").length == 0){
+		mensaje+= ' | Identificador ';
+    	focus++;
+    	addrequiredattr('idusuario-modal',focus);       
 	}
-    return null;
+	if($('#descripcionusuario-modal').attr("value") == null || $('#descripcionusuario-modal').attr("value").length == 0){
+		mensaje+= ' | Nombre y apellido ';
+    	focus++;
+    	addrequiredattr('descripcionusuario-modal',focus);
+	}  
+	if($('#passwordusuario-modal').attr("value") != $('#passwordusuario2-modal').attr("value")){
+		mensaje+= ' | Los passwords no coniciden ';
+    	focus++;
+    	addrequiredattr('passwordusuario-modal',focus);
+	}    
+	
+	if (mensaje != 'Ingrese los campos: '){
+		mensaje+= ' |';
+		mostarVentana("warning-registro", mensaje);
+		return null;
+	}else {
+				jsonObject.COD_USUARIO = $('#codigousuario-modal').attr("value");
+                jsonObject.ID_USUARIO = $('#idusuario-modal').attr("value");
+                jsonObject.NOMBRE_APELLIDO = $("#descripcionusuario-modal").attr("value");
+                jsonObject.USUARIO_PASSWORD = $('#passwordusuario-modal').attr("value");    
+                return jsonObject;
+	}
 }
 
 function ocultarSuccessBlock(){
@@ -206,26 +226,6 @@ function mostarVentana(box,mensaje){
 	}
 }
 
-function validarNumerosCampo(){
-	 $("#"+idCamposGrilla[1]).keydown(function(event) {
-	        // Allow: backspace, delete, tab, escape, and enter
-	        if ( event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 || event.keyCode == 13 ||
-	             // Allow: Ctrl+A
-	            (event.keyCode == 65 && event.ctrlKey === true) ||
-	             // Allow: home, end, left, right
-	            (event.keyCode >= 35 && event.keyCode <= 39)) {
-	                 // let it happen, don't do anything
-	                 return;
-	        }
-	        else {
-	            // Ensure that it is a number and stop the keypress
-	            if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105 )) {
-	                event.preventDefault();
-	            }
-	        }
-	    });
-}
-
 function buscarRegistros(){
 	var dataJson = obtenerJsonBuscar();
 	$.blockUI({
@@ -256,11 +256,11 @@ function editarRegistro(parametros){
 	limpiarFormulario();
 	$("#modalEditar").show();
 	$("#editar-nuevo").html("Editar Registro");
-	$("#"+idCamposGrilla[0]).attr("value",parametros.idRegistro);
-	$("#"+idCamposGrilla[1]).attr("value",parametros.nombreUsuario);
-	$("#"+idCamposGrilla[2]).attr("value",parametros.apellidoUsuario);
-	$("#"+idCamposGrilla[3]).attr("value",parametros.passwordUsuario);
-       ;
+	$("#guardar").html("Modificar");
+//	alert(parametros.COD_EMPRESA);
+	$("#codigousuario-modal").attr("value",parametros.COD_USUARIO);
+	$("#idusuario-modal").attr("value",parametros.ID_USUARIO);
+    $('#descripcionusuario-modal').attr("value",parametros.NOMBRE_APELLIDO);
 	$("#guardar-registro").html("Modificar");
 }
 
@@ -269,11 +269,10 @@ function limpiarFormulario(){
 	$("#warning-block").hide();
 	$("#warning-block-registro").hide();
 	$("#success-block").hide();
-	$("#"+idCamposGrilla[0]).attr("value",null);
-	$("#"+idCamposGrilla[1]).attr("value",null);
-	$("#"+idCamposGrilla[2]).attr("value",null);
-	$("#"+idCamposGrilla[3]).attr("value",null);
-     
+	$("#idusuario-modal").attr("value",null);
+    $('#descripcionusuario-modal').attr("value",null);
+    $("#passwordusuario-modal" ).attr("value",null);
+    $("#passwordusuario2-modal" ).attr("value",null);
 }
 
 
@@ -281,16 +280,13 @@ function limpiarFormulario(){
 function obtenerJsonBuscar(){
 	var jsonObject = new Object();
 
-	if($('#'+idCamposGrilla[1]).attr("value") != null && $('#'+idCamposGrilla[1]).attr("value").length != 0){
-		jsonObject.descripcion = $('#'+idCamposGrilla[1]).attr("value");
+	if($('#idusuario-filtro').attr("value") != null && $('#idusuario-filtro').attr("value").length != 0){
+		jsonObject.ID_USUARIO = $('#idusuario-filtro').attr("value");
+	}
+	if($('#descripcionusuario-filtro').attr("value") != null && $('#descripcionusuario-filtro').attr("value").length != 0){
+		jsonObject.NOMBRE_APELLIDO = $('#descripcionusuario-filtro').attr("value");
 	}
 
 	var dataString = JSON.stringify(jsonObject);
 	return dataString;
 }
-
-
-
-
-
-
