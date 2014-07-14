@@ -13,49 +13,47 @@ class Compras_ReportecomprasController extends Zend_Controller_Action
     public function indexAction()
     {
 
-    }
-   public function existecajaAction()
-    {
-//      $this->_helper->layout->disableLayout();
-            $this->_helper->viewRenderer->setNoRender(true);
-            $result = '';
-            $parametrosNamespace = new Zend_Session_Namespace ( 'parametros' );
-			$json_rowData = $this->getRequest ()->getParam ( "parametros" );
-			$rowData = json_decode($json_rowData);
-			$nro_caja = $rowData->nro_caja;			
-            try {
-                $db = Zend_Db_Table::getDefaultAdapter();
-                $select = $db->select()
-                        ->from(array('C' => 'caja'), 
-                               array('cantidad' => 'count(*)'))
-                        ->where("cod_caja = ".$nro_caja);               
-                $result = $db->fetchAll($select);
-                foreach ($result as $arr) {
-                    $htmlResultado = json_encode(array("cantidad" => $arr["cantidad"]));
-                }
-            } catch (Exception $e) {
-                    $htmlResultado = "error";
-            }
-            echo $htmlResultado;
     }		
-    public function imprimirarqueocajaAction() {
+    public function imprimirreporteAction() {
     //        $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender(true);
         $json_rowData = $this->getRequest ()->getParam ( "parametros" );
        // die($json_rowData);
        // die();
         $rowData = json_decode($json_rowData);
-        $nro_caja = $rowData->nro_caja;
+
+        $codproveedor = '';
+        if(trim($rowData->codproveedor) <> '')
+            $codproveedor = $rowData->codproveedor;
+        $nameproveedor = '';
+        if(trim($rowData->nameproveedor) <> '')
+            $nameproveedor = $rowData->nameproveedor;
+        $codigointerno = '';
+        if(trim($rowData->codigointerno) <> '')
+            $codigointerno = $rowData->codigointerno;        
+        $controlfiscal = '';
+        if(trim($rowData->controlfiscal) <> 'NULL')
+            $controlfiscal = $rowData->controlfiscal;
+        $fechaemision = '';
+        if(trim($rowData->fechaemision) <> '')
+            $fechaemision = $rowData->fechaemision;
+        $fechavencimiento = '';
+        if(trim($rowData->fechavencimiento) <> '')
+            $fechavencimiento = $rowData->fechavencimiento;
+        $formapago = '';
+        if($rowData->formapago <> -1)
+            $formapago = $rowData->formapago;
+        
         //$curso = $rowData->curso;
         
-        $var_nombrearchivo = 'caja_nro_'.trim($nro_caja);
+        $var_nombrearchivo = 'compras_';
         $path_tmp = './tmp/';
         $orientation='P';
         $unit='mm';
         $format='A4';
         
         if(!isset($pdf))
-          $pdf= new PDFReportearqueocaja($orientation,$unit,$format,$json_rowData);
+          $pdf= new PDFReportecompras($orientation,$unit,$format,$json_rowData);
         $pdf->AliasNbPages();
         $pdf->AddPage();
         $pdf->Body($json_rowData);
@@ -69,95 +67,20 @@ class Compras_ReportecomprasController extends Zend_Controller_Action
         echo json_encode(array("result" => "EXITO","archivo" => $file));
        // echo json_encode(array("result" => "EXITO","archivo" => $file));
         //echo "<script>  window.open('".$path_tmp.$file."');  </script>";                      
-    }	
-    public function listarAction() {
-        $this->_helper->viewRenderer->setNoRender(true);
-        $parametrosNamespace = new Zend_Session_Namespace('parametros');
-        $parametrosNamespace->unlock();
-        $cantidadFilas = $this->getRequest()->getParam("rows");
-        if (!isset($cantidadFilas)) {
-            $cantidadFilas = 10;
-        }
-        $parametrosNamespace->cantidadFilas = $cantidadFilas;
-        $page = $this->getRequest()->getParam("page");
-        if (!isset($page)) {
-            $page = 1;
-        }
+    }
+    public function proveedordataAction() {
+//        $this->_helper->layout->disableLayout();
 
+        $this->_helper->viewRenderer->setNoRender(true);
         $db = Zend_Db_Table::getDefaultAdapter();
         $select = $db->select()
-                ->from(array('C' => 'caja'), 
-                       array('C.cod_caja',
-                            'C.cod_usuario_caja',
-                            'C.fecha_hora_apertura',
-                            'C.fecha_hora_cierre',
-                            'C.monto_caja_apertura',
-                            'C.monto_caja_cierre',
-                            'C.monto_diferencia_arqueo',
-                            'C.arqueo_caja',
-                            'U.nombre_apellido'
-                           ))
-                ->join(array('U' => 'usuario'), 'U.cod_usuario = C.cod_usuario_caja');
+                ->from(array('P' => 'PROVEEDOR'))
+                ->order(array('P.PROVEEDOR_NOMBRE'));
         $result = $db->fetchAll($select);
-        $this->view->headScript()->appendFile($this->view->baseUrl() . '/js/bootstrap.js');
-        $this->view->headScript()->appendFile($this->view->baseUrl() . '/js/gridCaja.js');
-        $pagina = self::obtenerPaginas($result, $cantidadFilas, $page);
-        echo $this->_helper->json($pagina);
-    }
 
-    private function obtenerPaginas($result,$cantidadFilas,$page){
-        $this->_paginator = Zend_Paginator::factory($result);
-        $this->_paginator->setItemCountPerPage($cantidadFilas);
-        $this->_paginator->setCurrentPageNumber($page);
-        $pagina ['rows'] = array();
-        foreach ($this->_paginator as $item) {
-            if(trim($item['arqueo_caja']) == '')
-                $arqueo_caja = 'No';
-            else
-                $arqueo_caja = 'Si';
-            $arrayDatos ['cell'] = array(
-                null,
-                $item['cod_caja'],
-                $item['cod_usuario_caja'],
-                $item['nombre_apellido'],
-                $item['fecha_hora_apertura'],
-                $item['fecha_hora_cierre'],
-                $item['monto_caja_apertura'],
-                $item['monto_caja_cierre'],
-                $item['monto_diferencia_arqueo'],
-                $arqueo_caja,
-                $item['arqueo_caja']
-                
-            );
-            $arrayDatos ['columns'] = array(
-                "modificar",
-                "cod_caja",
-                "cod_usuario_caja",
-                "nombre_apellido",
-                "fecha_hora_apertura",
-                "fecha_hora_cierre",
-                "monto_caja_apertura",
-                "monto_caja_cierre",
-                "monto_diferencia_arqueo",
-                "desc_arqueo_caja",
-                "arqueo_caja"
-            );
-            array_push($pagina ['rows'], $arrayDatos);
-        }
-
-        if ($cantidadFilas == 0)
-            $cantidadFilas = 10;
-
-        $pagina ['records'] = count($result);
-        $pagina ['page'] = $page;
-        $pagina ['total'] = ceil($pagina ['records'] / $cantidadFilas);
-
-        if ($pagina['records'] == 0) {
-            $pagina ['mensajeSinFilas'] = true;
-        }
-
-        return $pagina;
-    }
+        echo json_encode($result);
+    }    
+   
 
     public function buscarAction(){
          $this->_helper->viewRenderer->setNoRender(true);

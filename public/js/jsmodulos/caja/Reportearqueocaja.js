@@ -22,14 +22,14 @@ $().ready(function() {
     
 });
 function imprimirArqueoCaja(){
-		var jsonObject = new Object();
-		
-		if($('#nrocajabusqueda-filtro').attr("value") != null && $('#nrocajabusqueda-filtro').attr("value").length != 0){
-			jsonObject.nro_caja = $('#nrocajabusqueda-filtro').attr("value");
-		}else{
-			mostarVentana("warning-block-title", "Debe ingresar un numero de caja");
-			return;
-		}
+        var jsonObject = new Object();
+
+        if($('#nrocajabusqueda-filtro').attr("value") != null && $('#nrocajabusqueda-filtro').attr("value").length != 0){
+                jsonObject.nro_caja = $('#nrocajabusqueda-filtro').attr("value");
+        }else{
+                mostarVentana("warning-block-title", "Debe ingresar un numero de caja");
+                return;
+        }
                        
         var dataString = JSON.stringify(jsonObject);      
         var existendatos = 0;

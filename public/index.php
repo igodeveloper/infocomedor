@@ -20,6 +20,7 @@ require_once '../library/Zend/Application.php';
 require_once '../library/fpdf/fpdf.php';
 require_once '../library/reports/PDFReportearqueocaja.php';
 require_once '../library/reports/PDFReporteclientes.php';
+require_once '../library/reports/PDFReportecompras.php';
 require_once '../library/reports/db_operation.php';
 
 // Create application, bootstrap, and run
