@@ -110,7 +110,7 @@
                 f.COD_FORMA_PAGO = a.COD_FORMA_PAGO
                 inner join usuario g on
                 g.COD_USUARIO = a.COD_USUARIO";
-            if(trim($where) <> '')
+            if(trim($where) <> 'where')
                 $sql .= ' '.$where;
             $sql .= ' '.$orderby;
           
