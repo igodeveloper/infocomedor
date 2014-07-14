@@ -14,48 +14,25 @@ class Ventas_ReporteclientesController extends Zend_Controller_Action
     {
 
     }
-   public function existecajaAction()
-    {
-//      $this->_helper->layout->disableLayout();
-            $this->_helper->viewRenderer->setNoRender(true);
-            $result = '';
-            $parametrosNamespace = new Zend_Session_Namespace ( 'parametros' );
-			$json_rowData = $this->getRequest ()->getParam ( "parametros" );
-			$rowData = json_decode($json_rowData);
-			$nro_caja = $rowData->nro_caja;			
-            try {
-                $db = Zend_Db_Table::getDefaultAdapter();
-                $select = $db->select()
-                        ->from(array('C' => 'caja'), 
-                               array('cantidad' => 'count(*)'))
-                        ->where("cod_caja = ".$nro_caja);               
-                $result = $db->fetchAll($select);
-                foreach ($result as $arr) {
-                    $htmlResultado = json_encode(array("cantidad" => $arr["cantidad"]));
-                }
-            } catch (Exception $e) {
-                    $htmlResultado = "error";
-            }
-            echo $htmlResultado;
-    }		
-    public function imprimirarqueocajaAction() {
+	
+    public function imprimirclientesAction() {
     //        $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender(true);
         $json_rowData = $this->getRequest ()->getParam ( "parametros" );
        // die($json_rowData);
        // die();
-        $rowData = json_decode($json_rowData);
-        $nro_caja = $rowData->nro_caja;
+        //$rowData = json_decode($json_rowData);
+        //$nro_caja = $rowData->nro_caja;
         //$curso = $rowData->curso;
         
-        $var_nombrearchivo = 'caja_nro_'.trim($nro_caja);
+        $var_nombrearchivo = 'clientes_';
         $path_tmp = './tmp/';
         $orientation='P';
         $unit='mm';
         $format='A4';
         
         if(!isset($pdf))
-          $pdf= new PDFReportearqueocaja($orientation,$unit,$format,$json_rowData);
+          $pdf= new PDFReporteclientes($orientation,$unit,$format,$json_rowData);
         $pdf->AliasNbPages();
         $pdf->AddPage();
         $pdf->Body($json_rowData);

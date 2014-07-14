@@ -21,8 +21,8 @@ $().ready(function() {
 	});
     
 });
-function imprimirArqueoCaja(){
-		var jsonObject = new Object();
+function imprimirclientes(){
+	/*	var jsonObject = new Object();
 		
 		if($('#nrocajabusqueda-filtro').attr("value") != null && $('#nrocajabusqueda-filtro').attr("value").length != 0){
 			jsonObject.nro_caja = $('#nrocajabusqueda-filtro').attr("value");
@@ -32,54 +32,29 @@ function imprimirArqueoCaja(){
 		}
                        
         var dataString = JSON.stringify(jsonObject);      
-        var existendatos = 0;
+        var existendatos = 0;                    
+   */
         $.ajax({
-             url: table+'/existecaja',
-             type: 'post',
-             data: {"parametros":dataString},
-             dataType: 'json',
-             async: false,
-             success: function(respuesta) {
+                url: table+'/imprimirclientes',
+                type: 'post',
+                //data: {"parametros":dataString},
+                dataType: 'json',
+                async: false,
+                success: function(respuesta) {
 
-                 if (respuesta == null) {
-                     mostarVentana("error", "TIMEOUT");
-                 } else if (respuesta.cantidad > 0) {
-                     existendatos = respuesta.cantidad;
-                 }else if (respuesta.cantidad == 0) {
-                     mostarVentana("warning-block-title", "No existe el numero de caja ingresado");
-					 return;
-                 }                                        
-                 $.unblockUI();
-             },
-             error: function(event, request, settings) {
-                 $.unblockUI();
-                 //alert(mostrarError("OCURRIO UN ERROR"));
-                 mostarVentana("warning-block-title", "OCURRIO UN ERROR");
-				 return;
-             }        
-        });            
-		var dataString = JSON.stringify(jsonObject);      
-		$.ajax({
-			url: table+'/imprimirarqueocaja',
-			type: 'post',
-			data: {"parametros":dataString},
-			dataType: 'json',
-			async: false,
-			success: function(respuesta) {
-
-				if (respuesta == null) {
-                                    mostarVentana("error", "TIMEOUT");
-				} else if (respuesta.result == "EXITO") {
-                                    window.open('../tmp/'+respuesta.archivo);
-				}                                        
-				$.unblockUI();
-			},
-			error: function(event, request, settings) {
-				$.unblockUI();
-				//alert(mostrarError("OCURRIO UN ERROR"));
-				mostarVentana("warning-block-title", "Ocurrio un error en la generacion del reporte");
-			}        
-		});                  	
+                        if (respuesta == null) {
+                            mostarVentana("error", "TIMEOUT");
+                        } else if (respuesta.result == "EXITO") {
+                            window.open('../tmp/'+respuesta.archivo);
+                        }                                        
+                        $.unblockUI();
+                },
+                error: function(event, request, settings) {
+                        $.unblockUI();
+                        //alert(mostrarError("OCURRIO UN ERROR"));
+                        mostarVentana("warning-block-title", "Ocurrio un error en la generacion del reporte");
+                }        
+        });                  	
 }
 function validarNumerosCampo(){
     $("#montoaperturacaja-modal").keydown(function(event) {

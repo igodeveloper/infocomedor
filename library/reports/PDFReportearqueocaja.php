@@ -140,8 +140,7 @@
              inner join tipo_movimiento d on
              d.cod_tipo_mov = b.cod_tipo_mov
              where a.cod_caja = ".$this->parametros->nro_caja."
-             order by b.fecha_hora_mov desc";
-            die($sql);               
+             order by b.fecha_hora_mov desc";               
             //echo $sql."<br>";                              
             $dtDatos = $this->Conn->query($sql); 
             $count = 1;
