@@ -234,8 +234,7 @@
                     $this->Ln(5);
                 } 
                 $this->Ln(10);
-            }
-           
+            }           
         }
         //Pie de p�gina
         function Footer()
