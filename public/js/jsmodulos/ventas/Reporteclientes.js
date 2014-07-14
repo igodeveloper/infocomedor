@@ -17,7 +17,7 @@ $().ready(function() {
 	validarNumerosCampo();
 	
 	$("#imprimirReporte").click(function() {                           
-		imprimirArqueoCaja();
+		imprimirclientes();
 	});
     
 });
