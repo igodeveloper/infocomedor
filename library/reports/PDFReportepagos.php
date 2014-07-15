@@ -24,7 +24,6 @@
             $this->I=0;
             $this->U=0;
             $this->HREF='';
-
         }
         //Cabecera de p�gina
         function Header()
