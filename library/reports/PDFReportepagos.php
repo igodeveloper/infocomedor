@@ -44,25 +44,29 @@
 
         function Body()
         {         
-            //{"NRO_FACTURA_COMPRA":"","NRO_CHEQUE":"","ESTADO_PAGO":"-1"}
             $where = 'where'; 
             if(trim($this->parametros->NRO_FACTURA_COMPRA) <> ''){
                 if(trim($where) <> 'where') $where .= ' and ';
-                $where .= ' a.NRO_FACTURA_COMPRA = '.$this->parametros->NRO_FACTURA_COMPRA; 
+                $where .= ' b.NRO_FACTURA_COMPRA = '.$this->parametros->NRO_FACTURA_COMPRA; 
             }
             if(trim($this->parametros->NRO_CHEQUE) <> ''){
                 if(trim($where) <> 'where') $where .= ' and ';
-                $where .= " d.NRO_CHEQUE = '".$this->parametros->NRO_CHEQUE."'";
+                $where .= " b.NRO_CHEQUE = '".$this->parametros->NRO_CHEQUE."'";
             }            
-            if(trim($this->parametros->ESTADO_PAGO) <> ''){
+            if(trim($this->parametros->ESTADO_PAGO) <> '-1'){
                 if(trim($where) <> 'where') $where .= ' and ';
-                $where .= ' a.ESTADO_PAGO = '.$this->parametros->ESTADO_PAGO;
-            }            
+                $where .= " b.ESTADO_PAGO = '".$this->parametros->ESTADO_PAGO."'";
+            }   
+            $group_principal = 'group by a.NRO_FACTURA_COMPRA';
             $sql_principal = "select a.NRO_FACTURA_COMPRA
                 from compra a
                 inner join pago_proveedor b on
                 a.NRO_FACTURA_COMPRA = b.NRO_FACTURA_COMPRA
-                group by a.NRO_FACTURA_COMPRA";             
+                ";          
+            if(trim($where) <> 'where')
+                $sql_principal .= ' '.$where;
+            $sql_principal .= ' '.$group_principal;
+            
             $dtDatos_principal = $this->Conn->query($sql_principal); 
        
             while($row_principal = mysql_fetch_assoc($dtDatos_principal))
@@ -73,19 +77,11 @@
                     a.FECHA_VENCIMIENTO_FACTURA,a.MONTO_TOTAL_COMPRA
                     ,a.CONTROL_FISCAL
                     from compra a
-                    inner join moneda c on
-                    c.COD_MONEDA = b.COD_MONEDA_PAGO
-                    inner join forma_pago f on
-                    f.COD_FORMA_PAGO = a.COD_FORMA_PAGO
-                    inner join usuario g on
-                    g.COD_USUARIO = a.COD_USUARIO
                     inner join proveedor d on
                     d.COD_PROVEEDOR = a.COD_PROVEEDOR
-                    where b.NRO_FACTURA_COMPRA = ".$row_principal['NRO_FACTURA_COMPRA'];
-                if(trim($where) <> 'where')
-                    $sql .= ' '.$where;
+                    where a.NRO_FACTURA_COMPRA = ".$row_principal['NRO_FACTURA_COMPRA'];               
                 $sql .= ' '.$orderby;
-
+                
                 $dtDatos = $this->Conn->query($sql); 
                 $count = 1;
 
@@ -165,10 +161,15 @@
                             inner join moneda c on
                             c.COD_MONEDA = b.COD_MONEDA_PAGO
                             where b.NRO_FACTURA_COMPRA = '.$NRO_FACTURA_COMPRA.'
-                            order by b.COD_PAGO_PROVEEDOR';
+                            order by b.COD_PAGO_PROVEEDOR';                   
                     $dtDatos_detalle = $this->Conn->query($sql_detalle); 
                     while($row = mysql_fetch_assoc($dtDatos_detalle))
                     {
+                        $estado_pago = '';
+                        if($row['ESTADO_PAGO'] == 'T')
+                            $estado_pago = 'Activo';
+                        if($row['ESTADO_PAGO'] == 'A')
+                            $estado_pago = 'Anulado';                        
                         $this->SetX(11+$x);
                         $this->SetFont('Arial','',7);
                         $this->SetX(20);
@@ -183,7 +184,7 @@
                         $this->SetX(130);
                         $this->Cell(19,10,$row['DES_BANCO'],0,0,'L');
                         $this->SetX(160);
-                        $this->Cell(24,10,$row['ESTADO_PAGO'],0,0,'L');
+                        $this->Cell(24,10,$estado_pago,0,0,'L');
                         $this->Ln(5);
                     } 
                     $this->Ln(10);
