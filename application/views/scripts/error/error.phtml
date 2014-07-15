@@ -2,9 +2,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>Zend Framework Default Application</title>
+  <title>INFOCOMEDOR</title>
 </head>
-<body>
+<!-- <body>
   <h1>An error occurred</h1>
   <h2><?php echo $this->message ?></h2>
 
@@ -22,6 +22,19 @@
   <h3>Request Parameters:</h3>
   <pre><?php echo $this->escape(var_export($this->request->getParams(), true)) ?>
   </pre>
+
+  <?php endif ?>
+
+</body> -->
+
+<body>
+  <h2><?php echo $this->message ?></h2>
+
+  <?php if (isset($this->exception)): ?>
+  
+
+  <h3>Regrese al menu: <a href="<?php echo $this->baseUrl() ."/parametricos/menu";?>">Menu</a></h3>
+  
 
   <?php endif ?>
 

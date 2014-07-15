@@ -2,65 +2,41 @@
 var pathname = window.location.pathname;
 var table = pathname;
 $().ready(function() {    
-    $('#descripciontipoproducto-filtro').attr("value",null);
-
-    $("#cerrar-bot").click(function() {
-            $("#modalEditar").hide();
-    });
-
-    $("#cancelar-bot").click(function() {
-            $("#modalEditar").hide();
-    });
-
-    $('#modalEditar').modal({backdrop:false,show:false});
-
-	validarNumerosCampo();
+      
 	
 	$("#imprimirReporte").click(function() {                           
-		imprimirArqueoCaja();
+		imprimirReporte();
 	});
+
+	cargartipoproducto();
+
     
 });
-function imprimirArqueoCaja(){
-		var jsonObject = new Object();
-		
-		if($('#nrocajabusqueda-filtro').attr("value") != null && $('#nrocajabusqueda-filtro').attr("value").length != 0){
-			jsonObject.nro_caja = $('#nrocajabusqueda-filtro').attr("value");
-		}else{
-			mostarVentana("warning-block-title", "Debe ingresar un numero de caja");
-			return;
-		}
-                       
-        var dataString = JSON.stringify(jsonObject);      
-        var existendatos = 0;
-        $.ajax({
-             url: table+'/existecaja',
-             type: 'post',
-             data: {"parametros":dataString},
-             dataType: 'json',
-             async: false,
-             success: function(respuesta) {
 
-                 if (respuesta == null) {
-                     mostarVentana("error", "TIMEOUT");
-                 } else if (respuesta.cantidad > 0) {
-                     existendatos = respuesta.cantidad;
-                 }else if (respuesta.cantidad == 0) {
-                     mostarVentana("warning-block-title", "No existe el numero de caja ingresado");
-					 return;
-                 }                                        
-                 $.unblockUI();
-             },
-             error: function(event, request, settings) {
-                 $.unblockUI();
-                 //alert(mostrarError("OCURRIO UN ERROR"));
-                 mostarVentana("warning-block-title", "OCURRIO UN ERROR");
-				 return;
-             }        
-        });            
-		var dataString = JSON.stringify(jsonObject);      
+function cargartipoproducto(){
+    
+//  alert('Tipo Producto');
+    $.ajax({
+        url: table+'/cargartipoproducto',
+        type: 'post',
+        dataType: 'html',
+        async : false,
+        success: function(respuesta){
+            if(respuesta== 'error'){
+                
+            }else{
+                $("#tipo-productos-modal").html(respuesta);             
+            }
+        },
+        error: function(event, request, settings){
+        }
+    }); 
+}
+function imprimirReporte(){
+           
+		var dataString = JSON.stringify(obtenerJsonBuscar());      
 		$.ajax({
-			url: table+'/imprimirarqueocaja',
+			url: table+'/imprimirreporte',
 			type: 'post',
 			data: {"parametros":dataString},
 			dataType: 'json',
@@ -81,155 +57,26 @@ function imprimirArqueoCaja(){
 			}        
 		});                  	
 }
-function validarNumerosCampo(){
-    $("#montoaperturacaja-modal").keydown(function(event) {
-	   // Allow: backspace, delete, tab, escape, and enter
-	   if ( event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 || event.keyCode == 13 ||
-			// Allow: Ctrl+A
-		   (event.keyCode == 65 && event.ctrlKey === true) ||
-			// Allow: home, end, left, right
-		   (event.keyCode >= 35 && event.keyCode <= 39)) {
-				// let it happen, don't do anything
-				return;
-	   }
-	   else {
-		   // Ensure that it is a number and stop the keypress
-		   if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105 )) {
-			   event.preventDefault();
-		   }
-	   }
-    });
-    $("#montocierrecaja-modal").keydown(function(event) {
-	   // Allow: backspace, delete, tab, escape, and enter
-	   if ( event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 || event.keyCode == 13 ||
-			// Allow: Ctrl+A
-		   (event.keyCode == 65 && event.ctrlKey === true) ||
-			// Allow: home, end, left, right
-		   (event.keyCode >= 35 && event.keyCode <= 39)) {
-				// let it happen, don't do anything
-				return;
-	   }
-	   else {
-		   // Ensure that it is a number and stop the keypress
-		   if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105 )) {
-			   event.preventDefault();
-		   }
-	   }
-    });    
-}
-function validarNumerosLetrasPorcentageEspacio(e) { // 1
-	var te;
-	if(document.all) {
-		if (e.keyCode==37) return false; // %
-		if (e.keyCode==63) return false; // guion bajo
-		if (e.keyCode==95) return false; // guion bajo
-		if (e.keyCode==8) return true; // back spacebar
-	    if (e.keyCode==32) return true; // space bar
-	    te = String.fromCharCode(e.keyCode); // 5
-	} else {
-		if (e.which==37) return false; // %
-		if (e.which==0) return true; // izquierda,derecha,arriba,abajo
-		if (e.which==95) return false; // guion bajo
-		if (e.which==8) return true; // back space bar
-	    if (e.which==32) return true; // space bar
-	    te = String.fromCharCode(e.which); // 5
-	}
-    patron = /\w/;
-
-    return patron.test(te); // 6
-}
 
 
-function enviarParametrosRegistro(data){
-	$.blockUI({
-        message: "Aguarde un momento por favor"
-    });
 
-	var urlenvio = '';
-	if(data.cod_caja !== null && data.cod_caja.length !== 0){
-		urlenvio = table+'/modificar';
-	}else {
-		urlenvio = table+'/guardar';
-	}
-	var dataString = JSON.stringify(data);
 
-	$.ajax({
-        url: urlenvio,
-        type: 'post',
-        data: {"parametros":dataString},
-        dataType: 'json',
-        async : true,
-        success: function(respuesta){
-        	if(respuesta == null){
-        		mostarVentana("error","TIMEOUT");
-        	} else if(respuesta.result == "EXITO") {
-        		mostarVentana("success-block-title","Los datos han sido almacenados exitosamente");
-        		$('#modalEditar').hide();
-        		$("#grillaRegistro").trigger("reloadGrid");
-        	} else if(respuesta.result == "ERROR") {
-        		if(respuesta.mensaje == 23505){
-        			mostarVentana("warning-registro","Ya existe un registro con la descripcion ingresada");
-        		} else {
-//        			mostarVentana("error-modal","Ha ocurrido un error");
-        		}
-        	}
-        	$.unblockUI();
-        },
-        error: function(event, request, settings){
-//        	mostarVentana("error-registro-listado","Ha ocurrido un error");
-    		$.unblockUI();
-        }
-    });
-}
-function addrequiredattr(id,focus){
-	$('#'+id).attr("required", "required");
-	if(focus == 1)
-		$('#'+id).focus();
-}
 
-function obtenerJsonFormulario() {
+
+
+
+function obtenerJsonBuscar(){
 	var jsonObject = new Object();
-	var mensaje = '';
-	var error = 0;
-	if($('#codigousuariocaja-modal').attr("value") == null || $('#codigousuariocaja-modal').attr("value").length == 0){
-    	mensaje+= ' | No se identifico el usuario de logeo | ';
-		error = 1;
+
+	
+	if($('#tipo-productos-modal').val() != -1){
+		jsonObject.cod_producto_tipo = $('#tipo-productos-modal').val();
 	}
-	if($('#montoaperturacaja-modal').attr("value") == null || $('#montoaperturacaja-modal').attr("value").length == 0){
-		mensaje+= ' | Ingrese un monto de apertura | ';
-		$('#montoaperturacaja-modal').attr("required", "required");
-		error = 1;
-    }
-	if(($.trim($('#codcaja-modal').attr("value")) != '' || $('#codcaja-modal').attr("value").length != 0) &&
-		($('#montocierrecaja-modal').attr("value") == null || $('#montocierrecaja-modal').attr("value").length == 0 )){
-		mensaje+= ' | Ingrese un monto de cierre efectivo| ';
-		$('#montocierrecaja-modal').attr("required", "required");
-		error = 1;
-    }	
-	if(($.trim($('#codcaja-modal').attr("value")) != '' || $('#codcaja-modal').attr("value").length != 0) &&
-		($('#montocierrecheque-modal').attr("value") == null || $('#montocierrecheque-modal').attr("value").length == 0 )){
-		mensaje+= ' | Ingrese un monto de cierre cheque| ';
-		$('#montocierrecheque-modal').attr("required", "required");
-		error = 1;
-    }	
-    if(error == 1){
-		mostarVentana("warning-registro",mensaje);
-		return null;            
-    }else {
-		//LOS CAMPOS DEBEN LLAMARSE IGUAL QUE EN gridTipoInsumo.js
-		jsonObject.cod_caja = $('#codcaja-modal').attr("value");
-		jsonObject.cod_usuario_caja = $('#codigousuariocaja-modal').attr("value");
-		jsonObject.monto_caja_apertura = $('#montoaperturacaja-modal').attr("value");	
-		jsonObject.monto_caja_cierre_efectivo = $('#montocierrecaja-modal').attr("value");
-		jsonObject.monto_caja_cierre_cheque = $('#montocierrecheque-modal').attr("value");
-		jsonObject.monto_entrante_efectivo = $('#montoentranteefectivo-modal').attr("value");
-		jsonObject.monto_saliente_efectivo = $('#montosalienteefectivo-modal').attr("value");
-		jsonObject.monto_entrante_cheque = $('#montoentrantecheque-modal').attr("value");
-		jsonObject.monto_saliente_cheque = $('#montosalientecheque-modal').attr("value");		
-		return jsonObject;
-	}
-    
+
+	var dataString = JSON.stringify(jsonObject);
+	return dataString;
 }
+
 
 function ocultarSuccessBlock(){
 	$("#success-block").hide(500);
@@ -305,166 +152,4 @@ function mostarVentana(box,mensaje){
 		$("#error-block-modal").show(500);
 		setTimeout("ocultarErrorBlockModal()",5000);
 	}
-}
-
-function buscarRegistros(){
-	var dataJson = obtenerJsonBuscar();
-	$.blockUI({
-        message: "Aguarde un momento por favor"
-        });
-	$.ajax({
-        url: table+'/buscar',
-        type: 'post',
-        data: {"data":dataJson},
-        dataType: 'html',
-        async : false,
-        success: function(respuesta){
-        	$("#grillaRegistro")[0].addJSONData(JSON.parse(respuesta));
-        	var obj = JSON.parse(respuesta);
-        	if(obj.mensajeSinFilas == true){
-        		mostarVentana("info","No se encontraron registros con los parametros ingresados");
-        	}
-        	$.unblockUI();
-        },
-        error: function(event, request, settings){
-            $.unblockUI();
-            mostarVentana("info","No se encontraron registros con los parametros ingresados");
-        }
-    });
-}
-
-function editarRegistro(parametros){
-	limpiarFormulario();
-        if(parametros.arqueo_caja == 'S'){
-            //alert("La caja ya se encuentra arqueada!!");
-            mostarVentana("warning-block-title","La caja ya se encuentra arqueada!!");
-            return;
-        }
-	$("#modalEditar").show();
-	$("#editar-nuevo").html("Cierre de Caja");
-	$("#codcaja-modal").attr("value",parametros.cod_caja);
-	cargarCierreCaja();
-	$("#guardar-registro").html("Cerrar Caja");
-	$("#contenedorcierrecaja-modal").css("display", "block");
-        
-        $('#montoentrantecaja-modal-idioma').css("display", "block");
-        $('#montoentrantecaja-modal').css("display", "block");
-        $('#montosalientecaja-modal-idioma').css("display", "block");
-        $('#montosalientecaja-modal').css("display", "block");
-}
-
-function limpiarFormulario(){
-	$("#error-block-modal").hide();
-	$("#warning-block").hide();
-	$("#warning-block-registro").hide();
-	$("#success-block").hide();
-	$("#codcaja-modal").attr("value",null);
-	$("#codigousuariocaja-modal").attr("value",null);
-	$("#nombreusuariocaja-modal").attr("value",null);
-	$("#fechaaperturacaja-modal").attr("value",null);
-	$("#montoaperturacaja-modal").attr("value",null);
-	$("#montocierrecaja-modal").attr("value",null);
-	$("#montoentrantecaja-modal").attr("value",null);
-	$("#montosalientecaja-modal").attr("value",null);
-}
-
-
-
-function obtenerJsonBuscar(){
-	var jsonObject = new Object();
-
-	if($('#descripciontipoproducto-filtro').attr("value") != null && $('#descripciontipoproducto-filtro').attr("value").length != 0){
-		jsonObject.descripcion = $('#descripciontipoproducto-filtro').attr("value");
-	}
-
-	var dataString = JSON.stringify(jsonObject);
-	return dataString;
-}
-
-function cargarUsuarioCaja(){
-	
-//	alert('Unidad Medida');
-	$.ajax({
-        url: table+'/usuariocajadata',
-        type: 'post',
-        dataType: 'json',
-        async : false,
-        success: function(respuesta){            
-        	if(respuesta== 'error'){
-        		mostarVentana("error-title",mostrarError("OcurrioError"));
-        	}else{
-				$("#codigousuariocaja-modal").attr("value",respuesta.cod_usuario);       		
-				$("#nombreusuariocaja-modal").attr("value",respuesta.nombre_apellido);  
-				$("#fechaaperturacaja-modal").attr("value",respuesta.fechaaperturacaja);   
-				$('#montoaperturacaja-modal').attr("readonly", false);				
-        	}
-        },
-        error: function(event, request, settings){
-         //   $.unblockUI();
-        	 alert(mostrarError("OcurrioError"));
-        }
-    });	
-}
-
-function cajaAbierta(){
-	
-//	alert('Unidad Medida');
-	$.ajax({
-        url: table+'/cajaabiertadata',
-        type: 'post',
-        dataType: 'json',
-        async : false,
-        success: function(respuesta){            
-        	if(respuesta.resultado == 'error'){
-        		mostarVentana("error-title","Ocurrio Error");
-        	}else if(respuesta.resultado != 'cerrado'){
-                    //alert("Ya existe una caja abierta. Usuario : "+respuesta.nombre_apellido+" Fecha : "+respuesta.fecha_hora_apertura);
-                    //exit;
-                    mostarVentana("warning-block-title","Ya existe una caja abierta. Usuario : "+respuesta.nombre_apellido+" Fecha : "+respuesta.fecha_hora_apertura);
-                    return;                                
-        	}
-        },
-        error: function(event, request, settings){
-         //   $.unblockUI();
-        	 mostarVentana("error-title","Ocurrio Error");
-        }
-    });	
-}
-
-function cargarCierreCaja(){	
-//	alert('Unidad Medida');	
-	var jsonObject = new Object();
-	jsonObject.cod_caja = $('#codcaja-modal').attr("value");
-	var dataString = JSON.stringify(jsonObject);	
-	$.ajax({
-        url: table+'/cierrecajadata',
-		data: {"parametros":dataString},
-        type: 'post',
-        dataType: 'json',
-        async : false,
-        success: function(respuesta){            
-        	if(respuesta== 'error'){
-        		mostarVentana("error-title",mostrarError("OcurrioError"));
-        	}else{
-				$("#codigousuariocaja-modal").attr("value",respuesta.cod_usuario_caja);       		
-				$("#nombreusuariocaja-modal").attr("value",respuesta.nombre_apellido);  
-				$("#fechaaperturacaja-modal").attr("value",respuesta.fecha_hora_apertura);
-				$("#montoaperturacaja-modal").attr("value",respuesta.monto_caja_apertura);
-				$("#fechacierrecaja-modal").attr("value",respuesta.fecha_hora_cierre);
-				$('#montoaperturacaja-modal').attr("readonly", true);	
-				$("#montoentranteefectivo-modal").attr("value",respuesta.monto_entrante_efectivo);
-				$("#montosalienteefectivo-modal").attr("value",respuesta.monto_saliente_efectivo);
-				$('#montoentranteefectivo-modal').attr("readonly", true);
-				$('#montosalienteefectivo-modal').attr("readonly", true);
-				$("#montoentrantecheque-modal").attr("value",respuesta.monto_entrante_cheque);
-				$("#montosalientecheque-modal").attr("value",respuesta.monto_saliente_cheque);
-				$('#montoentrantecheque-modal').attr("readonly", true);
-				$('#montosalientecheque-modal').attr("readonly", true);				
-        	}
-        },
-        error: function(event, request, settings){
-         //   $.unblockUI();
-        	 alert("OcurrioError");
-        }
-    });	
 }

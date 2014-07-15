@@ -2,7 +2,14 @@
 
 class ErrorController extends Zend_Controller_Action
 {
-
+     public function init()
+    {
+        /* Initialize action controller here */
+         // $r = Zend_Controller_Action_HelperBroker::getStaticHelper('redirector');
+         //        $r->gotoUrl('/parametricos/menu')->redirectAndExit();
+    }
+               
+     
     public function errorAction()
     {
         $errors = $this->_getParam('error_handler');

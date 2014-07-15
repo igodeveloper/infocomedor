@@ -8,7 +8,7 @@
             appendFile($this->baseUrl() . '/js/i18n/grid.locale-es.js')->
             appendFile($this->baseUrl() . '/js/jquery.jqGrid.min.js')->
             appendFile($this->baseUrl() . "/js/bootstrap.js")->
-            appendFile($this->baseUrl() . "/js/jsmodulos/caja/Reportearqueocaja.js")->
+            appendFile($this->baseUrl() . "/js/jsmodulos/produccion/Reporteproduccion.js")->
             appendFile($this->baseUrl() . "/js/jquery.tablescroll.js")->
             appendFile($this->baseUrl() . "/js/jquery.blockUI.js");
 
@@ -106,7 +106,7 @@
                     </nav>
 	            </div> 
                     <div  class="titulo-cabecera">
-                        <h1 id="cabecera-titulo">Reporte Arqueo de Caja</h1>
+                        <h1 id="cabecera-titulo">Reporte Produccion</h1>
 
                     </div>
                    
@@ -121,15 +121,28 @@
                             <div id="info-message"></div>
                         </div>
                         <div id="contenedor" class="filtro" align=center>
-                            <table style="width: 90%; padding: 1%;">
+                            <table style="width: 60%; padding: 1%;">
+                                
                                 <tr>
-                                   <td style="width: 25%; text-align: center">
-                                        <label for="nrocajabusqueda-filtro" id="nrocajabusqueda-filtro-idioma">Nro de Caja: </label>
-										<input id="nrocajabusqueda-filtro"  class="input-block-level" >
+                                    <!-- <td style="width: 15%; text-align: right;">
+                                        Producto
                                     </td>
-                                    
+                                    <td >
+                                        <input id="descripcionproductofinal-filtro"  class="input-block-level" >
+                                    </td> -->
+                                    <td style="width: 35%; text-align: right;">
+                                        Tipo de producto
+                                    </td>
+                                    <td style="width: 35%">
+                                       <select  name="tipo-productos-modal" id="tipo-productos-modal" 
+                                         class="input-block-level" >
+                                    <option value="-1">Seleccione</option>
+                               </select>
+                                    </td>
+                                  
                                 </tr>
                             </table>
+                           
                            
                         </div>
                         <div  id="tab-content">
