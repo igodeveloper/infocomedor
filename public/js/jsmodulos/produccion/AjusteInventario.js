@@ -350,7 +350,9 @@ function enviarParametrosRegistros(data) {
                 $("#grillaRegistro").trigger("reloadGrid");
                 $("#grillaRegistroModal").trigger("reloadGrid");
                 CleanFormItems();
-                print_pdf();
+                // print_pdf();
+                console.log(inventario);
+                ImprimirReporte(data.inventario);
             } else if (respuesta.result == "ERROR") {
                 if (respuesta.code == 23505) {
                     mostarVentana("warning-modal", "Datos duplicados");
@@ -571,4 +573,28 @@ function cargartipoproducto(){
 }
 
 
+function ImprimirReporte(inventario){
+              
+         var inven = JSON.stringify(inventario);
+        $.ajax({
+            url: table+'/imprimirreporte',
+            type: 'post',
+            data: {"parametros":inven},
+            dataType: 'json',
+            async: false,
+            success: function(respuesta) {
 
+                if (respuesta == null) {
+                                    mostarVentana("error", "TIMEOUT");
+                } else if (respuesta.result == "EXITO") {
+                                    window.open('../pdfs/'+respuesta.archivo);
+                }                                        
+                $.unblockUI();
+            },
+            error: function(event, request, settings) {
+                $.unblockUI();
+                //alert(mostrarError("OCURRIO UN ERROR"));
+                mostarVentana("warning-block-title", "Ocurrio un error en la generacion del reporte");
+            }        
+        });                     
+}

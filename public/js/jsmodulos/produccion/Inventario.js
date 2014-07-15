@@ -348,7 +348,8 @@ function enviarParametrosRegistros(data) {
             } else if (respuesta.result == "EXITO") {
                 if(inventario == "null"){
                     
-                    print_pdf();
+                     // print_pdf();
+                    imprimirReporte();
                 }
                 mostarVentana("success-title", "Datos almacenados exitosamente");
                 $('#modalEditar').hide();
@@ -573,5 +574,28 @@ function cargartipoproducto(){
     }); 
 }
 
+function imprimirReporte(){
+              
+        $.ajax({
+            url: table+'/imprimirreporte',
+            type: 'post',
+            data: {},
+            dataType: 'json',
+            async: false,
+            success: function(respuesta) {
 
+                if (respuesta == null) {
+                                    mostarVentana("error", "TIMEOUT");
+                } else if (respuesta.result == "EXITO") {
+                                    window.open('../pdfs/'+respuesta.archivo);
+                }                                        
+                $.unblockUI();
+            },
+            error: function(event, request, settings) {
+                $.unblockUI();
+                //alert(mostrarError("OCURRIO UN ERROR"));
+                mostarVentana("warning-block-title", "Ocurrio un error en la generacion del reporte");
+            }        
+        });                     
+}
 

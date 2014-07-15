@@ -164,7 +164,8 @@ public function guardarAction() {
 							'INVENTARIO_SALDO'  => $fila->diferencia
 		        	);
 					$upd = $db->insert('INVENTARIO', $data);
-                    $listado->codigo_inventario = $db->lastInsertId();
+                    // echo  $upd;
+                    $listado->codigo_inventario = $db->lastInsertValue;
            		}else{
            			$listado->inventario = $data_inventario;
            		//	if($fila->saldo < 0){
@@ -239,7 +240,8 @@ public function guardarAction() {
 			$listado->unlock();
 			$y = 100;
 			$i=0;
-            if($listado->codigo_inventario > 0 && $listado->inventario == 0){
+            
+            if($listado->codigo_inventario > 0){
                 $page->setFont($font, 14)
                 ->setFillColor(new Zend_Pdf_Color_Rgb(0, 0, 0))
                 ->drawText($listado->codigo_inventario, 450, $height-75);
@@ -449,6 +451,39 @@ public function modalinventarioAction() {
                             "unimedcod" => $uniMedidaCod, "unimeddesc" => $uniMedidaDesc, "saldo" => $saldo_producto, "precioventa" =>$precio_venta );
         }
         echo json_encode($option);
+    }
+
+        public function imprimirreporteAction() {
+    //        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
+        $json_rowData = $this->getRequest ()->getParam ( "parametros" );
+       // die($json_rowData);
+       // die();
+        //$rowData = json_decode($json_rowData);
+        //$nro_caja = $rowData->nro_caja;
+        //$curso = $rowData->curso;
+        
+        $var_nombrearchivo = 'inventario_';
+        $path_tmp = './pdfs/';
+        $orientation='P';
+        $unit='mm';
+        $format='A4';
+        
+        if(!isset($pdf))
+          $pdf= new PDFReporteinventario($orientation,$unit,$format,$json_rowData);
+        $pdf->AliasNbPages();
+        $pdf->AddPage();
+        $pdf->Body($json_rowData);
+
+        $file = basename($var_nombrearchivo."_".date('Ymdhis'));
+        $file .= '.pdf';
+        //Guardar el PDF en un fichero
+        $pdf->Output($path_tmp.$file, 'F');
+        $pdf->close();
+        unset($pdf);
+        echo json_encode(array("result" => "EXITO","archivo" => $file));
+       // echo json_encode(array("result" => "EXITO","archivo" => $file));
+        //echo "<script>  window.open('".$path_tmp.$file."');  </script>";                      
     }
 
 

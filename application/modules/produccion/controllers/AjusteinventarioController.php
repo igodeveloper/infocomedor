@@ -335,5 +335,38 @@ public function modalinventarioAction() {
         }
    }
 
+  public function imprimirreporteAction() {
+    //        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
+        $json_rowData = $this->getRequest ()->getParam ( "parametros" );
+       // die($json_rowData);
+       // die();
+        //$rowData = json_decode($json_rowData);
+        //$nro_caja = $rowData->nro_caja;
+        //$curso = $rowData->curso;
+        
+        $var_nombrearchivo = 'inventario_';
+        $path_tmp = './pdfs/';
+        $orientation='P';
+        $unit='mm';
+        $format='A4';
+        
+        if(!isset($pdf))
+          $pdf= new PDFReporteinventarioajuste($orientation,$unit,$format,$json_rowData);
+        $pdf->AliasNbPages();
+        $pdf->AddPage();
+        $pdf->Body($json_rowData);
+
+        $file = basename($var_nombrearchivo."_".date('Ymdhis'));
+        $file .= '.pdf';
+        //Guardar el PDF en un fichero
+        $pdf->Output($path_tmp.$file, 'F');
+        $pdf->close();
+        unset($pdf);
+        echo json_encode(array("result" => "EXITO","archivo" => $file));
+       // echo json_encode(array("result" => "EXITO","archivo" => $file));
+        //echo "<script>  window.open('".$path_tmp.$file."');  </script>";                      
+    }
+
 
 }

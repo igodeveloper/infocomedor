@@ -24,6 +24,8 @@ require_once '../library/reports/PDFReporteclientes.php';
 require_once '../library/reports/PDFReportecompras.php';
 require_once '../library/reports/PDFReportepagos.php';
 require_once '../library/reports/PDFReporteproduccion.php';
+require_once '../library/reports/PDFReporteinventario.php';
+require_once '../library/reports/PDFReporteinventarioajuste.php';
 
 
 // Create application, bootstrap, and run
