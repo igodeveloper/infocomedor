@@ -130,7 +130,7 @@ function cargarGrillaRegistro() {
                         align: 'right',
                         width: 20,
                         formatter: 'number',
-                formatoptions:{thousandsSeparator: ".", decimalPlaces: 0},
+                formatoptions:{thousandsSeparator: ".", decimalPlaces: 2},
                         hidden: false
                     },
                     {
@@ -141,7 +141,7 @@ function cargarGrillaRegistro() {
                         align: 'right',
                         width: 20,
                         formatter: 'number',
-                formatoptions:{thousandsSeparator: ".", decimalPlaces: 0},
+                formatoptions:{thousandsSeparator: ".", decimalPlaces: 2},
                         hidden: false
                     },
                     {
@@ -152,7 +152,7 @@ function cargarGrillaRegistro() {
                         align: 'right',
                         width: 20,
                         formatter: 'number',
-                formatoptions:{thousandsSeparator: ".", decimalPlaces: 0},
+                formatoptions:{thousandsSeparator: ".", decimalPlaces: 2},
                         hidden: false
                     },
                     {
@@ -288,7 +288,7 @@ function cargarGrillaRegistroModal() {
                         "align": "right",
                         "sortable": false,
                         formatter: 'number',
-                formatoptions:{thousandsSeparator: ".", decimalPlaces: 0},
+                formatoptions:{thousandsSeparator: ".", decimalPlaces:2},
                         "hidden": false,
                         width: 7,
                         
@@ -303,7 +303,7 @@ function cargarGrillaRegistroModal() {
                         "hidden": false,
                         width: 7,
                         formatter: 'number',
-                formatoptions:{thousandsSeparator: ".", decimalPlaces: 0},
+                formatoptions:{thousandsSeparator: ".", decimalPlaces: 2},
                         editable: true
                         
                     },
@@ -316,7 +316,7 @@ function cargarGrillaRegistroModal() {
                         "sortable": false,
                         "hidden": false,
                         formatter: 'number',
-                formatoptions:{thousandsSeparator: ".", decimalPlaces: 0},
+                formatoptions:{thousandsSeparator: ".", decimalPlaces: 2},
                         width: 7
                         
                         

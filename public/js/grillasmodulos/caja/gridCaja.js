@@ -124,60 +124,70 @@ function cargarGrillaRegistro() {
        	  {
 	       		"title" : false,
 	       		"name" : "monto_caja_apertura",
-	       		"label" : "MONTO APERTURA",
+	       		"label" : "APERTURA",
 	       		"id" : "monto_caja_apertura",
 	       		"search" : false,
 	       		"remove" : false,
 	       		"width" : 150,
 	       		"align":"right",
 	       		"sortable" : false,
-	       		"hidden" : false
+	       		"hidden" : false,
+	       		 formatter: 'number',
+                        formatoptions:{thousandsSeparator: ".", decimalPlaces: 0}
        		},
        	  {
 	       		"title" : false,
 	       		"name" : "monto_caja_cierre",
-	       		"label" : "MONTO CIERRE EFECTIVO",
+	       		"label" : "CIERRE EFECTIVO",
 	       		"id" : "monto_caja_cierre",
 	       		"search" : false,
 	       		"remove" : false,
 	       		"width" : 150,
 	       		"align":"right",
 	       		"sortable" : false,
-	       		"hidden" : false
+	       		"hidden" : false,
+	       		 formatter: 'number',
+                        formatoptions:{thousandsSeparator: ".", decimalPlaces: 0}
        		},{
 	       		"title" : false,
 	       		"name" : "monto_caja_cierre_cheque",
-	       		"label" : "MONTO CIERRE CHEQUE",
+	       		"label" : "CIERRE CHEQUE",
 	       		"id" : "monto_caja_cierre_cheque",
 	       		"search" : false,
 	       		"remove" : false,
 	       		"width" : 150,
 	       		"align":"right",
 	       		"sortable" : false,
-	       		"hidden" : false
+	       		"hidden" : false,
+	       		 formatter: 'number',
+                        formatoptions:{thousandsSeparator: ".", decimalPlaces: 0}
        		},
        	  {
 	       		"title" : false,
 	       		"name" : "monto_diferencia_arqueo",
-	       		"label" : "MONTO DIF. CIERRE EFEC.",
+	       		"label" : "DIF. CIERRE EFEC.",
 	       		"id" : "monto_diferencia_arqueo",
 	       		"search" : false,
 	       		"remove" : false,
 	       		"width" : 170,
 	       		"align":"right",
 	       		"sortable" : false,
-	       		"hidden" : false
+	       		"hidden" : false,
+	       		 formatter: 'number',
+                        formatoptions:{thousandsSeparator: ".", decimalPlaces: 0}
        		}, {
 	       		"title" : false,
 	       		"name" : "monto_diferencia_arqueo_cheque",
-	       		"label" : "MONTO DIF. CIERRE CHEQUE",
+	       		"label" : "DIF. CIERRE CHEQUE",
 	       		"id" : "monto_diferencia_arqueo_cheque",
 	       		"search" : false,
 	       		"remove" : false,
 	       		"width" : 170,
 	       		"align":"right",
 	       		"sortable" : false,
-	       		"hidden" : false
+	       		"hidden" : false,
+	       		 formatter: 'number',
+                        formatoptions:{thousandsSeparator: ".", decimalPlaces: 0}
        		},
                 {
 	       		"title" : false,

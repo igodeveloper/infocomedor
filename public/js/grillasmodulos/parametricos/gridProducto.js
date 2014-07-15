@@ -36,7 +36,7 @@ function cargarGrillaRegistro() {
        	"gridview" : true,
        	"multiselect" : false,
        	"viewrecords" : true,
-       	"rowNum":10,
+       	"rowNum":30,
        	"formatter": null,
        	"rowList":[10,20,30],
        	"pager": '#paginadorRegistro',

@@ -81,7 +81,7 @@ function cargarGrillaRegistro() {
 	       		"id" : "nombre_apellido",
 	       		"search" : false,
 	       		"remove" : false,
-	       		"width" : 200,
+	       		"width" : 130,
 	       		"align":"left",
 	       		"sortable" : false,
 	       		"hidden" : false
@@ -93,7 +93,7 @@ function cargarGrillaRegistro() {
 	       		"id" : "cod_caja",
 	       		"search" : false,
 	       		"remove" : false,
-	       		"width" : 200,
+	       		"width" : 130,
 	       		"align":"right",
 	       		"sortable" : false,
 	       		formatter: 'number',
@@ -107,7 +107,7 @@ function cargarGrillaRegistro() {
 	       		"id" : "cod_mov_caja",
 	       		"search" : false,
 	       		"remove" : false,
-	       		"width" : 200,
+	       		"width" : 150,
 	       		"align":"right",
 	       		"sortable" : false,
 	       		formatter: 'number',
@@ -121,7 +121,7 @@ function cargarGrillaRegistro() {
 	       		"id" : "fecha_hora_mov",
 	       		"search" : false,
 	       		"remove" : false,
-	       		"width" : 200,
+	       		"width" : 160,
 	       		"align":"left",
 	       		"sortable" : false,
 	       		"hidden" : false
@@ -147,7 +147,7 @@ function cargarGrillaRegistro() {
 	       		"id" : "desc_tipo_mov",
 	       		"search" : false,
 	       		"remove" : false,
-	       		"width" : 200,
+	       		"width" : 140,
 	       		"align":"left",
 	       		"sortable" : false,
 	       		"hidden" : false
@@ -159,7 +159,7 @@ function cargarGrillaRegistro() {
 	       		"id" : "cod_tipo_mov",
 	       		"search" : false,
 	       		"remove" : false,
-	       		"width" : 200,
+	       		"width" : 130,
 	       		"align":"right",
 	       		"sortable" : false,
 	       		"hidden" : true
@@ -171,7 +171,7 @@ function cargarGrillaRegistro() {
 	       		"id" : "factura_mov",
 	       		"search" : false,
 	       		"remove" : false,
-	       		"width" : 200,
+	       		"width" : 120,
 	       		"align":"right",
 	       		"sortable" : false,
 	       		"hidden" : false
@@ -186,7 +186,7 @@ function cargarGrillaRegistro() {
 	       		"width" : 200,
 	       		"align":"left",
 	       		"sortable" : false,
-	       		"hidden" : false
+	       		"hidden" : true
        		},
        	  {				
 	       		"title" : false,
@@ -203,23 +203,23 @@ function cargarGrillaRegistro() {
        	  {
 	       		"title" : false,
 	       		"name" : "observacion_mov",
-	       		"label" : "observacion_mov",
+	       		"label" : "OBSERVACION",
 	       		"id" : "observacion_mov",
 	       		"search" : false,
 	       		"remove" : false,
 	       		"width" : 200,
 	       		"align":"left",
 	       		"sortable" : false,
-	       		"hidden" : true
+	       		"hidden" : false
        		},
        	  {
 	       		"title" : false,
 	       		"name" : "tipo_mov",
-	       		"label" : "tipo_mov",
+	       		"label" : "TIPO",
 	       		"id" : "tipo_mov",
 	       		"search" : false,
 	       		"remove" : false,
-	       		"width" : 200,
+	       		"width" : 130,
 	       		"align":"left",
 	       		"sortable" : false,
 	       		"hidden" : true

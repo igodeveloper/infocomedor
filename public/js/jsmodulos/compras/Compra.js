@@ -406,7 +406,7 @@ function obtenerJsonDetalles() {
     }else {
         jsonObject.idproveedor = parseInt(jsonObject.idproveedor);
         jsonObject.codproducto = parseInt(jsonObject.codproducto);
-        jsonObject.cantidad = parseInt(jsonObject.cantidad);
+        jsonObject.cantidad = parseFloat(jsonObject.cantidad);
         jsonObject.preciounitario = parseInt(jsonObject.preciounitario);
         jsonObject.totalparcial = parseInt(jsonObject.totalparcial);
 //        alert(JSON.stringify(jsonObject));

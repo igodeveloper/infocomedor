@@ -269,7 +269,7 @@ function cargarGrillaComprasModal() {
                         "align": "center",
                         "hidden": false,
                         formatter: 'number',
-                        formatoptions:{thousandsSeparator: ".", decimalPlaces: 0},
+                        formatoptions:{thousandsSeparator: ".", decimalPlaces: 2},
                         width: 10
                     },
                     {
