@@ -29,7 +29,7 @@ class Produccion_ReporteproduccionController extends Zend_Controller_Action
         $json_rowData = $this->getRequest ()->getParam ( "parametros" );
        // die($json_rowData);
        // die();
-        $rowData = json_decode($json_rowData);
+        // $rowData = json_decode($json_rowData);
         //$curso = $rowData->curso;
         
         $var_nombrearchivo = 'productos';

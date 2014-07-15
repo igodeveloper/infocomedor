@@ -16,7 +16,8 @@
             {
                 //Llama al constructor de la clase padre
                 $this->FPDF($orientation,$unit,$format);
-                $this->parametros = json_decode($parametrosPDF);                
+                $this->parametros = json_decode($parametrosPDF);      
+               /* print_r($this->parametros->cod_producto_tipo); die();*/
                 //Iniciaci�n de variables
                 $this->Conn = new Conexion();
                 $this->B=0;
@@ -54,11 +55,11 @@
             $this->Cell(24,10,"Cod Producto",0,0,'L');                
             $this->SetX(45);
             $this->Cell(17,10,"Producto",0,0,'L');
-            $this->SetX(65);
-            $this->Cell(18,10,"Saldo",0,0,'L');
             $this->SetX(100);
-            $this->Cell(25,10,"Uni Med",0,0,'L');
+            $this->Cell(18,10,"Saldo",0,0,'L');
             $this->SetX(130);
+            $this->Cell(25,10,"Uni Med",0,0,'L');
+            $this->SetX(160);
             $this->Cell(19,10,"Actualizado",0,0,'L');
             $this->Ln(10);
 
@@ -68,74 +69,80 @@
         function Body()
         {          
 
-
-            //  $sql="select a.COD_TIPO_PRODUCTO,a.TIPO_PRODUCTO_DESCRIPCION
-            //     from TIPO_PRODUCTO a ";
-            // if($this->parametros->cod_producto_tipo){
-            //     $sql." where  a.COD_TIPO_PRODUCTO = ".$this->parametros->cod_producto_tipo;
-            // }
+             $sql="select a.COD_TIPO_PRODUCTO,a.TIPO_PRODUCTO_DESCRIPCION
+                from TIPO_PRODUCTO a ";
+                 // die($this->parametros->cod_producto_tipo);
+            if($this->parametros->cod_producto_tipo > 0){
+                $sql.=" where  a.COD_TIPO_PRODUCTO = ".$this->parametros->cod_producto_tipo;
+            }
            
-            //     $sql." order by a.COD_TIPO_PRODUCTO desc";            
-            // //echo $sql."<br>";                              
-            // $dtDatos = $this->Conn->query($sql);
+                $sql.=" order by a.COD_TIPO_PRODUCTO desc";            
+            //echo $sql."<br>";                              
+            $dtDatos = $this->Conn->query($sql);
             
-            // $count = 1;
+            $count = 1;
             
-            // while($row = mysql_fetch_assoc($dtDatos))
-            // {
-            //     $COD_TIPO_PRODUCTO     = $row['COD_TIPO_PRODUCTO'];
-            //     $TIPO_PRODUCTO_DESCRIPCION          = $row['TIPO_PRODUCTO_DESCRIPCION'];
-            //     // seteamos la cabecera 
+            while($row = mysql_fetch_assoc($dtDatos))
+            {
+                $COD_TIPO_PRODUCTO     = $row['COD_TIPO_PRODUCTO'];
+                $TIPO_PRODUCTO_DESCRIPCION          = $row['TIPO_PRODUCTO_DESCRIPCION'];
+                $this->Ln(5); 
+                $this->SetFont('Arial','',9);
+                $this->SetX(10);
+                $this->Cell(24,10,$TIPO_PRODUCTO_DESCRIPCION,0,0,'L');
+                $this->Ln(5); 
 
-                
-            //     $this->SetFont('Arial','',9);
-            //     $this->SetX(10);
-            //     $this->Cell(24,10,$TIPO_PRODUCTO_DESCRIPCION,0,0,'L');
 
+                $sql2="select 
+                    a.COD_PRODUCTO,
+                    b.PRODUCTO_DESC,
+                    a.SALDO_STOCK,
+                    b.COD_UNIDAD_MEDIDA,
+                    c.ISO_UNIDAD_MEDIDA,
+                    a.STOCK_FECHA_ACTUALIZA
+                from stock a
+                    join producto b on 
+                a.COD_PRODUCTO = b.COD_PRODUCTO
+                    join unidad_medida c on
+                b.COD_UNIDAD_MEDIDA = c.COD_UNIDAD_MEDIDA
+                    where b.COD_PRODUCTO_TIPO = ".$COD_TIPO_PRODUCTO."
+                order by b.PRODUCTO_DESC desc";   
 
-            //     $sql2="select 
-            //         a.COD_PRODUCTO,
-            //         b.PRODUCTO_DESC,
-            //         a.SALDO_STOCK,
-            //         b.COD_UNIDAD_MEDIDA,
-            //         c.ISO_UNIDAD_MEDIDA,
-            //         a.STOCK_FECHA_ACTUALIZA
-            //     from stock a
-            //         join producto b on 
-            //     a.COD_PRODUCTO = b.COD_PRODUCTO
-            //         join unidad_medida c on
-            //     b.COD_UNIDAD_MEDIDA = c.COD_UNIDAD_MEDIDA
-            //         where b.COD_PRODUCTO_TIPO = ".$COD_TIPO_PRODUCTO."
-            //     order by b.PRODUCTO_DESC desc";   
-
-            // //echo $sql."<br>";                              
-            // $dtDatos2 = $this->Conn->query($sql2);
-        
-            // $count2 = 1;
+                //echo $sql."<br>";                              
+                $dtDatos2 = $this->Conn->query($sql2);
             
-            // while($row2 = mysql_fetch_assoc($dtDatos2))
-            // {
-            //     $x=-2;
-            //     $this->SetX(11+$x);
-            //     $this->SetFont('Arial','',9);
-            //     $this->SetX(10);
-            //     $this->Cell(24,10,$COD_PRODUCTO,0,0,'L');                
-            //     $this->SetX(45);
-            //     $this->Cell(17,10,$PRODUCTO_DESC,0,0,'L');
-            //     $this->SetX(65);
-            //     $this->Cell(18,10,$SALDO_STOCK,0,0,'L');
-            //     $this->SetX(100);
-            //     $this->Cell(25,10,$COD_UNIDAD_MEDIDA,0,0,'L');
-            //     $this->SetX(130);
-            //     $this->Cell(19,10,$ISO_UNIDAD_MEDIDA,0,0,'L');
-            //     $this->SetX(160);
-            //     $this->Cell(19,10,$STOCK_FECHA_ACTUALIZA,0,0,'L');        
-            //     $this->fila++;
-            //     $count++;
-            //     $this->Ln(5);   
+                $count2 = 1;
+            
+                while($row2 = mysql_fetch_assoc($dtDatos2))
+                {
+                    $COD_PRODUCTO = $row2["COD_PRODUCTO"];
+                    $PRODUCTO_DESC = $row2["PRODUCTO_DESC"];
+                    $SALDO_STOCK = $row2["SALDO_STOCK"];
+                    // $COD_UNIDAD_MEDIDA = $row2["COD_UNIDAD_MEDIDA"];
+                    $ISO_UNIDAD_MEDIDA = $row2["ISO_UNIDAD_MEDIDA"];
+                    $STOCK_FECHA_ACTUALIZA = $row2["STOCK_FECHA_ACTUALIZA"];
 
 
-            // }            
+                    $x=-2;
+                    $this->SetX(11+$x);
+                    $this->SetFont('Arial','',9);
+                    $this->SetX(10);
+                    $this->Cell(24,10,$COD_PRODUCTO,0,0,'L');                
+                    $this->SetX(45);
+                    $this->Cell(17,10,$PRODUCTO_DESC,0,0,'L');
+                    $this->SetX(100);
+                    $this->Cell(18,10,$SALDO_STOCK,0,0,'L');
+                    // $this->SetX(100);
+                    // $this->Cell(25,10,$COD_UNIDAD_MEDIDA,0,0,'L');
+                    $this->SetX(130);
+                    $this->Cell(19,10,$ISO_UNIDAD_MEDIDA,0,0,'L');
+                    $this->SetX(160);
+                    $this->Cell(19,10,$STOCK_FECHA_ACTUALIZA,0,0,'L');        
+                    $this->fila++;
+                    $count2++;
+                    $this->Ln(5);   
+                } 
+            }           
         }
         //Pie de p�gina
         function Footer()

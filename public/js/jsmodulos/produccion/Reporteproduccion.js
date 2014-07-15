@@ -73,8 +73,8 @@ function obtenerJsonBuscar(){
 		jsonObject.cod_producto_tipo = $('#tipo-productos-modal').val();
 	}
 
-	var dataString = JSON.stringify(jsonObject);
-	return dataString;
+	
+	return jsonObject;
 }
 
 
