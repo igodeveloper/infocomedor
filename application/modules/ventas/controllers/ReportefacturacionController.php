@@ -22,48 +22,36 @@ class Ventas_ReportefacturacionController extends Zend_Controller_Action
     {
 
     }
-   public function existecajaAction()
-    {
-//      $this->_helper->layout->disableLayout();
-            $this->_helper->viewRenderer->setNoRender(true);
-            $result = '';
-            $parametrosNamespace = new Zend_Session_Namespace ( 'parametros' );
-			$json_rowData = $this->getRequest ()->getParam ( "parametros" );
-			$rowData = json_decode($json_rowData);
-			$nro_caja = $rowData->nro_caja;			
-            try {
-                $db = Zend_Db_Table::getDefaultAdapter();
-                $select = $db->select()
-                        ->from(array('C' => 'caja'), 
-                               array('cantidad' => 'count(*)'))
-                        ->where("cod_caja = ".$nro_caja);               
-                $result = $db->fetchAll($select);
-                foreach ($result as $arr) {
-                    $htmlResultado = json_encode(array("cantidad" => $arr["cantidad"]));
-                }
-            } catch (Exception $e) {
-                    $htmlResultado = "error";
-            }
-            echo $htmlResultado;
+    public function clientedataAction() {
+//        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $select = $db->select()
+                ->from(array('P' => 'cliente'))
+                ->order(array('P.cliente_des'));
+        $result = $db->fetchAll($select);
+
+        echo json_encode($result);
     }		
-    public function imprimirarqueocajaAction() {
+    public function imprimirreporteAction() {
     //        $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender(true);
         $json_rowData = $this->getRequest ()->getParam ( "parametros" );
+		//{"codcliente":"5","namecliente":"Ivan Gomez","codigointerno":"1","controlfiscal":null,"fechaemision":"2014-07-15","estado":"-1"}
        // die($json_rowData);
        // die();
         $rowData = json_decode($json_rowData);
-        $nro_caja = $rowData->nro_caja;
+        
         //$curso = $rowData->curso;
         
-        $var_nombrearchivo = 'caja_nro_'.trim($nro_caja);
+        $var_nombrearchivo = 'facturacion';
         $path_tmp = './tmp/';
         $orientation='P';
         $unit='mm';
         $format='A4';
         
         if(!isset($pdf))
-          $pdf= new PDFReportearqueocaja($orientation,$unit,$format,$json_rowData);
+          $pdf= new PDFReportefacturacion($orientation,$unit,$format,$json_rowData);
         $pdf->AliasNbPages();
         $pdf->AddPage();
         $pdf->Body($json_rowData);

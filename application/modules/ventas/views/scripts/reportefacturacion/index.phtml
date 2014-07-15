@@ -7,7 +7,8 @@
             appendFile($this->baseUrl() . '/js/i18n/grid.locale-es.js')->
             appendFile($this->baseUrl() . '/js/jquery.jqGrid.min.js')->
             appendFile($this->baseUrl() . "/js/bootstrap.js")->
-            appendFile($this->baseUrl() . "/js/jsmodulos/caja/Reportearqueocaja.js")->
+            appendFile($this->baseUrl() . "/js/jsmodulos/ventas/Reportefacturacion.js")->
+            
             appendFile($this->baseUrl() . "/js/jquery.tablescroll.js")->
             appendFile($this->baseUrl() . "/js/jquery.blockUI.js");
 
@@ -20,10 +21,10 @@
             ->prependStylesheet($this->baseUrl() . "/css/cssgenerico/ui.jqgrid.css")
             ->prependStylesheet($this->baseUrl() . "/css/cssgenerico/bootstrap.css")
             ->prependStylesheet($this->baseUrl() . "/css/cssgenerico/bootstrap-responsive.css")
-   			->prependStylesheet($this->baseUrl() . "/css/cssgenerico/contenedor.css")
-            ->prependStylesheet($this->baseUrl() . "/css/cssmodulos/CssGeneral.css")
-            ->prependStylesheet($this->baseUrl() . "/css/cssgenerico/ui.jqgrid.css")
+            ->prependStylesheet($this->baseUrl() . "/css/cssmodulos/compras/compra.css")
             ->prependStylesheet($this->baseUrl() . "/css/cssgenerico/default.css")
+            ->prependStylesheet($this->baseUrl() . "/css/cssgenerico/contenedor.css")
+            ->prependStylesheet($this->baseUrl() . "/css/cssgenerico/ui.jqgrid.css")
             ->prependStylesheet($this->baseUrl() . "/css/cssmodulos/parametricos/menucss3/css/cool_nav.css")
     ?>
     <head>
@@ -33,13 +34,12 @@
         <title>Infocomedor</title>
     </head>
     <body>
-             
-        <div class="container-fluid"> 
 
+        <div class="container-fluid"> 
             <div class="row-fluid">
                 <div class="span10">
-                    <div  class="titulo-cabecera" style="text-align: left">
-                                             <nav id="colorNav" >
+                     <div  class="titulo-cabecera" style="text-align: left">
+                    <nav id="colorNav" >
                         <ul>
                             <li class="menu">
                                 <a href="<?php echo $this->baseUrl() ."/parametricos/menu";?>" class="">MENU</a>
@@ -103,12 +103,12 @@
 
                         </ul>
                     </nav>
-	            </div> 
+                    </div> 
                     <div  class="titulo-cabecera">
-                        <h1 id="cabecera-titulo">Reporte Arqueo de Caja</h1>
+                        <h1 id="cabecera-titulo">Facturaci&oacuten</h1>
 
                     </div>
-                   
+
                     <div>
                         <div class="alert alert-block hide" id="warning-block-title">
                             <div id="warning-message-title"></div>
@@ -122,22 +122,431 @@
                         <div id="contenedor" class="filtro" align=center>
                             <table style="width: 90%; padding: 1%;">
                                 <tr>
-                                   <td style="width: 25%; text-align: center">
-                                        <label for="nrocajabusqueda-filtro" id="nrocajabusqueda-filtro-idioma">Nro de Caja: </label>
-										<input id="nrocajabusqueda-filtro"  class="input-block-level" >
+                                    <td style="width: 7%;text-align: right; ">C&oacutedigo Cliente</td>
+                                    <td style="width: 10%">
+                                        <input id="codcliente-filtro"  class="input-block-level just-number" >
+                                    </td>
+                                    <td style="width: 7%;text-align: right;">Cliente</td>
+                                    <td style="width: 20%">
+                                        <input id="namecliente-filtro"  class="input-block-level"  >
+                                    </td>
+                                    <td style="width: 7%;text-align: right;">C&oacuted Interno</td>
+                                    <td style="width: 13%">
+                                        <input id="codigointerno-filtro"  maxlength="10" class="input-block-level just-number"  >
+                                    </td>
+                                    <td style="width: 7%;text-align: right;">Factura</td>
+                                    <td style="width: 20%">
+                                        <input id="controlfiscal-filtro_1"  class="input-block-level" maxlength="3" value="001" style="width: 15%; display: inline; " >
+                                        <input id="controlfiscal-filtro_2"  maxlength="3" class="input-block-level" max="3" value="001" style="width: 15%; display: inline;" >
+                                        <input id="controlfiscal-filtro_3"  maxlength="10" class="input-block-level just-number" style="width: 60%; display: inline;" >
+                                    </td>
+                                     
+                             </tr>
+                             </table>
+                             <table style="width: 90%; padding: 1%;">
+                             <tr>
+                                   <td style="width: 7%;text-align: right;">Desde Emision</td>
+                                    <td style="width: 10%">
+                                        <input id="fechaemision-filtro"  class="input-block-level" >
+                                    </td>
+                                  
+                                    <td style="width: 10%">
+                                        <input id="fechavencimiento-filtro"  class="input-block-level" >
+                                    </td>
+                                    <td style="width: 7%;text-align: right;">Estado</td>
+                                    <td style="width: 13%">
+                                        <select class="input-block-level" name="estado-filtro-idioma" id="estado-filtro" onchange="">
+                                            <option value="-1">Estado</option>
+                                            <option value="P">Pendiente</option>
+                                            <option value="A">Anulado</option>
+                                            <option value="C">Cancelado</option>
+                                        </select>
                                     </td>
                                     
+
                                 </tr>
                             </table>
-                           
                         </div>
                         <div  id="tab-content">
-                            <div id="contenedor" align=center>                               
-                                <a id="imprimirReporte"  class="btn btn-info"><img src="<?php echo $this->baseUrl() . "/css/images/buscar.png"; ?>" id="buscar-img" title="Generar Reporte Arqueo de Caja"  style="cursor: hand;"/></a>
+                            <div id="contenedor" align=center>
+                                <a id="imprimirReporte"  class="btn btn-info" <?php echo $this->guardar ?>><img src="<?php echo $this->baseUrl() . "/css/images/nuevo.png"; ?>" id="nuevo-img" title="Generar Reporte de Facturaci&oacuten"  style="cursor: hand;"/></a>                                
                             </div> 
                         </div>
                     </div>
-                </div>               
+                    <div id="contenedor" >
+
+                        <div class="contenedor-grid">
+                            <table id="grillaCompras"></table>
+                            <div id="paginadorCompras"></div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="modal hide" id="modalEditar">
+                    <div class="modal-header">
+
+                        <div id="cabeceraModal" class="btn btn-info">
+                            <h3 id="editar-nuevo" style="color:white; display: inline;"><?php echo 'EditarGestionComisionVendedores'; ?></h3>
+                            <button data-dismiss="modal" class="close" type="button" id="cerrar-bot" style="display: inline">X</button>
+                        </div>
+                        <div class="alert alert-block hide" id="warning-block">
+                            <div id="warning-message"></div>
+                        </div>
+                        <div class="alert alert-success hide" id="success-block"><?php echo 'datosalmacenadosexitosamente'; ?></div>
+                        <div class="alert alert-error hide" id="error-block"></div>
+                        <div class="alert alert-success hide" id="limpiar-block"></div>
+                    </div>
+
+                    <div class="modal-body">
+                        <!--                        <div class="well">-->
+                        <div style="text-align: center;">
+                       
+                        <button  id="buscar-karrito" class="btn btn-navbar" data-toggle="collapse"><img src="<?= $this->baseUrl() . "/css/Icons/thumbails/_0030_Search.png"; ?>"/></button >
+                        
+                        
+                        <button  id="cargar-karrito"class="btn btn-navbar" data-toggle="collapse"><img src="<?= $this->baseUrl() . "/css/Icons/thumbails/_0009_Add.png"; ?>"/></button >
+                        </div>
+                        <input class="input-block-level" type="hidden" id="id-compra">
+                        <input class="input-block-level" type="hidden" id="estado-compra">
+
+                        <input class="input-block-level" type="hidden" id="codigoCaja-modal-ventas">
+                        <input class="input-block-level" type="hidden" id="usuarioCaja-modal-ventas">
+
+
+                        <!-- datos del cliente-->
+                        <div id="cabecera-factura">
+                        <table id="datos-clientes" class="well form-inline"> 
+                            <tr>    
+                                <td style="width: 10%">
+                                    <label for="codigocliente-modal" id="codigocliente-modal-idioma">C&oacutedigo</label>
+                                </td>
+                                <td>
+                                    <button class="btn-compra" type="button" onclick="validacliente('cod');"><img src="<?= $this->baseUrl() . "/css/Icons/thumbails/_0007_Tick.png"; ?>"/></button>
+                                </td>
+                                <td style="width: 10%">
+                                    <input id="codigocliente-modal"  maxlength="10" class="input-block-level just-number" 
+                                           onchange="" >
+                                </td>
+
+                                <td style="width: 10%">
+                                    <label for="ruc-modal" id="clienteRuc-modal-idioma">RUC</label>
+                                </td>
+                                <td>
+                                    <button class="btn-compra" type="button" onclick="validacliente('ruc');"><img src="<?= $this->baseUrl() . "/css/Icons/thumbails/_0007_Tick.png"; ?>"/></button>
+                                </td>
+                                <td style="width: 15%">
+                                    <input id="ruc-modal"  maxlength="10" class="input-block-level" onchange="" placeholder=""  >
+                                </td>
+
+                                <td style="width: 15%">
+                                    <label for="razonsocial-modal" id="razonsocial-modal-idioma">Raz&oacuten Social</label>
+                                </td>
+                                <td>
+                                    <button class="btn-compra" type="button" onclick="validacliente('name');"><img src="<?= $this->baseUrl() . "/css/Icons/thumbails/_0007_Tick.png"; ?>"/></button>
+                                </td>
+                                <td style="width: 40%">
+                                    <input  type="hidden" id="idcliente" value="1">
+                                    <input id="razonsocial-modal"  type="text" class="input-block-level" placeholder="" >
+                                </td>
+
+
+                            </tr>
+                        </table>
+
+                      
+                        <!-- datos de la factura-->
+                        <table id="datos-facturas" class="well form-inline">
+                            <tr>
+                                <td id="numeroFacturaLb" style="width: 6%">
+                                    <label for="factura-modal" id="factura-modal-idioma">N&uacutemero Factura</label>
+                                </td>
+                                <td id="numeroFacturaIn"style="width: 10%">
+                                    <input id="factura-modal"  maxlength="10" class="input-block-level just-number" onchange="" placeholder="Autogenerado" >
+                                </td>
+                                </td>
+                                <td style="width: 5%">
+                                    <label for="controlfiscal-modal" id="controlfiscal-modal-idioma">Control Fiscal</label>
+                                </td>
+                                <td style="width: 15%">
+                                    <input id="controlfiscal-modal_1"  class="input-block-level" maxlength="3" value="001" style="width: 20%"  >
+                                    <input id="controlfiscal-modal_2"  maxlength="10" class="input-block-level" max="3" value="001" style="width: 20%"  >
+                                    <input id="controlfiscal-modal_3"  maxlength="10" class="input-block-level just-number" style="width: 50%" placeholder="Nro Factura"  >
+
+                                </td>
+                                <td style="width: 6%"> 
+                                    <label for="FechaFactura-modal" id="FechaFactura-modal-idioma">Fechas Factura</label>
+                                </td>
+                                <td style="width: 10%;" >
+                                    <input id="FechaFactura-modal"  maxlength="10" class="input-block-level" onchange=""  >
+                                </td>
+                                <td style="width: 6%">
+                                    <label for="FechaVencimiento-modal" id="FechaVencimiento-modal-idioma">Fecha Vencimiento</label>
+                                </td>
+                                <td style="width: 10%">
+                                    <input id="FechaVencimiento-modal"  maxlength="10" class="input-block-level" onchange=""  >
+                                </td>
+                            </tr>
+
+                        </table>
+
+                       </div> <!-- Cierra div que contiene cabecera-factura-->
+                        <!-- agregar productos-->
+                        <table id="addProductos" class=" table well form-inline">
+                           
+                            <!-- Valores de los items a ingresar-->
+                            <tr id="detalle-receta">  
+                                <td style="width:8%">
+                                    <label for="codproducto-title" id="factura-title-idioma">C&oacuted Producto</label>
+                                    <div class="btn-confirmar" style="width: 80%">
+                                        <input id="codproducto-item"  maxlength="10" class="input-block-level" onchange="" 
+                                               style="width: 80%" placeholder="Ingresa el codigo"  >
+                                        <button class="btn-compra" onclick="productvalidation('cod');"><img src="<?= $this->baseUrl() . "/css/Icons/thumbails/_0007_Tick.png"; ?>"/></button>
+                                    </div>
+                                </td >
+                                <td style="width: 16%">
+                                <label for="descripcionproducto-title" id="factura-title-idioma">Descripci&oacuten</label>
+                                    <div class="btn-confirmar" style="width: 90%">  
+                                        <input id="descripcionproducto-item"  class="input-block-level" onchange="" style="width: 95%" placeholder="Escribi en nombre del producto"  >
+                                        <button class="btn-compra" onclick="productvalidation('descripcion');"> <img  src="<?= $this->baseUrl() . "/css/Icons/thumbails/_0007_Tick.png"; ?>" alt="Confirmar Codigo"/></button>
+                                    </div> 
+                                </td>
+                                <td style="width:2%">
+                                    <label for="unidadmedida-title" id="unidadmedida-title-idioma">Medida</label>
+                                    <input id="codUnidadMedida-item" type="hidden" value="0">
+                                    <input id="unidadmedida-item"  class="input-block-level" onchange="">
+                                </td>
+                                <td style="width: 4%; text-align: center;">
+                                    <label for="precio-title" id="precio-title-idioma">Precio</label>
+                                    <input id="precio-item"   class="input-block-level just-number"  value="0" type="number" step="100"   >
+                                </td>
+                                <td style="width: 2%; text-align: center;">
+                                    <label for="cant-title" id="cant-title-idioma">Cant</label>
+                                    <input id="cant-item"   class="input-block-level just-number"  value="0.000" type="number" step="0.1"  >
+                                </td>
+                                <td style="width: 4%; text-align: center;">
+                                    <label for="total-title" id="total-title-idioma">Total</label>
+                                    <input id="total-item"  class="input-block-level"  value="0.000" type="number" step="0.1"  >
+                                </td>
+                            
+                                <td style="width: 4%">
+                                    <br>
+                                    <button title="Add Product" class="btn-compra" type="button" id="addItem"><img src="<?= $this->baseUrl() . "/css/Icons/thumbails/_0009_Add.png"; ?>"/></button>
+                                    <button title="Reload Product" class="btn-compra" type="button" id="reloadItem"><img src="<?= $this->baseUrl() . "/css/Icons/thumbails/_Reload.png"; ?>"/></button>
+                                </td>
+                            </tr>
+
+                        </table>
+
+                    </div>
+<!--                    <div id="contenedormodal" > -->
+                            <table id="grillaComprasModal" ></table>
+                            <div id="paginadorComprasModal"></div>
+
+                             <!-- <table id="grillaDetalleFactura" class="hide"></table> -->
+                           
+<!--                    </div>-->
+                    <div class="modal-footer" id="modal-footer-ventas">
+                        <a data-dismiss="modal" class="btn" id="cancelar-bot"><?php echo 'Cancelar'; ?></a>
+                        <a class="btn btn-info" id="guardar"><?php echo 'Guardar'; ?></a>
+                    </div>
+                </div>
+
+                <!-- MODAL VER DETALLE -->
+
+                <div class="modal hide" id="modalDetalleFactura">
+                    <div class="modal-header">
+
+                        <div id="cabeceraModal" class="btn btn-info">
+                            <h3 id="" style="color:white; display: inline;">Detalle Factura</h3>
+                            <button data-dismiss="modal" class="close" type="button" id="cerrar-detalle" style="display: inline">X</button>
+                        </div>
+                       
+                    </div>
+
+                    <div class="modal-body">
+                        <!-- datos del cliente-->
+                        <div id="cabecera-factura-modalDetalle">
+                         <table id="datos-clientes-modalDetalle" class="well form-inline"> 
+                            <tr>    
+                                <td style="width: 10%">
+                                    <label for="codigocliente-modalDetalle" id="codigocliente-modalDetalle-idioma">C&oacutedigo</label>
+                                </td>
+                               
+                                <td style="width: 10%">
+                                    <input id="codigocliente-modalDetalle"  maxlength="10" class="input-block-level just-number" 
+                                           onchange="" >
+                                </td>
+
+                                <td style="width: 10%">
+                                    <label for="ruc-modalDetalle" id="clienteRuc-modalDetalle-idioma">RUC</label>
+                                </td>
+                               
+                                <td style="width: 15%">
+                                    <input id="ruc-modalDetalle"  maxlength="10" class="input-block-level" onchange="" placeholder=""  >
+                                </td>
+
+                                <td style="width: 15%">
+                                    <label for="razonsocial-modalDetalle" id="razonsocial-modalDetalle-idioma">Raz&oacuten Social</label>
+                                </td>
+                             
+                                <td style="width: 40%">
+                          
+                                    <input id="razonsocial-modalDetalle"  type="text" class="input-block-level" placeholder="" >
+                                </td>
+
+
+                            </tr>
+                        </table>
+
+                        <!-- datos de la factura-->
+                        <table id="datos-facturas-modalDetalle" class="well form-inline">
+                            <tr>
+                                <td id="numeroFacturaLbDetalle" style="width: 6%">
+                                    <label for="factura-modalDetalle" id="factura-modalDetalle-idioma">N&uacutemero Factura</label>
+                                </td>
+                                <td id="numeroFacturaInDetalle"style="width: 10%">
+                                    <input id="factura-modalDetalle"  maxlength="10" class="input-block-level just-number" onchange="" placeholder="Autogenerado" >
+                                </td>
+                                </td>
+                                <td style="width: 5%">
+                                    <label for="controlfiscal-modalDetalle" id="controlfiscal-modalDetalle-idioma">Control Fiscal</label>
+                                </td>
+                                <td style="width: 15%">
+                                    <input id="controlfiscal-modalDetalle_1"  class="input-block-level" maxlength="3" value="001" style="width: 20%"  >
+                                    <input id="controlfiscal-modalDetalle_2"  maxlength="10" class="input-block-level" max="3" value="001" style="width: 20%"  >
+                                    <input id="controlfiscal-modalDetalle_3"  maxlength="10" class="input-block-level just-number" style="width: 50%" placeholder="Nro Factura"  >
+
+                                </td>
+                                <td style="width: 6%"> 
+                                    <label for="FechaFactura-modalDetalle" id="FechaFactura-modal-idioma">Fechas Factura</label>
+                                </td>
+                                <td style="width: 10%;" >
+                                    <input id="FechaFactura-modalDetalle"  maxlength="10" class="input-block-level" onchange=""  >
+                                </td>
+                               
+                            </tr>
+
+                        </table>
+
+                       </div> <!-- Cierra div que contiene cabecera-factura-->
+                       
+
+                    </div>
+                    <table id="grillaDetalleFactura" ></table>
+                    <div class="modal-footer" id="modal-footer-Detalle">
+                        <a data-dismiss="modal" class="btn" id="cancelar-detalle"><?php echo 'Cancelar'; ?></a>
+                       
+                    </div>
+                </div>
+                <!--    MODAL KARRITO     -->
+                <div class="modal hide" id="modalKarrito">   
+                    <div class="modal-header">
+                        <div id="cabeceraModal" class="btn btn-info">
+                            <h3 id="title-modal-karrito" style="color:white; display: inline;">Buscar Pedidos</h3>
+                            <button data-dismiss="modal" class="close" type="button" id="cerrar-bot-karrito" style="display: inline">X</button>
+                        </div>
+                         <div class="alert alert-block hide" id="warning-block-karrito">
+                            <div id="warning-message-karrito"></div>
+                        </div>
+                    </div>                
+                    <div class="modal-body">
+                         <table style="width: 90%; padding: 1%;">
+                                <tr>
+                                    
+                                    <td style="width: 10%">
+                                        <input id="codcliente-karrito"  class="input-block-level just-number" placeholder="Codigo Cliente">
+                                    </td>
+                                   
+                                    <td style="width: 18%">
+                                        <input id="namecliente-karrito"  class="input-block-level" placeholder="Nombre Cliente">
+                                    </td>
+                                    
+                                    <td style="width: 10%">
+                                        <input id="codmesa-karrito"  maxlength="10" class="input-block-level just-number" placeholder="Codigo Mesa">
+                                    </td>
+                                    <td style="width: 5%">
+                                     <button title="Reload Filter" class="btn-compra" type="button" id="reloadFilter"><img src="<?= $this->baseUrl() . "/css/Icons/thumbails/_Reload.png"; ?>"/></button>
+                                     <button class="btn-compra" type="button" id="searchtransaction" ><img src="<?= $this->baseUrl() . "/css/Icons/thumbails/_0007_Tick.png"; ?>"/></button>
+                                    </td>
+
+                                </tr>
+                            </table>
+                       
+              
+                        
+                            <!--                            Aca se pone la grilla para el modal-->
+                            <table id="grillaRegistroKarrito"></table>
+                            <div id="paginadorRegistroKarrito"></div>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <a data-dismiss="modal" class="btn" id="cerrar-transactions"><?php echo 'Cancelar'; ?></a>
+                        <a class="btn btn-info" id="select-transactions"><?php echo 'Seleccionar'; ?></a>
+                    </div>
+                </div>
+                <!--    FIN - MODAL KARRITO     -->
+                                <!--    MODAL FORMA DE PAGO     -->
+                <div class="modal hide" id="modalFormaPago">   
+                    <div class="modal-header">
+                        <div id="cabeceraModal" class="btn btn-info">
+                            <h3 id="title-modal-karrito" style="color:white; display: inline;">Forma de Pago</h3>
+                            <button data-dismiss="modal" class="close" type="button" id="cerrar-bot-karrito" style="display: inline">X</button>
+                             <div class="alert alert-block hide" id="warning-block-pagos">
+                            <div id="warning-message-pagos"></div>
+                        </div>
+                        </div>
+                    </div>                
+                    <div class="modal-body">
+                         <table style="width: 90%; padding: 1%;">
+                                <tr>
+                                <td style="text-align: right" class="checkboxes" >
+                                    Efectivo : <input type="checkbox" name="formaPagoEfectivo" id="formaPagoEfectivo" checked value="EF" onclick="selectFormaPago('efectivo');">
+                                    <br>
+                                    Cheque : <input type="checkbox" name="formaPagoCheque" id="formaPagoCheque" value="CH" onclick="selectFormaPago('cheque');" >
+                                </td>
+                                <td class="cheque">
+                                    <label for="banco-modal-pagos" id="banco-modal-pagos-idioma">Banco:</label>
+                                </td>
+                                <td class="cheque">
+                                    <input id="banco-modal-pagos"  class="input-block-level " onchange="" >
+                                </td>
+                                <td class="cheque">
+                                    <label for="cheque-modal-pagos" id="cheque-modal-pagos-idioma">Cheque:</label>
+                                </td>
+                                 <td class="cheque">
+                                    <input id="cheque-modal-pagos"  class="input-block-level just-number" onchange="" >
+                                </td>
+                                <td>
+                                    <label for="montoPago-modal-pagos" id="montoPago-modal-pagos-idioma">Monto pago:</label>
+                                </td>
+                                <td >
+                                    <input id="montoPago-modal-pagos"  class="input-block-level just-number"  onchange="" >
+                                </td>
+                                <td>
+                                    <label for="saldoPendiente-modal-pagos" id="factura-modal-pagos-idioma just-number">Saldo Factura:</label>
+                                </td>
+                                <td >
+                                    <input id="saldoPendiente-modal-pagos"  class="input-block-level" onchange="">
+                                    <input id="totalFactura-modal-pagos"  class="hide" onchange="">
+                                </td>
+                                <td>
+                                <button title="Agregar Pago" class="btn-compra" type="button" id="addPago"><img src="<?= $this->baseUrl() . "/css/Icons/thumbails/_0009_Add.png"; ?>"/></button>
+                                 </td>
+                            </tr>
+                        </table>
+                            <!--Aca se pone la grilla para el modal-->
+                            <table id="grillaRegistroPagoVenta"></table>
+                            <div id="paginadorRegistroPagoVenta"></div>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <a data-dismiss="modal" class="btn" id="cerrar-venta"><?php echo 'Cancelar'; ?></a>
+                        <a class="btn btn-info" id="guardar-venta"><?php echo 'Confirmar'; ?></a>
+                    </div>
+                </div>
             </div>
         </div>
     </body>
