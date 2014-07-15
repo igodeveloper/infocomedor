@@ -7,7 +7,7 @@
             appendFile($this->baseUrl() . '/js/i18n/grid.locale-es.js')->
             appendFile($this->baseUrl() . '/js/jquery.jqGrid.min.js')->
             appendFile($this->baseUrl() . "/js/bootstrap.js")->
-            appendFile($this->baseUrl() . "/js/jsmodulos/caja/Reportearqueocaja.js")->
+            appendFile($this->baseUrl() . "/js/jsmodulos/compras/Reportepagos.js")->
             appendFile($this->baseUrl() . "/js/jquery.tablescroll.js")->
             appendFile($this->baseUrl() . "/js/jquery.blockUI.js");
 
@@ -20,11 +20,11 @@
             ->prependStylesheet($this->baseUrl() . "/css/cssgenerico/ui.jqgrid.css")
             ->prependStylesheet($this->baseUrl() . "/css/cssgenerico/bootstrap.css")
             ->prependStylesheet($this->baseUrl() . "/css/cssgenerico/bootstrap-responsive.css")
-   			->prependStylesheet($this->baseUrl() . "/css/cssgenerico/contenedor.css")
-            ->prependStylesheet($this->baseUrl() . "/css/cssmodulos/CssGeneral.css")
-            ->prependStylesheet($this->baseUrl() . "/css/cssgenerico/ui.jqgrid.css")
+            ->prependStylesheet($this->baseUrl() . "/css/cssmodulos/compras/compra.css")
             ->prependStylesheet($this->baseUrl() . "/css/cssgenerico/default.css")
-            ->prependStylesheet($this->baseUrl() . "/css/cssmodulos/parametricos/menucss3/css/cool_nav.css")
+            ->prependStylesheet($this->baseUrl() . "/css/cssgenerico/contenedor.css")
+            ->prependStylesheet($this->baseUrl() . "/css/cssgenerico/ui.jqgrid.css")
+            ->prependStylesheet($this->baseUrl() . "/css/cssmodulos/parametricos/menucss3/css/cool_nav.css");
     ?>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
@@ -32,14 +32,14 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <title>Infocomedor</title>
     </head>
-    <body>
-             
-        <div class="container-fluid"> 
 
+    <body>
+
+        <div class="container-fluid"> 
             <div class="row-fluid">
                 <div class="span10">
-                    <div  class="titulo-cabecera" style="text-align: left">
-                         <nav id="colorNav" >
+                 <div  class="titulo-cabecera" style="text-align: left">
+                                        <nav id="colorNav" >
                         <ul>
                             <li class="menu">
                                 <a href="<?php echo $this->baseUrl() ."/parametricos/menu";?>" class="">MENU</a>
@@ -47,31 +47,38 @@
                             <li class="red">
                                 <a href="#" class="" title="COMPRAS">COMPRAS</a>
                                 <ul>
-                                    <li><a href="<?php echo $this->baseUrl() ."/parametricos/proveedor";?>">Proveedor</a></li>
-                                    <li><a href="<?php echo $this->baseUrl() ."/compras/compra2";?>">Compras - Pagos</a></li>
-                                    <li><a href="<?php echo $this->baseUrl() ."/compras/pagos";?>">Pagos</a></li>
+                                <li><a href="<?php echo $this->baseUrl() ."/parametricos/proveedor";?>">Proveedor</a></li>
+                                <li><a href="<?php echo $this->baseUrl() ."/compras/compra2";?>">Compras - Pagos</a></li>
+                                <li><a href="<?php echo $this->baseUrl() ."/compras/pagos";?>">Pagos</a></li>
+                                <li><a href="<?php echo $this->baseUrl() ."/compras/Reportecompras";?>">Reporte Compras</a></li>
+                                <li><a href="<?php echo $this->baseUrl() ."/compras/Reportepagos";?>">Reporte Pagos</a></li>
 
-                                </ul>
+                              
+                            </ul>
                             </li>
                             <li class="green">
                                 <a href="#" class="" title="PRODUCCION">PRODUCCION</a>
                                 <ul>
-                                    <li><a href="<?php echo $this->baseUrl() ."/parametricos/tipoproducto";?>">Tipo Producto</a></li>
-                                    <li><a href="<?php echo $this->baseUrl() ."/parametricos/producto";?>">Producto</a></li>
-                                    <li><a href="<?php echo $this->baseUrl() ."/produccion/receta";?>">Recetas</a></li>
-                                    <li><a href="<?php echo $this->baseUrl() ."/produccion/productofinal";?>">Produccion</a></li>
+                                <li><a href="<?php echo $this->baseUrl() ."/parametricos/tipoproducto";?>">Tipo Producto</a></li>
+                                <li><a href="<?php echo $this->baseUrl() ."/parametricos/producto";?>">Producto</a></li>
+                                <li><a href="<?php echo $this->baseUrl() ."/produccion/receta";?>">Recetas</a></li>
+                                <li><a href="<?php echo $this->baseUrl() ."/produccion/productofinal";?>">Produccion</a></li>
+                                <li><a href="<?php echo $this->baseUrl() ."/produccion/Reporteproduccion";?>"> Reporte Produccion</a></li>
 
-                                </ul>
+                            </ul>
                             </li>
                             <li class="blue">
                                 <a href="#" class="" title="VENTAS">VENTAS</a>
                                 <ul>
-                                     <li><a href="<?php echo $this->baseUrl() ."/parametricos/empresa";?>">Empresa Clientes</a></li>
-                                     <li><a href="<?php echo $this->baseUrl() ."/parametricos/cliente";?>">Clientes</a></li>
-                                     <li><a href="<?php echo $this->baseUrl() ."/ventas/karrito";?>">Pedidos</a></li>
-                                     <li><a href="<?php echo $this->baseUrl() ."/ventas/factura";?>">Facturacion</a></li>
-
-                                </ul>
+                                <li><a href="<?php echo $this->baseUrl() ."/parametricos/empresa";?>">Empresa Clientes</a></li>
+                                 <li><a href="<?php echo $this->baseUrl() ."/parametricos/cliente";?>">Clientes</a></li>
+                                 <li><a href="<?php echo $this->baseUrl() ."/ventas/karrito";?>">Pedidos</a></li>
+                                 <li><a href="<?php echo $this->baseUrl() ."/ventas/factura";?>">Facturación</a></li>
+                                 <li><a href="<?php echo $this->baseUrl() ."/ventas/Reporteclientes";?>">Reporte Clientes</a></li>
+                                 <li><a href="<?php echo $this->baseUrl() ."/ventas/Reportefacturacion";?>">Reporte Facturación</a></li>
+                                 <li><a href="<?php echo $this->baseUrl() ."/ventas/Reportepedidos";?>">Reporte Pedidos</a></li>
+                                
+                            </ul>
                             </li>
                             <li class="yellow">
                                 <a href="#" class="" title="INVENTARIO">INVENTARIO</a>
@@ -87,7 +94,8 @@
                                     <li><a href="<?php echo $this->baseUrl() ."/caja/caja";?>">Caja</a></li>
                                     <li><a href="<?php echo $this->baseUrl() ."/caja/tipomovimiento";?>">Tipo Movimiento</a></li>
                                     <li><a href="<?php echo $this->baseUrl() ."/caja/movcaja";?>">Movimientos</a></li>
-                               </ul>
+                                   <li><a href="<?php echo $this->baseUrl() ."/caja/Reportearqueocaja";?>">Reporte Arqueo de caja</a></li>
+                                </ul>
                            </li>
                            <li class="">
                                 <a href="<?php echo $this->baseUrl() ."/menus/menu";?>">LogOut</a>
@@ -95,12 +103,14 @@
 
                         </ul>
                     </nav>
-	            </div> 
+
+
+	         </div> 
                     <div  class="titulo-cabecera">
-                        <h1 id="cabecera-titulo">Reporte Arqueo de Caja</h1>
+                        <h1 id="cabecera-titulo">Reporte de Pagos</h1>
 
                     </div>
-                   
+                  
                     <div>
                         <div class="alert alert-block hide" id="warning-block-title">
                             <div id="warning-message-title"></div>
@@ -114,23 +124,47 @@
                         <div id="contenedor" class="filtro" align=center>
                             <table style="width: 90%; padding: 1%;">
                                 <tr>
-                                   <td style="width: 25%; text-align: center">
-                                        <label for="nrocajabusqueda-filtro" id="nrocajabusqueda-filtro-idioma">Nro de Caja: </label>
-										<input id="nrocajabusqueda-filtro"  class="input-block-level" >
+                                    
+                                    <td style="width: 7%">
+                                        <label for="codigointerno-filtro" id="codigointerno-filtro-idioma">C&oacute;d. Interno</label>
+                                    </td>
+                                    <td style="width: 13%">
+                                        <input id="codigointerno-filtro"  maxlength="10" class="input-block-level" >
+                                    </td>
+                                    <td style="width: 7%">
+                                        <label for="nrocheque-filtro" id="nrocheque-filtro-idioma">Cheque:</label>
+                                    </td>
+                                    <td style="width: 13%">
+                                        <input id="nrocheque-filtro"  maxlength="10" class="input-block-level" >
                                     </td>
                                     
+                                    <td style="width: 10%">
+                                        <label for="formapago-filtro" id="formapago-filtro-idioma">Pago</label>
+                                    </td>
+                                    <td style="width: 15%">
+                                        <select class="input-block-level" name="estado-filtro-idioma" id="formapago-filtro" onchange="">
+                                            <option value="-1">Seleccione</option>
+                                            <option value="A">Anulado</option>
+                                            <option value="T">Activo</option>
+                                        </select>
+                                    </td>
+
                                 </tr>
                             </table>
-                           
                         </div>
                         <div  id="tab-content">
-                            <div id="contenedor" align=center>                               
-                                <a id="imprimirReporte"  class="btn btn-info"><img src="<?php echo $this->baseUrl() . "/css/images/buscar.png"; ?>" id="buscar-img" title="Generar Reporte Arqueo de Caja"  style="cursor: hand;"/></a>
+                            <div id="contenedor" align=center>
+                                <a id="imprimirReporte"  class="btn btn-info"><img src="<?php echo $this->baseUrl() . "/css/images/buscar.png"; ?>" id="buscar-img" title="Generar reporte de Pagos"  style="cursor: hand;"/></a>
+
+
                             </div> 
                         </div>
                     </div>
-                </div>               
+                </div>
+
+
+               
+                </div>
             </div>
-        </div>
     </body>
 </html>

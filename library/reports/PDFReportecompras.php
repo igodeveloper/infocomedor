@@ -36,7 +36,7 @@
             if(trim($this->parametros->nameproveedor) <> '')
                 $nameproveedor = $this->parametros->nameproveedor;
             $codigointerno = '';
-            if(trim($rowData->codigointerno) <> '')
+            if(trim($this->parametros->codigointerno) <> '')
                 $codigointerno = $this->parametros->codigointerno;        
             $controlfiscal = '';
             if(trim($this->parametros->controlfiscal) <> 'NULL')
