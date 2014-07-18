@@ -348,9 +348,9 @@ public function guardarAction() {
 	            );
 	            $insert = $db->insert('FACTURA', $data);
 	            $factura_nro = $db->lastInsertId();
-	            
+	            $i = 1;
                 foreach ($dataVentaDetalle as $fila) {
-                    $i = 0;
+                    
                  	$data = array(
 		                'FAC_NRO'=>$factura_nro,
 						'FAC_DET_ITEM'=>$i++,
