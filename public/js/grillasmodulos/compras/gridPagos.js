@@ -56,6 +56,14 @@ function cargarGrillaPagos() {
                         width: 30,
                         align: 'right'
 
+                    },{
+                        name: 'NOMBRE_PROVEEDOR',
+                        label: 'PROVEEDOR',
+                        id: "NOMBRE_PROVEEDOR",
+                        hidden: false,
+                        width: 50,
+                        align: 'left'
+
                     },
                     
                     {

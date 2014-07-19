@@ -189,7 +189,8 @@ class Ventas_KarritoController extends Zend_Controller_Action {
 							'C.FACT_NRO',
                 	  		'C.ESTADO'))
                 ->joinLeft(array('P' => 'CLIENTE'), 'C.COD_CLIENTE = P.COD_CLIENTE')
-                ->join(array('M' => 'PRODUCTO'), 'C.COD_PRODUCTO = M.COD_PRODUCTO');
+                ->join(array('M' => 'PRODUCTO'), 'C.COD_PRODUCTO = M.COD_PRODUCTO')
+                ->order(array('C.COD_KARRITO DESC'));
 //                ->join(array('F' => 'FORMA_PAGO'), 'C.COD_FORMA_PAGO = F.COD_FORMA_PAGO');
 
 //        die($select);

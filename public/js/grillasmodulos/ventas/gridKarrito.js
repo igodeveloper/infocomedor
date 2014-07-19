@@ -62,6 +62,8 @@ function cargarGrillaRegistro() {
                         label: 'FECHA',
                         id: 'KAR_FECH_MOV',
                         align: 'center',
+                        formatter: 'date', 
+                        formatoptions: { srcformat: 'Y/m/d', newformat: 'd/m/Y'},
                         width: 25,
                         hidden: false
                     },

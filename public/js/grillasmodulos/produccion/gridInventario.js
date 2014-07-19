@@ -118,6 +118,8 @@ function cargarGrillaRegistro() {
                         name: 'INVENTARIO_FECHA',
                         label: 'FECHA INVENTARIO',
                         id: 'INVENTARIO_FECHA',
+                        formatter: 'date', 
+                        formatoptions: { srcformat: 'Y/m/d', newformat: 'd/m/Y'},
                         align: 'left',
                         width: 20,
                         hidden: false
@@ -176,7 +178,7 @@ function cargarGrillaRegistro() {
 					groupColumnShow : false,
 					groupDataSorted : true,
 					groupCollapse : true,
-					groupText : [ '<b>Codigo de Inventario {0} -  Cantidad de Productos {1}</b>' ]
+					groupText : [ '<b>Código de Inventario {0} -  Cantidad de Productos {1}</b>' ]
 				}
             }).navGrid('#paginadorRegistro', {
         add: false,

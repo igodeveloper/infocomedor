@@ -51,7 +51,8 @@ class Produccion_InventarioController extends Zend_Controller_Action {
                     'UM.DESC_UNIDAD_MEDIDA'))
                 ->join(array('P' => 'PRODUCTO'), 'S.COD_PRODUCTO = P.COD_PRODUCTO')
                 ->join(array('TP' => 'TIPO_PRODUCTO'), 'P.COD_PRODUCTO_TIPO = TP.COD_TIPO_PRODUCTO')
-                ->join(array('UM' => 'UNIDAD_MEDIDA'), 'UM.COD_UNIDAD_MEDIDA = P.COD_UNIDAD_MEDIDA');     
+                ->join(array('UM' => 'UNIDAD_MEDIDA'), 'UM.COD_UNIDAD_MEDIDA = P.COD_UNIDAD_MEDIDA')
+                 ->order(array('S.COD_INVENTARIO DESC'));        
                 
 //        die($select);
 				$select->order(array('S.COD_INVENTARIO DESC','S.COD_PRODUCTO'));

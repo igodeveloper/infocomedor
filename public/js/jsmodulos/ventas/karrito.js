@@ -374,7 +374,7 @@ function productvalidation(data) {
             }
         });
     } else {
-        mostarVentana("warning","Inserte un valor antes de validar");
+        mostarVentana("warning","Inserte un valor antes de v\u00e1lidar");
         addrequiredattr('codproducto-item',1);
     }
 

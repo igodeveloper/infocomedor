@@ -50,7 +50,8 @@ class Parametricos_ProductoController extends Zend_Controller_Action
                    ->join(array('TP' => 'TIPO_PRODUCTO'), 'C.COD_PRODUCTO_TIPO = TP.COD_TIPO_PRODUCTO')
                    ->join(array('UM' => 'UNIDAD_MEDIDA'), 'C.COD_UNIDAD_MEDIDA = UM.COD_UNIDAD_MEDIDA')
                    ->join(array('I' => 'IMPUESTO'), 'C.COD_IMPUESTO = I.COD_IMPUESTO')
-                   ->joinLeft(array('R' => 'RECETA'), 'C.COD_RECETA = R.COD_RECETA');
+                   ->joinLeft(array('R' => 'RECETA'), 'C.COD_RECETA = R.COD_RECETA')
+                    ->order(array('C.COD_PRODUCTO DESC'));
                    
         $result = $db->fetchAll($select);
         $this->view->headScript()->appendFile($this->view->baseUrl() . '/js/bootstrap.js');

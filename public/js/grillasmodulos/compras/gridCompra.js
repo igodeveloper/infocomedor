@@ -114,6 +114,8 @@ function cargarGrillaCompras() {
                         id: 'FECHA_EMISION_FACTURA',
                         width: 15,
                         align: 'center',
+                        formatter: 'date', 
+                        formatoptions: { srcformat: 'Y/m/d', newformat: 'd/m/Y'},
                         hidden: false
                     },
                     {
@@ -123,6 +125,8 @@ function cargarGrillaCompras() {
                         id: 'FECHA_VENCIMIENTO_FACTURA',
                         width: 15,
                         align: 'center',
+                        formatter: 'date', 
+                        formatoptions: { srcformat: 'Y/m/d', newformat: 'd/m/Y'},
                         hidden: false
                     },
                     {

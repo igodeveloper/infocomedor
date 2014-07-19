@@ -38,7 +38,8 @@ class Produccion_ProductofinalController extends Zend_Controller_Action {
                     'P.PRODUCTO_DESC','TP.TIPO_PRODUCTO_DESCRIPCION','S.SALDO_STOCK','UM.DESC_UNIDAD_MEDIDA'))
                 ->join(array('P' => 'PRODUCTO'), 'S.COD_PRODUCTO = P.COD_PRODUCTO')
                 ->join(array('TP' => 'TIPO_PRODUCTO'), 'P.COD_PRODUCTO_TIPO = TP.COD_TIPO_PRODUCTO')
-                ->join(array('UM' => 'UNIDAD_MEDIDA'), 'UM.COD_UNIDAD_MEDIDA = P.COD_UNIDAD_MEDIDA');
+                ->join(array('UM' => 'UNIDAD_MEDIDA'), 'UM.COD_UNIDAD_MEDIDA = P.COD_UNIDAD_MEDIDA')
+                ->order(array('S.SALDO_STOCK DESC'));    
 //        die($select);
         $result = $db->fetchAll($select);
         $pagina = self::obtenerPaginas($result, $cantidadFilas, $page);

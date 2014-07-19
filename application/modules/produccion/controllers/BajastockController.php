@@ -49,7 +49,8 @@ class Produccion_BajaStockController extends Zend_Controller_Action
                             'B.cod_baja_stock'
                            ))
                 ->join(array('P' => 'producto'), 'B.cod_producto = P.cod_producto')
-                ->join(array('U' => 'unidad_medida'), 'U.cod_unidad_medida = P.cod_unidad_medida');
+                ->join(array('U' => 'unidad_medida'), 'U.cod_unidad_medida = P.cod_unidad_medida')
+                ->order(array('B.fecha_hora_baja DESC'));   
 //die($select);        
         $result = $db->fetchAll($select);
         $this->view->headScript()->appendFile($this->view->baseUrl() . '/js/bootstrap.js');

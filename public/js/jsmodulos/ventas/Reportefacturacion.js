@@ -225,16 +225,16 @@ function imprimirreporte(){
 function formatearFechas(){
         $("#FechaFactura-modal").datepicker();
         $("#FechaVencimiento-modal").datepicker();
-        $("#FechaFactura-modal").datepicker("option", "dateFormat", "yy-mm-dd");
-        $("#FechaVencimiento-modal").datepicker("option", "dateFormat", "yy-mm-dd");
+        $("#FechaFactura-modal").datepicker("option", "dateFormat", "dd-mm-yy");
+        $("#FechaVencimiento-modal").datepicker("option", "dateFormat", "dd-mm-yy");
         $("#FechaFactura-modal").datepicker("setDate", new Date());
         $("#FechaVencimiento-modal").datepicker("setDate", new Date());
         $("#FechaVencimiento-modal").datepicker();
-        $("#FechaVencimiento-modal").datepicker("option", "dateFormat", "yy-mm-dd");
+        $("#FechaVencimiento-modal").datepicker("option", "dateFormat", "dd-mm-yy");
         $("#fechavencimiento-filtro").datepicker();
-        $("#fechavencimiento-filtro").datepicker("option", "dateFormat", "yy-mm-dd");
+        $("#fechavencimiento-filtro").datepicker("option", "dateFormat", "dd-mm-yy");
         $("#fechaemision-filtro").datepicker();
-        $("#fechaemision-filtro").datepicker("option", "dateFormat", "yy-mm-dd");
+        $("#fechaemision-filtro").datepicker("option", "dateFormat", "dd-mm-yyd");
         $("#FechaFactura").datepicker();
         $("#FechaFactura").datepicker("option", "dateFormat", "dd-mm-yy");
         $("#FechaFactura").datepicker("setDate", new Date());

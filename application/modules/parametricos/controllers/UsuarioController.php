@@ -88,7 +88,8 @@ class Parametricos_UsuarioController extends Zend_Controller_Action
                        array('C.COD_USUARIO',
                              'C.ID_USUARIO',
                              'C.NOMBRE_APELLIDO',
-                             'C.USUARIO_PASSWORD'));
+                             'C.USUARIO_PASSWORD'))
+                 ->order(array('C.COD_USUARIO DESC'));
 
         if ($Obj != null) {
             if ($Obj->ID_USUARIO != null) {

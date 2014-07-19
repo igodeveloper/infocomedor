@@ -35,7 +35,8 @@ class Produccion_RecetaController extends Zend_Controller_Action {
         $db = Zend_Db_Table::getDefaultAdapter();
         $select = $db->select()
                 ->from(array('R' => 'RECETA'), array('R.COD_RECETA',
-                    'R.RECETA_DESCRIPCION'));
+                    'R.RECETA_DESCRIPCION'))
+                ->order(array('R.COD_RECETA DESC'));
 //        die($select);
         $result = $db->fetchAll($select);
         $pagina = self::obtenerPaginas($result, $cantidadFilas, $page);

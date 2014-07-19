@@ -113,6 +113,8 @@ function cargarGrillaFacturas() {
                         id: 'FAC_FECHA_EMI',
                         width: 15,
                         align: 'center',
+                        formatter: 'date', 
+                        formatoptions: { srcformat: 'Y/m/d', newformat: 'd/m/Y'},
                         hidden: false
                     },
                     {
@@ -121,6 +123,8 @@ function cargarGrillaFacturas() {
                         label: 'FECHA VENCIMIENTO',
                         id: 'FAC_FECH_VTO',
                         width: 15,
+                        formatter: 'date', 
+                        formatoptions: { srcformat: 'Y/m/d', newformat: 'd/m/Y'},
                         align: 'center',
                         hidden: true
                     },
@@ -227,6 +231,8 @@ function cargarGrillaFacturasModal() {
                         name: 'KAR_FECH_MOV',
                         label: 'FECHA',
                         id: 'KAR_FECH_MOV',
+                        formatter: 'date', 
+                        formatoptions: { srcformat: 'Y/m/d', newformat: 'd/m/Y'},
                         align: 'center',
                         width: 20,
                         hidden: false

@@ -47,12 +47,15 @@ class Compras_PagosController extends Zend_Controller_Action {
         $select = $db->select()
                 ->from(array('PP' => 'PAGO_PROVEEDOR'), array(
                     'PP.COD_PAGO_PROVEEDOR',
+                    'PC.PROVEEDOR_NOMBRE',
                     'PP.NRO_FACTURA_COMPRA',
                     'PP.DES_BANCO',
                     'PP.NRO_CHEQUE',
                     'PP.MONTO_PAGO',
-                    'PP.ESTADO_PAGO')
-                );
+                    'PP.ESTADO_PAGO'))
+                ->join(array('CC' => 'COMPRA'), 'CC.NRO_FACTURA_COMPRA = PP.NRO_FACTURA_COMPRA')
+                ->join(array('PC' => 'PROVEEDOR'), 'CC.COD_PROVEEDOR = PC.COD_PROVEEDOR')
+                 ->order(array('PP.NRO_FACTURA_COMPRA DESC'));
 
         if ($Obj != null) {
             //print_r($Obj);
@@ -67,6 +70,9 @@ class Compras_PagosController extends Zend_Controller_Action {
             }
             if ($Obj->ESTADO_PAGO != -1) {
                 $select->where("PP.ESTADO_PAGO = ?", $Obj->ESTADO_PAGO);
+            }
+            if ($Obj->PROVEEDOR_NOMBRE != null) {
+                $select->where("PC.PROVEEDOR_NOMBRE like '%".$Obj->PROVEEDOR_NOMBRE."%' ");
             }
             $result = $db->fetchAll($select);
         } else {
@@ -90,6 +96,7 @@ class Compras_PagosController extends Zend_Controller_Action {
             $numero_cheque = ($item['NRO_CHEQUE'] == '0') ? '-' : $item  ['NRO_CHEQUE'];
             $arrayDatos ['cell'] = array(
                 $item['COD_PAGO_PROVEEDOR'],
+                $item['PROVEEDOR_NOMBRE'],
                 $item['NRO_FACTURA_COMPRA'],
                 
                 $descripcion_banco,
@@ -100,6 +107,7 @@ class Compras_PagosController extends Zend_Controller_Action {
             );
             $arrayDatos ['columns'] = array(
                 "COD_PAGO_PROVEEDOR",
+                "PROVEEDOR_NOMBRE",
                 "NRO_FACTURA_COMPRA",
                 "DES_BANCO",
                 "NRO_CHEQUE",

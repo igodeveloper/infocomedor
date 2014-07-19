@@ -172,7 +172,7 @@ function enviarParametrosRegistro(data){
         		$("#grillaRegistro").trigger("reloadGrid");
         	} else if(respuesta.result == "ERROR") {
         		if(respuesta.mensaje == 23505){
-        			mostarVentana("warning-registro","Ya existe un registro con la descripcion ingresada");
+        			mostarVentana("warning-registro","Ya existe un registro con la descripci\u00f3n ingresada");
         		} else {
 //        			mostarVentana("error-modal","Ha ocurrido un error");
         		}
@@ -322,13 +322,13 @@ function buscarRegistros(){
         	$("#grillaRegistro")[0].addJSONData(JSON.parse(respuesta));
         	var obj = JSON.parse(respuesta);
         	if(obj.mensajeSinFilas == true){
-        		mostarVentana("info","No se encontraron registros con los parametros ingresados");
+        		mostarVentana("info","No se encontrar\u00f3n registros con los parametros ingresados");
         	}
         	$.unblockUI();
         },
         error: function(event, request, settings){
             $.unblockUI();
-            mostarVentana("info","No se encontraron registros con los parametros ingresados");
+            mostarVentana("info","No se encontrar\u00f3n registros con los parametros ingresados");
         }
     });
 }

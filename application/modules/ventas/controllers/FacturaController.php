@@ -53,7 +53,8 @@ public function buscarAction() {
                     'C.FAC_ANO',
                     'C.FAC_MONTO_TOTAL',
                 	'C.ESTADO'))
-                ->join(array('P' => 'CLIENTE'), 'C.COD_CLIENTE = P.COD_CLIENTE');
+                ->join(array('P' => 'CLIENTE'), 'C.COD_CLIENTE = P.COD_CLIENTE')
+                ->order(array('C.FAC_NRO DESC'));
                 
 
         if ($Obj != null) {
@@ -341,7 +342,7 @@ public function guardarAction() {
 					'FAC_FECHA_EMI' =>$dataVenta->fechaEmision,
 					'FAC_MES' =>(int)(substr($dataVenta->fechaEmision,6,2)),
 					'FAC_ANO' =>(int)(substr($dataVenta->fechaEmision,1,4)),
-					'FAC_FECH_VTO' =>$dataVenta->fechaVencimiento,
+					'FAC_FECH_VTO' =>date('Y-m-d', strtotime($dataVenta->fechaVencimiento)),
 					'FAC_MONTO_TOTAL' =>(float)($dataVenta->montoTotal),
 					'ESTADO' =>'C',
 					'CONTROL_FISCAL' =>$dataVenta->controlFiscal             

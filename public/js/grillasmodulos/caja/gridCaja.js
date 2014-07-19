@@ -105,6 +105,8 @@ function cargarGrillaRegistro() {
 	       		"search" : false,
 	       		"remove" : false,
 	       		"width" : 150,
+	       		 formatter: 'date', 
+                formatoptions: { srcformat: 'Y/m/d H:i:s', newformat: 'd/m/Y H:i:s' },
 	       		"align":"left",
 	       		"sortable" : false,
 	       		"hidden" : false
@@ -114,6 +116,8 @@ function cargarGrillaRegistro() {
 	       		"name" : "fecha_hora_cierre",
 	       		"label" : "FECHA CIERRE",
 	       		"id" : "fecha_hora_cierre",
+	       		 formatter: 'date', 
+                formatoptions: { srcformat: 'Y/m/d H:i:s', newformat: 'd/m/Y H:i:s' },
 	       		"search" : false,
 	       		"remove" : false,
 	       		"width" : 150,

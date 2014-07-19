@@ -237,9 +237,9 @@ function obtenerJsonDetalles() {
     jsonObject.saldo = $("#saldo-item").attr("value");
 
     if (jsonObject.codproducto === "" || jsonObject.codproducto === null) {
-        mostarVentana("warning", "Ingrese el Codigo del producto");
+        mostarVentana("warning", "Ingrese el C\u00f3digo del producto");
     } else if (jsonObject.descripcionproducto === "" || jsonObject.descripcionproducto === null) {
-        mostarVentana("warning", "Ingrese la descripcion del producto");
+        mostarVentana("warning", "Ingrese la descripci\u00f3n del producto");
     } else if (jsonObject.codUnidadMedida === "" || jsonObject.codUnidadMedida === null) {
         mostarVentana("warning", "Ingrese la unidad de medida");
     } else {
@@ -359,7 +359,7 @@ function enviarParametrosRegistros(data) {
                 } else if(respuesta.code == 23000) {
                     mostarVentana("warning-modal", "Registros para el inventario duplicados");
                 } else {
-                	 mostarVentana("warning-modal", "Ocurrio un error verifique los datos");
+                	 mostarVentana("warning-modal", "Ocurri\u00f3 un error verifique los datos");
                 }
             }
         },
@@ -594,7 +594,7 @@ function ImprimirReporte(inventario){
             error: function(event, request, settings) {
                 $.unblockUI();
                 //alert(mostrarError("OCURRIO UN ERROR"));
-                mostarVentana("warning-block-title", "Ocurrio un error en la generacion del reporte");
+                mostarVentana("warning-block-title", "Ocurrio un error en la generaci\u00f3n del reporte");
             }        
         });                     
 }

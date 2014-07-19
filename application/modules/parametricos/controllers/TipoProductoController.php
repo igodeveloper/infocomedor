@@ -38,7 +38,8 @@ class Parametricos_TipoproductoController extends Zend_Controller_Action
         $select = $db->select()
                 ->from(array('C' => 'TIPO_PRODUCTO'), 
                        array('C.COD_TIPO_PRODUCTO',
-                             'C.TIPO_PRODUCTO_DESCRIPCION'));
+                             'C.TIPO_PRODUCTO_DESCRIPCION'))
+                 ->order(array('C.COD_TIPO_PRODUCTO DESC'));
         $result = $db->fetchAll($select);
         $this->view->headScript()->appendFile($this->view->baseUrl() . '/js/bootstrap.js');
         $this->view->headScript()->appendFile($this->view->baseUrl() . '/js/gridTipoproducto.js');

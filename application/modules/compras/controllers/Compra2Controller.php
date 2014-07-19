@@ -358,7 +358,9 @@ class Compras_Compra2Controller extends Zend_Controller_Action {
 
     public function almacenarDatos($compraModel, $dataCompra, $dataCompraDetalle, $dataCompraCantItems) {
 //    public function almacenarDatos($compraModel, $dataCompra, $dataCompraDetalle) {
+        // 
         try {
+
             $db = Zend_Db_Table::getDefaultAdapter();
             $db->beginTransaction();
 
@@ -370,8 +372,8 @@ class Compras_Compra2Controller extends Zend_Controller_Action {
             $servCompraImpuesto = new Application_Model_DataService("Application_Model_DbTable_CompraImpuesto");
             $compraModel->setCod_Proveedor($dataCompra["codproveedor"]);
             $compraModel->setNro_Factura_Compra(0);
-            $compraModel->setFecha_Emision_Factura($dataCompra["fechaEmision"]);
-            $compraModel->setFecha_Vencimiento_Factura($dataCompra["fechaVencimiento"]);
+            $compraModel->setFecha_Emision_Factura(date('Y-m-d', strtotime($dataCompra["fechaEmision"])));
+            $compraModel->setFecha_Vencimiento_Factura(date('Y-m-d', strtotime($dataCompra["fechaVencimiento"])));
             $compraModel->setMonto_Total_Compra($dataCompra["montoTotalCompra"]);
             $compraModel->setCod_Moneda_Compra($dataCompra["codigoMoneda"]);
             $compraModel->setCod_Usuario($dataCompra["codigoUsuario"]);

@@ -44,7 +44,9 @@ class Parametricos_ClienteController extends Zend_Controller_Action
                        		 'C.CLIENTE_EMAIL',
                        		 'C.COD_EMPRESA',
                        		 'E.DES_EMPRESA'))
-                   ->joinLeft(array('E' => 'EMPRESA'), 'C.COD_EMPRESA = E.COD_EMPRESA');
+                   ->joinLeft(array('E' => 'EMPRESA'), 'C.COD_EMPRESA = E.COD_EMPRESA')
+                    ->order(array('C.COD_CLIENTE DESC'));
+
                    
         $result = $db->fetchAll($select);
         $this->view->headScript()->appendFile($this->view->baseUrl() . '/js/bootstrap.js');

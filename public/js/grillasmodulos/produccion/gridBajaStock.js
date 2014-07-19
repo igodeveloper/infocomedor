@@ -92,7 +92,7 @@ function cargarGrillaRegistro() {
 	       		"id" : "cantidad_baja",
 	       		"search" : false,
 	       		"remove" : false,
-	       		"width" : 200,
+	       		"width" : 80,
 	       		"align":"right",
 	       		"sortable" : false,
 	       		"hidden" : false
@@ -104,7 +104,7 @@ function cargarGrillaRegistro() {
 	       		"id" : "desc_unidad_medida",
 	       		"search" : false,
 	       		"remove" : false,
-	       		"width" : 150,
+	       		"width" : 80,
 	       		"align":"left",
 	       		"sortable" : false,
 	       		"hidden" : false
@@ -118,6 +118,8 @@ function cargarGrillaRegistro() {
 	       		"remove" : false,
 	       		"width" : 150,
 	       		"align":"left",
+	       		formatter: 'date', 
+                formatoptions: { srcformat: 'Y/m/d H:i:s', newformat: 'd/m/Y H:i:s' },
 	       		"sortable" : false,
 	       		"hidden" : false
        		},
@@ -128,7 +130,7 @@ function cargarGrillaRegistro() {
 	       		"id" : "observacion_mov",
 	       		"search" : false,
 	       		"remove" : false,
-	       		"width" : 150,
+	       		"width" : 280,
 	       		"align":"left",
 	       		"sortable" : false,
 	       		"hidden" : false
