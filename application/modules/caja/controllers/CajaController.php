@@ -23,8 +23,9 @@ class Caja_CajaController extends Zend_Controller_Action
     }
 
     public function listarAction() {
-        $this->_helper->viewRenderer->setNoRender(true);
+        $this->_helper->viewRenderer->setNoRender(true);        
         $parametrosNamespace = new Zend_Session_Namespace('parametros');
+        $cod_usuario = $parametrosNamespace->cod_usuario;
         $parametrosNamespace->unlock();
         $cantidadFilas = $this->getRequest()->getParam("rows");
         if (!isset($cantidadFilas)) {
@@ -51,7 +52,8 @@ class Caja_CajaController extends Zend_Controller_Action
                             'C.monto_caja_cierre_cheque',
                             'C.monto_diferencia_arqueo_cheque',
                            ))
-                ->join(array('U' => 'usuario'), 'U.cod_usuario = C.cod_usuario_caja');
+                ->join(array('U' => 'usuario'), 'U.cod_usuario = C.cod_usuario_caja')
+                ->where('C.cod_usuario_caja = '.$cod_usuario);
         $result = $db->fetchAll($select);
         $this->view->headScript()->appendFile($this->view->baseUrl() . '/js/bootstrap.js');
         $this->view->headScript()->appendFile($this->view->baseUrl() . '/js/gridCaja.js');
@@ -206,10 +208,11 @@ class Caja_CajaController extends Zend_Controller_Action
             $db->beginTransaction();
                     if(isset($rowData->cod_usuario_caja) and isset($rowData->cod_caja))
                             $rowClass->setCod_usuario_caja(trim(utf8_decode($rowData->cod_usuario_caja)));
-                    if(isset($rowData->fecha_hora_apertura))
+                    if(trim($rowData->fecha_hora_apertura) <> '')
                             $rowClass->setFecha_hora_apertura(trim(utf8_decode($rowData->fecha_hora_apertura)));
                     else
                             $rowClass->setFecha_hora_apertura(date('Y-m-d h:i:s'));
+                    
                     if(trim($rowData->cod_caja) <> '')
                             $rowClass->setFecha_hora_cierre(date('Y-m-d h:i:s'));
 

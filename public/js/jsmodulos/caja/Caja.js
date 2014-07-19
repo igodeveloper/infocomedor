@@ -221,7 +221,8 @@ function obtenerJsonFormulario() {
 		jsonObject.monto_entrante_efectivo = $('#montoentranteefectivo-modal').attr("value");
 		jsonObject.monto_saliente_efectivo = $('#montosalienteefectivo-modal').attr("value");
 		jsonObject.monto_entrante_cheque = $('#montoentrantecheque-modal').attr("value");
-		jsonObject.monto_saliente_cheque = $('#montosalientecheque-modal').attr("value");		
+		jsonObject.monto_saliente_cheque = $('#montosalientecheque-modal').attr("value");
+                jsonObject.fecha_hora_apertura = $('#fechaaperturacaja-modal').attr("value");
 		return jsonObject;
 	}
     
