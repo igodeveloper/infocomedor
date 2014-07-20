@@ -181,7 +181,7 @@ class Compras_PagosController extends Zend_Controller_Action {
                     $where = "COD_MOV_CAJA = " . $data_Pagos->COD_MOV_CAJA;
                     $upd = $db->update('MOV_CAJA', $egreso, $where);
                     $cod_vuelto = self::buscaVuelto($data_Pagos->NRO_FACTURA_COMPRA);
-
+                    // echo $cod_vuelto."vuelto";
                     if($cod_vuelto != null){
                         $delete_vuelto = $db->delete('MOV_CAJA', array(
                             'COD_MOV_CAJA = ?' => $cod_vuelto,
@@ -239,9 +239,10 @@ class Compras_PagosController extends Zend_Controller_Action {
                  ->from(array('C' => 'MOV_CAJA'), array('C.COD_MOV_CAJA'))
                  ->where("C.FACTURA_MOV = ?", $nro_factura)
                  ->where("C.TIPO_FACTURA_MOV = ?", 'C')
-                 ->where("C.COD_TIPO_MOV = ?", 3)
-                 ->where("C.OBSERVACION_MOV like 'Vuelto Factura Compra:".$nro_factura."'");
+                 ->where("C.COD_TIPO_MOV = ?", 3);
+                
         $result = $db->fetchAll($select);
+        // print_r($result);
         if(count($result)>0)
             return $result[0]['COD_MOV_CAJA'];
         else
