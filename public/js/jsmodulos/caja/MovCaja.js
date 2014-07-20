@@ -62,12 +62,30 @@ $().ready(function() {
 	 });
 
 
-	//validarNumerosCampo();
+	validarNumerosCampo();
 	$('#codtipomov-modal').change(function() {
                 //$("#codtipomov-modal option:selected").val();
 	 });                        
 });
-
+function validarNumerosCampo(){
+    $("#montomov-modal").keydown(function(event) {
+	   // Allow: backspace, delete, tab, escape, and enter
+	   if ( event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 || event.keyCode == 13 ||
+			// Allow: Ctrl+A
+		   (event.keyCode == 65 && event.ctrlKey === true) ||
+			// Allow: home, end, left, right
+		   (event.keyCode >= 35 && event.keyCode <= 39)) {
+				// let it happen, don't do anything
+				return;
+	   }
+	   else {
+		   // Ensure that it is a number and stop the keypress
+		   if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105 )) {
+			   event.preventDefault();
+		   }
+	   }
+    });
+}
 function validarNumerosLetrasPorcentageEspacio(e) { // 1
 	var te;
 	if(document.all) {
@@ -289,10 +307,35 @@ function buscarRegistros(){
 
 function editarRegistro(parametros){
 	limpiarFormulario();
+/*
+cod_usuario
+nombre_apellido
+cod_caja
+cod_mov_caja
+fecha_hora_mov
+monto_mov
+desc_tipo_mov
+cod_tipo_mov
+factura_mov
+desc_factura_mov
+tipo_factura_mov
+observacion_mov
+tipo_mov    
+*/      if(parametros.arqueo_caja == 'Si'){
+            mostarVentana("warning-block-title","La caja ya se encuentra arqueada, no es posible modificar el movimiento!!"); 
+            return;
+        }   
 	$("#modalEditar").show();
 	$("#editar-nuevo").html("Editar Registro");
-	$("#codigotipoproducto-modal").attr("value",parametros.COD_TIPO_PRODUCTO);
-	$("#descripciontipoproducto-modal").attr("value",parametros.TIPO_PRODUCTO_DESCRIPCION);
+	$("#codcaja-modal").attr("value",parametros.cod_caja);
+        $("#codmovcaja-modal").attr("value",parametros.cod_mov_caja);
+        $("#codigousuariocaja-modal").attr("value",parametros.cod_usuario);
+        $("#nombreusuariocaja-modal").attr("value",parametros.nombre_apellido);
+        $("#fechaaperturacaja-modal").attr("value",parametros.fecha_hora_mov);
+        $("#codtipomov-modal").attr("value",parametros.cod_tipo_mov);
+        $("#montomov-modal").attr("value",parametros.monto_mov);
+        $("#firmante-input").attr("value",parametros.firmante_mov);
+	$("#observacion-input").attr("value",parametros.observacion_mov);
 	$("#guardar-registro").html("Modificar");
 }
 
@@ -307,6 +350,16 @@ function limpiarFormulario(){
 	$("#nombreusuariocaja-modal").attr("value",null);
 	$("#fechaaperturacaja-modal").attr("value",null);
 	$("#montomov-modal").attr("value",null);	
+        
+	$("#codcaja-modal").attr("value",null);
+        $("#codmovcaja-modal").attr("value",null);
+        $("#codigousuariocaja-modal").attr("value",null);
+        $("#nombreusuariocaja-modal").attr("value",null);
+        $("#fechaaperturacaja-modal").attr("value",null);
+        $("#codtipomov-modal").attr("value",-1);
+        $("#montomov-modal").attr("value",null);
+        $("#firmante-input").attr("value",null);
+	$("#observacion-input").attr("value",null);        
 }
 
 

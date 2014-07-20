@@ -93,7 +93,7 @@ function cargarGrillaRegistro() {
 	       		"id" : "cod_caja",
 	       		"search" : false,
 	       		"remove" : false,
-	       		"width" : 130,
+	       		"width" : 50,
 	       		"align":"right",
 	       		"sortable" : false,
 	       		formatter: 'number',
@@ -107,7 +107,7 @@ function cargarGrillaRegistro() {
 	       		"id" : "cod_mov_caja",
 	       		"search" : false,
 	       		"remove" : false,
-	       		"width" : 150,
+	       		"width" : 70,
 	       		"align":"right",
 	       		"sortable" : false,
 	       		formatter: 'number',
@@ -121,7 +121,7 @@ function cargarGrillaRegistro() {
 	       		"id" : "fecha_hora_mov",
 	       		"search" : false,
 	       		"remove" : false,
-	       		"width" : 160,
+	       		"width" : 140,
 	       		"align":"left",
 	       		"sortable" : false,
 	       		"hidden" : false
@@ -133,7 +133,7 @@ function cargarGrillaRegistro() {
 	       		"id" : "monto_mov",
 	       		"search" : false,
 	       		"remove" : false,
-	       		"width" : 200,
+	       		"width" : 100,
 	       		"align":"right",
 	       		"sortable" : false,
 	       		formatter: 'number',
@@ -147,7 +147,7 @@ function cargarGrillaRegistro() {
 	       		"id" : "desc_tipo_mov",
 	       		"search" : false,
 	       		"remove" : false,
-	       		"width" : 140,
+	       		"width" : 80,
 	       		"align":"left",
 	       		"sortable" : false,
 	       		"hidden" : false
@@ -171,7 +171,7 @@ function cargarGrillaRegistro() {
 	       		"id" : "factura_mov",
 	       		"search" : false,
 	       		"remove" : false,
-	       		"width" : 120,
+	       		"width" : 80,
 	       		"align":"right",
 	       		"sortable" : false,
 	       		"hidden" : false
@@ -223,6 +223,30 @@ function cargarGrillaRegistro() {
 	       		"align":"left",
 	       		"sortable" : false,
 	       		"hidden" : true
+       		},
+       	  {
+	       		"title" : false,
+	       		"name" : "arqueo_caja",
+	       		"label" : "Caja Arqueada",
+	       		"id" : "arqueo_caja",
+	       		"search" : false,
+	       		"remove" : false,
+	       		"width" : 50,
+	       		"align":"left",
+	       		"sortable" : false,
+	       		"hidden" : false
+       		},
+       	  {
+	       		"title" : false,
+	       		"name" : "firmante_mov",
+	       		"label" : "Firmante",
+	       		"id" : "firmante_mov",
+	       		"search" : false,
+	       		"remove" : false,
+	       		"width" : 80,
+	       		"align":"left",
+	       		"sortable" : false,
+	       		"hidden" : false
        		}]
     }).navGrid('#paginadorRegistro',{
         add:false,
@@ -285,10 +309,37 @@ function borrar(){
  */
 function cargarLinkModificar ( cellvalue, options, rowObject )
 {
+/*
+cod_usuario
+nombre_apellido
+cod_caja
+cod_mov_caja
+fecha_hora_mov
+monto_mov
+desc_tipo_mov
+cod_tipo_mov
+factura_mov
+desc_factura_mov
+tipo_factura_mov
+observacion_mov
+tipo_mov    
+*/
 	var parametros = new Object();
-	parametros.cod_tipo_mov = rowObject[1];
-	parametros.desc_tipo_mov = rowObject[2];
-	parametros.tipo_mov = rowObject[3];
+	parametros.cod_usuario = rowObject[1];
+	parametros.nombre_apellido = rowObject[2];
+	parametros.cod_caja = rowObject[3];
+        parametros.cod_mov_caja = rowObject[4];
+        parametros.fecha_hora_mov = rowObject[5];
+        parametros.monto_mov = rowObject[6];
+        parametros.desc_tipo_mov = rowObject[7];
+        parametros.cod_tipo_mov = rowObject[8];
+        parametros.factura_mov = rowObject[9];
+        parametros.desc_factura_mov = rowObject[10];
+        parametros.tipo_factura_mov = rowObject[11];
+        parametros.observacion_mov = rowObject[12];
+        parametros.tipo_mov = rowObject[13];        
+        parametros.arqueo_caja = rowObject[14];
+        parametros.firmante_mov = rowObject[15];
 	json = JSON.stringify(parametros);
 	return "<a><img title='Editar' src='../../css/images/edit.png' data-toggle='modal'  onclick='editarRegistro("+json+");'/></a>";
 }
