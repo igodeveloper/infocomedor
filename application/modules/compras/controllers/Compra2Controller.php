@@ -556,7 +556,7 @@ class Compras_Compra2Controller extends Zend_Controller_Action {
     public function guardarpagosAction() {
         $this->_helper->viewRenderer->setNoRender(true);
         $data = json_decode($this->getRequest()->getParam("data"));
-        $pago_Model = new Application_Model_Pagoproveedor();
+        // $pago_Model = new Application_Model_Pagoproveedor();
         self::almacenarPagos($pago_Model, $data);
     }
 
@@ -568,16 +568,19 @@ class Compras_Compra2Controller extends Zend_Controller_Action {
             $db->beginTransaction();
             foreach ($data as $data_Pagos) {
             // Se guarda pagos
-            $serv_pagos = new Application_Model_DataService("Application_Model_DbTable_Pagoproveedor");
-            $pago_Model->setCod_pago_proveedor((int) 0);
-            $pago_Model->setNro_factura_compra((int) $data_Pagos->NRO_FACTURA_COMPRA);
-            $pago_Model->setMonto_pago((float) $data_Pagos->MONTO_PAGO);
-            $pago_Model->setCod_moneda_pago((int) 1);
-            $pago_Model->setNro_cheque((int) $data_Pagos->NRO_CHEQUE);
-            $pago_Model->setDes_banco($data_Pagos->DES_BANCO);
-            $pago_Model->setEstado_pago("T");
-
-            $result_pagos = $serv_pagos->saveRow($pago_Model);
+                $data_pago_proveedor = array(
+                        'COD_PAGO_PROVEEDOR' => 0,
+                        'NRO_FACTURA_COMPRA' => $data_Pagos->NRO_FACTURA_COMPRA,
+                        'MONTO_PAGO' => ($data_Pagos->MONTO_PAGO),
+                        'COD_MONEDA_PAGO' => 1,
+                        'NRO_CHEQUE' => $data_Pagos->NRO_CHEQUE,
+                        'DES_BANCO'=>$data_Pagos->DES_BANCO,
+                        'ESTADO_PAGO'=>'T',
+                        'COD_CAJA'=>$data_Pagos->CODIGO_CAJA,
+                        'COD_MOV_CAJA' =>$data_Pagos->CODIGO_EGRESO
+                );
+            
+                $result_pagos = $db->insert('PAGO_PROVEEDOR', $data_pago_proveedor); 
 
 
             // se hace un update de EGRESOS

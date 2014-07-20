@@ -8,7 +8,9 @@ class Application_Model_Pagoproveedor extends ZendExt_Db_Table_Row_Abstract {
 	protected $_nro_cheque = null;
 	protected $_des_banco = null;
 	protected $_estado_pago = null;
+	protected $_cod_caja = null;
 	protected $_cod_mov_caja = null;
+	
 	public $_data = null;
 	public function getCod_pago_proveedor(){
 		return $this->_cod_pago_proveedor;
@@ -31,12 +33,14 @@ class Application_Model_Pagoproveedor extends ZendExt_Db_Table_Row_Abstract {
 	public function getEstado_pago(){
 		return $this->_estado_pago;
 	}
+	public function getCod_caja(){
+		return $this->_cod_caja;
+	}
 	public function getCod_mov_caja(){
 		return $this->_cod_mov_caja;
 	}
-	public function setCod_mov_caja($_cod_mov_caja){
-		$this->_cod_mov_caja = $_cod_mov_caja;
-	}
+	
+	
 	public function setCod_pago_proveedor($_cod_pago_proveedor){
 		$this->_cod_pago_proveedor = $_cod_pago_proveedor;
 	}
@@ -58,6 +62,12 @@ class Application_Model_Pagoproveedor extends ZendExt_Db_Table_Row_Abstract {
 	public function setEstado_pago($_estado_pago){
 		$this->_estado_pago = $_estado_pago;
 	}
+	public function setCod_mov_caja($_cod_mov_caja){
+		$this->_cod_mov_caja = $_cod_mov_caja;
+	}
+	public function setCod_mov_caja($_cod_caja){
+		$this->_cod_caja = $_cod_caja;
+	}
 	public function __get($propertyName) {
 		$getter = "get" . $propertyName;
 		if (!method_exists($this, $getter)) {
@@ -73,11 +83,14 @@ class Application_Model_Pagoproveedor extends ZendExt_Db_Table_Row_Abstract {
 			'COD_MONEDA_PAGO' => $this->_cod_moneda_pago, 
 			'NRO_CHEQUE' => $this->_nro_cheque, 
 			'DES_BANCO' => $this->_des_banco, 
-			'ESTADO_PAGO' => $this->_estado_pago)
-			'CODD_MOV_CAJA' => $this->_cod_mov_caja);
+			'ESTADO_PAGO' => $this->_estado_pago,
+			'COD_CAJA' => $this->_cod_caja,
+			'COD_MOV_CAJA' => $this->_cod_mov_caja
+			);
 }
     public function setFromArray(array $data) {
-    	foreach (array('cod_pago_proveedor', 'nro_factura_compra', 'monto_pago', 'cod_moneda_pago', 'nro_cheque', 'des_banco', 'estado_pago', 'cod_mov_caja' ) as  $property) {
+    	foreach (array('cod_pago_proveedor', 'nro_factura_compra', 'monto_pago', 'cod_moneda_pago', 
+    		'nro_cheque', 'des_banco', 'estado_pago', 'cod_caja', 'cod_mov_caja',  ) as  $property) {
     		if (isset($data[strtoupper($property)])) {
      			$this->{'_'. $property} = $data[strtoupper($property)];
     		}

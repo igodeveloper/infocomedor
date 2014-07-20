@@ -53,7 +53,9 @@ class Compras_PagosController extends Zend_Controller_Action {
                     'PP.DES_BANCO',
                     'PP.NRO_CHEQUE',
                     'PP.MONTO_PAGO',
-                    'PP.ESTADO_PAGO'))
+                    'PP.ESTADO_PAGO',
+                    'PP.COD_CAJA',
+                    'PP.COD_MOV_CAJA'))
                 ->join(array('CC' => 'COMPRA'), 'CC.NRO_FACTURA_COMPRA = PP.NRO_FACTURA_COMPRA')
                 ->join(array('PC' => 'PROVEEDOR'), 'CC.COD_PROVEEDOR = PC.COD_PROVEEDOR')
                  ->order(array('PP.NRO_FACTURA_COMPRA DESC'));
@@ -104,7 +106,10 @@ class Compras_PagosController extends Zend_Controller_Action {
                 $descripcion_banco,
                 $numero_cheque,
                 $item['MONTO_PAGO'],
-                $estado_pago
+                
+                $estado_pago,
+                $item['COD_CAJA'],
+                $item['COD_MOV_CAJA']
                 
             );
             $arrayDatos ['columns'] = array(
@@ -115,7 +120,9 @@ class Compras_PagosController extends Zend_Controller_Action {
                 "DES_BANCO",
                 "NRO_CHEQUE",
                 "MONTO_PAGO",
-                "ESTADO_PAGO"
+                "ESTADO_PAGO",
+                'COD_CAJA',
+                'COD_MOV_CAJA'
             );
             array_push($pagina ['rows'], $arrayDatos);
         }
@@ -142,30 +149,103 @@ class Compras_PagosController extends Zend_Controller_Action {
   
     public function anulacionpagoAction() {
         $this->_helper->viewRenderer->setNoRender(true);
-        $parametros_pagos = json_decode($this->getRequest()->getParam("parametrosPagos"));
+        $data_Pagos = json_decode($this->getRequest()->getParam("parametrosPagos"));
+        $caja_abierta=self::verificacaja($data_Pagos->COD_CAJA);
+        
         try {
+
             $db = Zend_Db_Table::getDefaultAdapter();
             $db->beginTransaction();
-            $serv_pagos = new Application_Model_DataService("Application_Model_DbTable_Pagoproveedor");
-            $pago_Model = new Application_Model_Pagoproveedor();
-            $pago_Model->setCod_pago_proveedor((int) $parametros_pagos->COD_PAGO_PROVEEDOR);
-            $pago_Model->setNro_factura_compra((int) $parametros_pagos->NRO_FACTURA_COMPRA);
-            $pago_Model->setMonto_pago((int) $parametros_pagos->MONTO_PAGO);
-            $pago_Model->setCod_moneda_pago((int) $parametros_pagos->COD_MONEDA_COMPRA);
-            $pago_Model->setNro_cheque((int) $parametros_pagos->NRO_CHEQUE);
-            $pago_Model->setDes_banco($parametros_pagos->DES_BANCO);
-            $pago_Model->setEstado_pago("A");
+            if($caja_abierta){
+                if($data_Pagos->COD_MOV_CAJA == 0){
+                     $delete_mov = $db->delete('MOV_CAJA', array(
+                            'COD_TIPO_MOV = ?' =>1,
+                            'TIPO_FACTURA_MOV = ?' =>'C',
+                            'FACTURA_MOV = ?' => $data_Pagos->NRO_FACTURA_COMPRA
 
-            $result_pagos = $serv_pagos->saveRow($pago_Model);
+                        ));
+                        $data_pago_proveedor = array(
+                    
+                        'ESTADO_PAGO'=>'A',
+                 
+                     );
+                    $where = "COD_PAGO_PROVEEDOR = " . $data_Pagos->COD_PAGO_PROVEEDOR;
+                    $where = "NRO_FACTURA_COMPRA = " . $data_Pagos->NRO_FACTURA_COMPRA;
+            
+                     $update_pago = $db->update('PAGO_PROVEEDOR',$data_pago_proveedor,$where); 
 
-            $db->commit();
+                }else if ($data_Pagos->COD_MOV_CAJA > 0){
+                    $egreso = array('FACTURA_MOV' => 0,
+                                'TIPO_FACTURA_MOV' => ""  
+                                );
+                    $where = "COD_MOV_CAJA = " . $data_Pagos->COD_MOV_CAJA;
+                    $upd = $db->update('MOV_CAJA', $egreso, $where);
+                    $cod_vuelto = self::buscaVuelto($data_Pagos->NRO_FACTURA_COMPRA);
 
-
-            echo json_encode(array("result" => "EXITO"));
+                    if($cod_vuelto != null){
+                        $delete_vuelto = $db->delete('MOV_CAJA', array(
+                            'COD_MOV_CAJA = ?' => $cod_vuelto,
+                            'COD_TIPO_MOV = ?' =>3,
+                            'TIPO_FACTURA_MOV = ?' =>'C'
+                        ));
+                    }
+                    $data_pago_proveedor = array(
+                    
+                        'ESTADO_PAGO'=>'A',
+                 
+                     );
+                    $where = "COD_PAGO_PROVEEDOR = " . $data_Pagos->COD_PAGO_PROVEEDOR;
+                    $where = "NRO_FACTURA_COMPRA = " . $data_Pagos->NRO_FACTURA_COMPRA;
+            
+                    $result_pagos = $db->update('PAGO_PROVEEDOR',$data_pago_proveedor,$where); 
+                } else{
+                    $resultado = "NARANJA";
+                }
+                $db->commit();
+                 echo json_encode(array("result" => "EXITO"));
+            }else{
+                echo json_encode(array("result" => "CERRADA"));
+            }
+            
         } catch (Exception $e) {
             echo json_encode(array("result" => "ERROR", "errotname" => $e->getMessage()));
             $db->rollBack();
         }
+    }
+
+    public function verificacaja($cod_caja){
+
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $select = $db->select()
+                 ->from(array('C' => 'CAJA'), array('COUNT(C.COD_CAJA)'))
+                 ->where("C.COD_CAJA = ?", $cod_caja)
+                 ->where("C.FECHA_HORA_CIERRE IS NULL");
+        // print_r($select);
+        $result = $db->fetchAll($select);
+        
+        if($result[0]['COUNT(C.COD_CAJA)'] > 0){
+           return true;
+        }else {
+           return false;
+        }
+        
+
+    }
+
+    public function buscaVuelto($nro_factura){
+
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $select = $db->select()
+                 ->from(array('C' => 'MOV_CAJA'), array('C.COD_MOV_CAJA'))
+                 ->where("C.FACTURA_MOV = ?", $nro_factura)
+                 ->where("C.TIPO_FACTURA_MOV = ?", 'C')
+                 ->where("C.COD_TIPO_MOV = ?", 3)
+                 ->where("C.OBSERVACION_MOV like 'Vuelto Factura Compra:".$nro_factura."'");
+        $result = $db->fetchAll($select);
+        if(count($result)>0)
+            return $result[0]['COD_MOV_CAJA'];
+        else
+            return null;
     }
     
     

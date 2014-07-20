@@ -127,6 +127,24 @@ function cargarGrillaPagos() {
                         align: "left",
                         hidden: false,
                         width: 30
+                    },
+                    {
+                        title: false,
+                        name: 'COD_CAJA',
+                        label: 'COD CAJA',
+                        id: 'COD_CAJA',
+                        align: "left",
+                        hidden: false,
+                        width: 30
+                    },
+                    {
+                        title: false,
+                        name: 'COD_MOV_CAJA',
+                        label: 'MOV CAJA',
+                        id: 'COD_MOV_CAJA',
+                        align: "left",
+                        hidden: false,
+                        width: 30
                     }
                 ]
 
@@ -164,6 +182,8 @@ function anularPago()
     parametrosPagos.DES_BANCO = $("#grillaPagos").jqGrid('getCell', id, 'DES_BANCO');
     parametrosPagos.NRO_CHEQUE = $("#grillaPagos").jqGrid('getCell', id, 'NRO_CHEQUE');
     parametrosPagos.ESTADO_PAGO = $("#grillaPagos").jqGrid('getCell', id, 'ESTADO_PAGO');
+    parametrosPagos.COD_CAJA = $("#grillaPagos").jqGrid('getCell', id, 'COD_CAJA');
+    parametrosPagos.COD_MOV_CAJA = $("#grillaPagos").jqGrid('getCell', id, 'COD_MOV_CAJA');
     parametrosPagos.NRO_FACTURA_COMPRA = $("#grillaPagos").jqGrid('getCell', id, 'NRO_FACTURA_COMPRA');
      parametrosPagos.COD_MONEDA_COMPRA = 1;
      console.log(parametrosPagos);
@@ -182,7 +202,10 @@ function anularPago()
                 success: function(data) {
                     if (data.result == "ERROR") {
                         mostarVentana("warning-pagos", "Ha ocurrido un error, verifique sus datos");
-                    } else {
+                    } else if (data.result == "CERRADA"){
+                        mostarVentana("warning-pagos", "la caja esta cerrada, no se puede anular el pago");
+                    } 
+                    else {
                         $("#grillaPagos").trigger("reloadGrid");
                         mostarVentana("success-title", "Pago anulado con exito");    
                         
