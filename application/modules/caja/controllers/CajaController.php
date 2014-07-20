@@ -53,7 +53,8 @@ class Caja_CajaController extends Zend_Controller_Action
                             'C.monto_diferencia_arqueo_cheque',
                            ))
                 ->join(array('U' => 'usuario'), 'U.cod_usuario = C.cod_usuario_caja')
-                ->where('C.cod_usuario_caja = '.$cod_usuario);
+                ->where('C.cod_usuario_caja = '.$cod_usuario)
+                ->order('C.cod_caja desc'); 
         $result = $db->fetchAll($select);
         $this->view->headScript()->appendFile($this->view->baseUrl() . '/js/bootstrap.js');
         $this->view->headScript()->appendFile($this->view->baseUrl() . '/js/gridCaja.js');

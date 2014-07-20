@@ -57,7 +57,7 @@ class Caja_MovcajaController extends Zend_Controller_Action
 					->join(array('M' => 'mov_caja'), 'M.cod_caja = D.cod_caja')
 					->join(array('T' => 'tipo_movimiento'), 'T.cod_tipo_mov = M.cod_tipo_mov')
 					->where("D.cod_usuario_caja = ".$cod_usuario)
-                                        ->order('M.fecha_hora_mov desc');	
+                    ->order('M.cod_mov_caja desc');	
 			$result = $db->fetchAll($select);
 //die($select);	
         $result = $db->fetchAll($select);
