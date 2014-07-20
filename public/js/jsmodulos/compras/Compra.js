@@ -534,10 +534,12 @@ function productvalidation(data) {
                     $('#descripcionproducto-item').attr("value", respuesta.descripcion);
                     $('#codUnidadMedida-item').attr("value", respuesta.unimedcod);
                     $('#unidadmedida-item').attr("value", respuesta.unimeddesc);
+                    $('#tipoimpuesto-item').attr("value", respuesta.impuesto);
 //                  $("#addItem").attr("enabled", "enabled");
                     $("#addItem").removeAttr('disabled');
                     $("#codproducto-item").attr('disabled',true);
                     $("#descripcionproducto-item").attr('disabled',true);    
+                    $("#tipoimpuesto-item").attr('disabled',true);    
                 }else{
                     mostarVentana("warning","No se encontraron datos, verifique los datos ingresados");
                     addrequiredattr('codproducto-item',1);
@@ -748,7 +750,7 @@ function pagos(parametros) {
 }
 
 function levantapagos(parametros){
-        $("#modalPagos").show();
+        
         $('#AgregarPagos').show();
         $("#editar-nuevo").html("Registrar Pago");
         $("#grillaComprasModalPagos").jqGrid("clearGridData");
@@ -792,7 +794,7 @@ function levantapagos(parametros){
             calcularSaldo(parametros.NRO_FACTURA_COMPRA);
         }
         BlockProveedorData("pagos");
-        $("#modalPagos").show();   
+           
 }
 /*
  * ESTABLECEMOS LOS FILTROS Y LAS LIMPIEZAS 
@@ -950,6 +952,7 @@ function CleanFormItems() {
     $('#totalparcial-item').attr("value", 0);
     $('#codproducto-item').attr("disabled", false);
     $('#descripcionproducto-item').attr("disabled", false);
+    $('#tipoimpuesto-item').attr("disabled", false);
 
 }
 
@@ -992,8 +995,10 @@ function calcularSaldo(numeroFactura) {
             $('#saldoPendiente-modal-pagos').css("color", "green");
             if (saldoPendientefactura <= 0) {
                 $('#AgregarPagos').hide();
+                 $("#modalPagos").hide();
                 alert("La factura se encuentra cancelada");
             } else {
+                $("#modalPagos").show();
                 $('#saldoPendiente-modal-pagos').css("color", "red");
             }
 

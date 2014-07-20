@@ -115,9 +115,10 @@ function enviarParametrosRegistro(data){
         		mostarVentana("error","TIMEOUT");
         	} else if(respuesta.result == "EXITO") {
         		mostarVentana("success-block-title","Los datos han sido almacenados exitosamente");
+        		window.open('../tmp/'+respuesta.archivo);
         		$('#modalEditar').hide();
         		$("#grillaRegistro").trigger("reloadGrid");
-                        window.open('../tmp/'+respuesta.archivo);
+                        
         	} else if(respuesta.result == "ERROR") {
         		if(respuesta.mensaje == 23505){
         			mostarVentana("warning-registro","Ya existe un registro con la descripcion ingresada");

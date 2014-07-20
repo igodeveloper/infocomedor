@@ -323,7 +323,7 @@ class Compras_Compra2Controller extends Zend_Controller_Action {
         $select = $db->select()
                 ->from(array('P' => 'PRODUCTO'), array('P.COD_PRODUCTO', 'P.PRODUCTO_DESC', 
                 									   'P.COD_UNIDAD_MEDIDA', 'U.ISO_UNIDAD_MEDIDA',
-                                                       'S.SALDO_STOCK','P.PRECIO_VENTA'))
+                                                       'S.SALDO_STOCK','P.PRECIO_VENTA', 'P.COD_IMPUESTO'))
                 ->distinct(true)
                 ->join(array('U' => 'UNIDAD_MEDIDA'), 'P.COD_UNIDAD_MEDIDA = U.COD_UNIDAD_MEDIDA', array())
                 ->joinLeft(array('S' => 'STOCK'), 'S.COD_PRODUCTO = P.COD_PRODUCTO', array())
@@ -337,8 +337,9 @@ class Compras_Compra2Controller extends Zend_Controller_Action {
             $uniMedidaDesc = utf8_encode(trim($value ['ISO_UNIDAD_MEDIDA']));
             $saldo_producto = $value ['SALDO_STOCK'];
              $precio_venta = $value ['PRECIO_VENTA'];
+             $impuesto = $value ['COD_IMPUESTO'];
             $option = array("cod" => $codProducto, "descripcion" => $descripcionProducto, 
-            				"unimedcod" => $uniMedidaCod, "unimeddesc" => $uniMedidaDesc, "saldo" => $saldo_producto, "precioventa" =>$precio_venta );
+            				"unimedcod" => $uniMedidaCod, "unimeddesc" => $uniMedidaDesc, "saldo" => $saldo_producto, "precioventa" =>$precio_venta, "impuesto" =>  $impuesto);
         }
         echo json_encode($option);
     }

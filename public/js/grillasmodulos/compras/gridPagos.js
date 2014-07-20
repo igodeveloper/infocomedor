@@ -65,8 +65,7 @@ function cargarGrillaPagos() {
                         align: 'left'
 
                     },
-                    
-                    {
+                        {
                         name: 'NRO_FACTURA_COMPRA',
                         label: 'CONTROL INTERNO',
                         id: "NRO_FACTURA_COMPRA",
@@ -79,6 +78,18 @@ function cargarGrillaPagos() {
                         align: 'right'
 
                     },
+
+                    {
+                        name: 'CONTROL_FISCAL',
+                        label: 'CONTROL FISCAL',
+                        id: "CONTROL_FISCAL",
+                        hidden: false,
+                        width: 30,
+                        align: 'left'
+
+                    }
+                    
+                   ,
                     {
                         name: 'DES_BANCO',
                         label: 'BANCO',

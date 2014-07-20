@@ -49,6 +49,7 @@ class Compras_PagosController extends Zend_Controller_Action {
                     'PP.COD_PAGO_PROVEEDOR',
                     'PC.PROVEEDOR_NOMBRE',
                     'PP.NRO_FACTURA_COMPRA',
+                    'CC.CONTROL_FISCAL',   
                     'PP.DES_BANCO',
                     'PP.NRO_CHEQUE',
                     'PP.MONTO_PAGO',
@@ -98,6 +99,7 @@ class Compras_PagosController extends Zend_Controller_Action {
                 $item['COD_PAGO_PROVEEDOR'],
                 $item['PROVEEDOR_NOMBRE'],
                 $item['NRO_FACTURA_COMPRA'],
+                $item['CONTROL_FISCAL'],
                 
                 $descripcion_banco,
                 $numero_cheque,
@@ -109,6 +111,7 @@ class Compras_PagosController extends Zend_Controller_Action {
                 "COD_PAGO_PROVEEDOR",
                 "PROVEEDOR_NOMBRE",
                 "NRO_FACTURA_COMPRA",
+                "CONTROL_FISCAL",
                 "DES_BANCO",
                 "NRO_CHEQUE",
                 "MONTO_PAGO",
