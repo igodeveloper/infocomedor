@@ -369,5 +369,36 @@ public function modalinventarioAction() {
         //echo "<script>  window.open('".$path_tmp.$file."');  </script>";                      
     }
 
+public function anularinventarioAction() {
+
+//      $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
+
+        $data_inventario = json_decode($this->getRequest()->getParam("inventario"));
+        
+        try {
+                $db = Zend_Db_Table::getDefaultAdapter();
+                $db->beginTransaction();
+                if($data_inventario){
+                    $data = array(
+                            'INVENTARIO_SALDO' => NULL
+                            
+                        );
+                    $where= array(
+                            'COD_INVENTARIO = ?' => $data_inventario
+                        );
+                    $n  = $db->update('INVENTARIO', $data, $where);
+                    $db->commit();
+                    echo json_encode(array("result" => "EXITO"));
+                }else{
+                    echo json_encode(array("result" => "ERROR"));
+                }
+            
+       } catch (Exception $e) {
+            $db->rollBack();
+            echo json_encode(array("result" => "ERROR", "code" => $e->getCode(),"mensaje" => $e->getMessage()));
+            
+        }
+   }
 
 }

@@ -16,6 +16,11 @@ $().ready(function() {
         buscar();
         
     });
+    $("#anularInventario").click(function() {
+        anulaInventario();
+        
+        
+    });
 
     $("#cerrar-bot").click(function() {
         $('#modalEditar').hide();
@@ -27,37 +32,37 @@ $().ready(function() {
         CleanFormItems();
     });
 
-    $("#nuevo-registro").click(function() {
+    // $("#nuevo-registro").click(function() {
        
-        jQuery("#grillaRegistroModal").setGridParam({multiselect: true});
-        $("#grillaRegistroModal").jqGrid('showCol', 'cb'); 
-        cargartipoproducto();
-        $("#guardar").html("Imprimir");
-        $(".btn-compra").show();
-        $("#detalle-receta").show();
-        $("#editar-nuevo").html("Nuevo Registro");
-        CleanFormItems();
-        $("#grillaRegistroModal").jqGrid("clearGridData");
-        $("#grillaRegistroModal").hideCol("saldos");
-        $('#codproducto-item').attr("disabled", false);
-        $('#descripcionproducto-item').attr("disabled", false);
-        $("#guardar").show();
-        $("#guardarinventario").hide();
-        $("#addProductos").show();
-        $("#addTipoProducto").show();
-        $("#addItem").attr("disabled", true);  
-        $("#unidadmedida-item").attr("disabled", true);
-        $('#modalEditar').show();
-       // loadAutocompleteProducto();
-    });
+    //     jQuery("#grillaRegistroModal").setGridParam({multiselect: true});
+    //     $("#grillaRegistroModal").jqGrid('showCol', 'cb'); 
+    //     cargartipoproducto();
+    //     $("#guardar").html("Imprimir");
+    //     $(".btn-compra").show();
+    //     $("#detalle-receta").show();
+    //     $("#editar-nuevo").html("Nuevo Registro");
+    //     CleanFormItems();
+    //     $("#grillaRegistroModal").jqGrid("clearGridData");
+    //     $("#grillaRegistroModal").hideCol("saldos");
+    //     $('#codproducto-item').attr("disabled", false);
+    //     $('#descripcionproducto-item').attr("disabled", false);
+    //     $("#guardar").show();
+    //     $("#guardarinventario").hide();
+    //     $("#addProductos").show();
+    //     $("#addTipoProducto").show();
+    //     $("#addItem").attr("disabled", true);  
+    //     $("#unidadmedida-item").attr("disabled", true);
+    //     $('#modalEditar').show();
+    //    // loadAutocompleteProducto();
+    // });
 
-    $("#addItem").click(function() {
-        addItem();
-    });
+    // $("#addItem").click(function() {
+    //     addItem();
+    // });
     
-    $("#reloadItem").click(function() {
-    	CleanFormItems();
-    });
+    // $("#reloadItem").click(function() {
+    // 	CleanFormItems();
+    // });
 
     $("#guardar").click(function() {
 //        if (!confirm("Esta seguro de que desea almacenar los datos?"))
@@ -359,6 +364,44 @@ function enviarParametrosRegistros(data) {
                 } else if(respuesta.code == 23000) {
                     mostarVentana("warning-modal", "Registros para el inventario duplicados");
                 } else {
+                     mostarVentana("warning-modal", "Ocurri\u00f3 un error verifique los datos");
+                }
+            }
+        },
+        error: function(event, request, settings) {
+           // alert("OCURRIO UN ERROR");
+        }
+    });
+}
+function anulaInventario() {
+    
+    var inventario= $("#inventario-codigo").val();
+    
+    var urlenvio = '';
+    urlenvio = table+'/anularinventario';
+    
+    $.ajax({
+        url: urlenvio,
+        type: 'post',
+        data: { "inventario": inventario},
+        dataType: 'JSON',
+        async: true,
+        success: function(respuesta) {
+//                alert(respuesta+"hola");
+            if (respuesta == null) {
+                mostarVentana("error", "TIMEOUT");
+            } else if (respuesta.result == "EXITO") {
+                mostarVentana("success-title", "Datos almacenados exitosamente");
+                $('#modalEditar').hide();
+                $("#grillaRegistro").trigger("reloadGrid");
+                $("#grillaRegistroModal").trigger("reloadGrid");
+                console.log(inventario);
+            } else if (respuesta.result == "ERROR") {
+                if (respuesta.code == 23505) {
+                    mostarVentana("warning-modal", "Datos duplicados");
+                } else if(respuesta.code == 23000) {
+                    mostarVentana("warning-modal", "Registros para el inventario duplicados");
+                } else {
                 	 mostarVentana("warning-modal", "Ocurri\u00f3 un error verifique los datos");
                 }
             }
@@ -368,6 +411,8 @@ function enviarParametrosRegistros(data) {
         }
     });
 }
+
+
 
 function buscar() {
     var dataJsonBusqueda = JSON.stringify(filtrosbusqueda());
@@ -487,17 +532,20 @@ function modalInventario(parametros) {
     }
     
     $("#grillaRegistroModal").jqGrid('hideCol', 'cb'); 
-    $("#modalEditar").show();
+   
     cargarInventario(parametros.nro_inventario);
     $("#guardar").hide();
     console.log(parametros.ESTADO);
     if(parametros.ESTADO == "SI"){
         $("#guardarinventario").hide();
         $("#guardarinventario").html("Ajustar");
+        $("#anularInventario").hide();
     }else{
         $("#guardarinventario").show();
         $("#guardarinventario").html("Ajustar");
+        $("#anularInventario").show();
     }
+     $("#modalEditar").show();
 }
 
 function cargarInventario(nro_inventario) {
