@@ -63,8 +63,9 @@ $().ready(function() {
 
 
 	//validarNumerosCampo();
-
-
+	$('#codtipomov-modal').change(function() {
+                //$("#codtipomov-modal option:selected").val();
+	 });                        
 });
 
 function validarNumerosLetrasPorcentageEspacio(e) { // 1
@@ -116,6 +117,7 @@ function enviarParametrosRegistro(data){
         		mostarVentana("success-block-title","Los datos han sido almacenados exitosamente");
         		$('#modalEditar').hide();
         		$("#grillaRegistro").trigger("reloadGrid");
+                        window.open('../tmp/'+respuesta.archivo);
         	} else if(respuesta.result == "ERROR") {
         		if(respuesta.mensaje == 23505){
         			mostarVentana("warning-registro","Ya existe un registro con la descripcion ingresada");
@@ -150,11 +152,21 @@ function obtenerJsonFormulario() {
 		$('#codtipomov-modal').attr("required", "required");
 		error = 1;
     }
-	if($('#montomov-modal').attr("value") == -1 || $('#montomov-modal').attr("value").length == 0){
+	if($('#montomov-modal').attr("value") == '' || $('#montomov-modal').attr("value").length == 0){
 		mensaje+= ' | Debe un monto | ';
 		$('#montomov-modal').attr("required", "required");
 		error = 1;
     }	
+    if($('#firmante-input').attr("value") == '' || $('#firmante-input').attr("value").length == 0){
+		mensaje+= ' | Debe ingresar el nombre de la persona que retirara el efectivo | ';
+		$('#firmante-input').attr("required", "required");
+		error = 1;
+    } 
+    if($('#observacion-input').attr("value") == '' || $('#observacion-input').attr("value").length == 0){
+		mensaje+= ' | Debe ingresar una observacion| ';
+		$('#observacion-input').attr("required", "required");
+		error = 1;
+    }     
     if(error == 1){
 		mostarVentana("warning-registro",mensaje);
 		return null;            
@@ -164,6 +176,8 @@ function obtenerJsonFormulario() {
 		jsonObject.cod_caja = $('#codcaja-modal').attr("value");
 		jsonObject.cod_tipo_mov = $("#codtipomov-modal option:selected").val();
 		jsonObject.monto_mov = $('#montomov-modal').attr("value");		
+                jsonObject.firmante_mov = $('#firmante-input').attr("value");
+                jsonObject.observacion_mov = $('#observacion-input').attr("value");
 		return jsonObject;
 	}
     

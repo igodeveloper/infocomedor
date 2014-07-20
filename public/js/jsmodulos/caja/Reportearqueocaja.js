@@ -70,7 +70,7 @@ function imprimirArqueoCaja(){
 				if (respuesta == null) {
                                     mostarVentana("error", "TIMEOUT");
 				} else if (respuesta.result == "EXITO") {
-									console.log('../tmp/'+respuesta.archivo);
+                                    console.log('../tmp/'+respuesta.archivo);
                                     window.open('../tmp/'+respuesta.archivo);
 				}                                        
 				$.unblockUI();

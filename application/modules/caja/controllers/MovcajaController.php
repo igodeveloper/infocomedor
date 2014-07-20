@@ -56,7 +56,8 @@ class Caja_MovcajaController extends Zend_Controller_Action
 					->join(array('D' => 'caja'), 'D.cod_usuario_caja = C.cod_usuario')
 					->join(array('M' => 'mov_caja'), 'M.cod_caja = D.cod_caja')
 					->join(array('T' => 'tipo_movimiento'), 'T.cod_tipo_mov = M.cod_tipo_mov')
-					->where("D.cod_usuario_caja = ".$cod_usuario);	
+					->where("D.cod_usuario_caja = ".$cod_usuario)
+                                        ->order('M.fecha_hora_mov desc');	
 			$result = $db->fetchAll($select);
 //die($select);	
         $result = $db->fetchAll($select);
@@ -68,7 +69,7 @@ class Caja_MovcajaController extends Zend_Controller_Action
 
 	private function obtenerPaginas($result,$cantidadFilas,$page){
 		$this->_paginator = Zend_Paginator::factory($result);
-        $this->_paginator->setItemCountPerPage($cantidadFilas);
+                $this->_paginator->setItemCountPerPage($cantidadFilas);
         $this->_paginator->setCurrentPageNumber($page);
         $pagina ['rows'] = array();
         foreach ($this->_paginator as $item) {
@@ -227,14 +228,35 @@ class Caja_MovcajaController extends Zend_Controller_Action
 					$rowClass->setTipo_factura_mov(trim(utf8_decode($rowData->tipo_factura_mov)));
 				else
 					$rowClass->setTipo_factura_mov('');
-				if(isset($rowData->observacion_mov))
+				if(trim($rowData->observacion_mov) <> '')
 					$rowClass->setObservacion_mov(trim(utf8_decode($rowData->observacion_mov)));
 				else
 					$rowClass->setObservacion_mov('');
+				if(trim($rowData->firmante_mov) <> '')
+					$rowClass->setFirmante_mov(trim(utf8_decode($rowData->firmante_mov)));                                
                                 $rowClass->setTipo_mov('EFECTIVO');
-                $result = $service->saveRow($rowClass);
+                $result_pk = $service->saveRow($rowClass);
 	    	$db->commit();
-	    	echo json_encode(array("result" => "EXITO"));
+                
+                $var_nombrearchivo = 'nro_movimiento_'.trim($result_pk);
+                $path_tmp = './tmp/';
+                $orientation='P';
+                $unit='mm';
+                $format='A4';
+
+                if(!isset($pdf))
+                  $pdf= new PDFReporteagresocaja($orientation,$unit,$format,$result_pk);
+                $pdf->AliasNbPages();
+                $pdf->AddPage();
+                $pdf->Body();
+
+                $file = basename($var_nombrearchivo."_".date('Ymdhis'));
+                $file .= '.pdf';
+                //Guardar el PDF en un fichero
+                $pdf->Output($path_tmp.$file, 'F');
+                $pdf->close();
+                unset($pdf);
+                echo json_encode(array("result" => "EXITO","archivo" => $file));	    	
         }catch( Exception $e ) {
 	    	echo json_encode(array("result" => "ERROR","mensaje"=>$e->getCode()));
 		$db->rollBack();
