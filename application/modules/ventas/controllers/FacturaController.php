@@ -14,7 +14,31 @@ class Ventas_FacturaController extends Zend_Controller_Action {
     public function indexAction() {
         //$this->_helper->viewRenderer->setNoRender ( true );
     }
-    
+public function imprimirfacturaAction(){
+        try{
+            $var_nombrearchivo = 'factura';
+            $path_tmp = './tmp/';
+            $orientation='P';
+            $unit='mm';
+            $format='A4';    
+            if(!isset($pdf))
+              $pdf= new PDFFacturaPY();
+            $pdf->AliasNbPages();
+            $pdf->AddPage();
+            //$pdf->Body();
+
+            $file = basename($var_nombrearchivo."_".date('Ymdhis'));
+            $file .= '.pdf';
+            //Guardar el PDF en un fichero
+            $pdf->Output($path_tmp.$file, 'F');
+            $pdf->close();
+            unset($pdf);    
+        }catch( Exception $e ) {
+	    	echo json_encode(array("result" => "ERROR","mensaje"=>$e->getCode()));
+		$db->rollBack();
+	}    
+}
+
 public function buscarAction() {
 
         $this->_helper->viewRenderer->setNoRender(true);
