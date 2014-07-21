@@ -457,9 +457,17 @@ public function guardarAction() {
                         //si no se cancela el item se calcula la diferencia 
                         $saldo_cant_facturar=($fila->KAR_CANT_PRODUCTO - $fila->KAR_CANT_FACTURAR);
                         $saldo_precio_facturar=($fila->KAR_PRECIO_PRODUCTO - $fila->KAR_PRECIO_FACTURAR);
+                        
+                        if ($fila->COD_IMPUESTO == 5) {
+                               $impuesto_pendiente = (int)(($saldo_precio_facturar * 5) / 105);
+                            }
+                        if ($fila->COD_IMPUESTO == 10) {
+                             $impuesto_pendiente = (int)(($saldo_precio_facturar * 10) / 110);
+                        }
                         $dataKarrito = array(
                             'KAR_CANT_FACTURAR'=>$saldo_cant_facturar,
-                            'KAR_PRECIO_FACTURAR'=>$saldo_precio_facturar
+                            'KAR_PRECIO_FACTURAR'=>$saldo_precio_facturar,
+                            'MONTO_IMPUESTO'=>$impuesto_pendiente
                             
                         );
                         $where = "COD_KARRITO= " . $fila->COD_KARRITO;
