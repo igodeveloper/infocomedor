@@ -33,9 +33,8 @@ class Caja_MovcajaController extends Zend_Controller_Action
         if (!isset($page)) {
             $page = 1;
         }
-		//$parametrosNamespace = new Zend_Session_Namespace ( 'parametros' );
-		//$cod_usuario = $parametrosNamespace->cod_usuario;
-		$cod_usuario = 1;
+        $parametrosNamespace = new Zend_Session_Namespace ( 'parametros' );
+        $cod_usuario = $parametrosNamespace->cod_usuario;
         $db = Zend_Db_Table::getDefaultAdapter();
 			$db = Zend_Db_Table::getDefaultAdapter();
 			$select = $db->select()
@@ -282,7 +281,6 @@ class Caja_MovcajaController extends Zend_Controller_Action
 		$result = '';
 		$parametrosNamespace = new Zend_Session_Namespace ( 'parametros' );
 		$cod_usuario = $parametrosNamespace->cod_usuario;
-		$cod_usuario = 1;
 		$jsonResultado = json_encode(array("resultado" => 'cerrado'));		
 		try {
 			$db = Zend_Db_Table::getDefaultAdapter();
