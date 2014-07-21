@@ -142,7 +142,7 @@ public function buscarAction() {
         $db = Zend_Db_Table::getDefaultAdapter();
         $select = $db->select()
                 ->from(array('P' => 'PRODUCTO'), array('P.COD_PRODUCTO', 'P.PRODUCTO_DESC', 
-                                                       'P.COD_UNIDAD_MEDIDA', 'U.ISO_UNIDAD_MEDIDA','S.SALDO_STOCK','P.PRECIO_VENTA'))
+                                                       'P.COD_UNIDAD_MEDIDA', 'U.ISO_UNIDAD_MEDIDA','S.SALDO_STOCK','P.PRECIO_VENTA','P.COD_IMPUESTO'))
                 ->distinct(true)
                 ->join(array('U' => 'UNIDAD_MEDIDA'), 'P.COD_UNIDAD_MEDIDA = U.COD_UNIDAD_MEDIDA', array())
                 ->joinLeft(array('S' => 'STOCK'), 'S.COD_PRODUCTO = P.COD_PRODUCTO', array())
@@ -156,8 +156,10 @@ public function buscarAction() {
             $uniMedidaDesc = utf8_encode(trim($value ['ISO_UNIDAD_MEDIDA']));
             $saldo_producto = $value ['SALDO_STOCK'];
              $precio_venta = $value ['PRECIO_VENTA'];
+             $COD_IMPUESTO = $value ['COD_IMPUESTO'];
             $option = array("cod" => $codProducto, "descripcion" => $descripcionProducto, 
-                            "unimedcod" => $uniMedidaCod, "unimeddesc" => $uniMedidaDesc, "saldo" => $saldo_producto, "precioventa" =>$precio_venta );
+                            "unimedcod" => $uniMedidaCod, "unimeddesc" => $uniMedidaDesc, "saldo" => $saldo_producto, 
+                            "precioventa" =>$precio_venta, "COD_IMPUESTO" =>$COD_IMPUESTO );
         }
         echo json_encode($option);
     }    
@@ -242,7 +244,9 @@ private function obtenerPaginas($result, $cantidadFilas, $page) {
                             'C.KAR_CANT_PRODUCTO',
 							'C.KAR_CANT_FACTURAR',
                             'C.KAR_PRECIO_PRODUCTO',
-							'C.KAR_PRECIO_FACTURAR',
+                            'C.KAR_PRECIO_FACTURAR',
+                            'C.COD_IMPUESTO',
+							'C.MONTO_IMPUESTO',
 							'C.COD_MOZO',
 							'C.FACT_NRO',
                 	  		'C.ESTADO'))
@@ -275,7 +279,9 @@ private function obtenerPaginas($result, $cantidadFilas, $page) {
                                 'KAR_CANT_PRODUCTO'=> $value ['KAR_CANT_FACTURAR'],
 								'KAR_CANT_FACTURAR'=> $value ['KAR_CANT_FACTURAR'],
                                 'KAR_PRECIO_PRODUCTO'=> $value ['KAR_PRECIO_FACTURAR'],
-								'KAR_PRECIO_FACTURAR'=> $value ['KAR_PRECIO_FACTURAR'],
+                                'KAR_PRECIO_FACTURAR'=> $value ['KAR_PRECIO_FACTURAR'],
+                                'COD_IMPUESTO'=> $value ['COD_IMPUESTO'],
+								'MONTO_IMPUESTO'=> $value ['MONTO_IMPUESTO'],
 								'COD_MOZO'=> $value ['COD_MOZO'],
 								'FACT_NRO'=> $value ['FACT_NRO'],
 								'ESTADO'=> $value ['ESTADO']);
@@ -363,7 +369,7 @@ public function guardarAction() {
 	            $data = array(
 					'FAC_NRO' =>0,
 					'COD_CLIENTE' =>$dataVenta->codcliente,
-					'FAC_FECHA_EMI' =>$dataVenta->fechaEmision,
+					'FAC_FECHA_EMI' =>date('Y-m-d', strtotime($dataVenta->fechaEmision)),
 					'FAC_MES' =>(int)(substr($dataVenta->fechaEmision,6,2)),
 					'FAC_ANO' =>(int)(substr($dataVenta->fechaEmision,1,4)),
 					'FAC_FECH_VTO' =>date('Y-m-d', strtotime($dataVenta->fechaVencimiento)),
@@ -373,30 +379,39 @@ public function guardarAction() {
 	            );
 	            $insert = $db->insert('FACTURA', $data);
 	            $factura_nro = $db->lastInsertId();
-	            $i = 1;
+	            $i = 0;
                 foreach ($dataVentaDetalle as $fila) {
                     
                  	$data = array(
 		                'FAC_NRO'=>$factura_nro,
-						'FAC_DET_ITEM'=>$i++,
+						'FAC_DET_ITEM'=>++$i,
 						'COD_PRODUCTO'=>$fila->COD_PRODUCTO,
                         'FAC_DET_CANTIDAD' =>$fila->KAR_CANT_FACTURAR,
 						'FAC_DET_TOTAL'=>$fila->KAR_PRECIO_FACTURAR
 		            );
 		            $insertDetalle = $db->insert('FACTURA_DETALLE', $data);
                     
+                    $dataImpuesto = array(
+                        'FAC_NRO'=>$factura_nro,
+                        'FAC_IMPUESTO_ITEM'=>$i,
+                        'COD_IMPUESTO'=>(int)$fila->COD_IMPUESTO,
+                        'FACT_IMP_MONTO' =>(int)$fila->MONTO_IMPUESTO
+                    );
+                    $insertDetalleImpuesto = $db->insert('FACTURA_IMPUESTO', $dataImpuesto);
                     
 		            if($fila->COD_KARRITO == 0){
 		            	$dataKarrito = array(
 		            		'COD_KARRITO'=>0,
-							'KAR_FECH_MOV'=>$dataVenta->fechaEmision,
+							'KAR_FECH_MOV'=>date('Y-m-d', strtotime($dataVenta->fechaEmision)),
 							'COD_CLIENTE'=>$dataVenta->codcliente,
 							'COD_MESA'=>1,
 							'COD_PRODUCTO'=>$fila->COD_PRODUCTO,
                             'KAR_CANT_PRODUCTO'=>$fila->KAR_CANT_PRODUCTO,
 							'KAR_CANT_FACTURAR'=>$fila->KAR_CANT_PRODUCTO,
                             'KAR_PRECIO_PRODUCTO'=>$fila->KAR_PRECIO_PRODUCTO,
-							'KAR_PRECIO_FACTURAR'=>$fila->KAR_PRECIO_PRODUCTO,
+                            'KAR_PRECIO_FACTURAR'=>$fila->KAR_PRECIO_PRODUCTO,
+                            'COD_IMPUESTO'=>$fila->COD_IMPUESTO,
+							'MONTO_IMPUESTO'=>$fila->MONTO_IMPUESTO,
 							'COD_MOZO'=>1,
 							'FACT_NRO'=>$factura_nro,
 							'ESTADO'=>'PA'

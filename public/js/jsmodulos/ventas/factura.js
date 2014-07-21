@@ -155,6 +155,7 @@ $().ready(function() {
             cargarGrillaRegistroPagoVenta();
             $('#modalFormaPago').show();
             $('#modalEditar').hide();
+             $("#grillaRegistroPagoVenta").jqGrid("clearGridData", true);
             $('#montoPago-modal-pagos').attr("value", data.venta.montoTotal);
             $('#saldoPendiente-modal-pagos').attr("value", data.venta.montoTotal);
             $('#saldoPendiente-modal-pagos').attr("disabled", true);
@@ -475,6 +476,18 @@ function obtenerJsonDetalles() {
     jsonObject.COD_MOZO = 1;  
     jsonObject.FACT_NRO = 0;  
     jsonObject.ESTADO = 'PE';  
+
+    var impuestos = document.getElementById("tipoimpuesto-item");
+    var impuesto = parseInt(impuestos.options[impuestos.selectedIndex].value);
+     if (impuesto === 5) {
+        jsonObject.COD_IMPUESTO = impuesto;
+        jsonObject.MONTO_IMPUESTO = parseInt((jsonObject.KAR_PRECIO_FACTURAR * 5) / 105);
+    }
+    if (impuesto === 10) {
+         jsonObject.COD_IMPUESTO = impuesto;
+        jsonObject.MONTO_IMPUESTO = parseInt((jsonObject.KAR_PRECIO_FACTURAR * 10) / 110);
+    }
+
     
     if (jsonObject.PRODUCTO_DESC === "" || jsonObject.PRODUCTO_DESC === null) {
         mensaje+= ' | Descripci\u00F3n del producto';
@@ -486,7 +499,12 @@ function obtenerJsonDetalles() {
         focus++;
         addrequiredattr('cant-item',focus);
     }
-
+     if (impuesto === -1 || impuesto === null) {
+        mensaje+= ' | Impuesto ';
+        focus++;
+        addrequiredattr('tipoimpuesto-item',focus);
+        
+    } 
     if (mensaje != 'Ingrese: '){
         mensaje+= ' |';
         mostarVentana("warning", mensaje);
@@ -690,6 +708,7 @@ function productvalidation(data) {
                     $('#codUnidadMedida-item').attr("value", respuesta.unimedcod);
                     $('#unidadmedida-item').attr("value", respuesta.unimeddesc);
                     $('#precio-item').attr("value", respuesta.precioventa);
+                    $('#tipoimpuesto-item').attr("value", respuesta.COD_IMPUESTO);
                     $("#addItem").removeAttr('disabled');
                     bloqueamosCeldas('block');
                  }else{
@@ -714,6 +733,7 @@ function bloqueamosCeldas(action){
         $('#codproducto-item').attr("disabled", true);
         $('#descripcionproducto-item').attr("disabled", true);
         $('#unidadmedida-item').attr("disabled", true);
+        $('#tipoimpuesto-item').attr("disabled", true);
         
     }else{
         $('#codproducto-item').attr("disabled", false);
@@ -721,6 +741,7 @@ function bloqueamosCeldas(action){
          $('#unidadmedida-item').attr("disabled", false);
         $('#cant-item').attr("disabled", false);
         $('#precio-item').attr("disabled", false);
+        $('#tipoimpuesto-item').attr("disabled", false);
     }
 
 }
@@ -740,6 +761,7 @@ $('#modalEditar').show();
 	var dataVenta = JSON.stringify(data.venta);
     var dataVentaDetalle = JSON.stringify(data.ventaDetalle);
 	var dataVentaPago = JSON.stringify(pago);
+    console.log(dataVentaDetalle);
     $.ajax({
         url: table+'/guardar',
         type: 'post',

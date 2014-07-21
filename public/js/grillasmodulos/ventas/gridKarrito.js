@@ -73,7 +73,7 @@ function cargarGrillaRegistro() {
                         label: 'COD CLIENTE',
                         id: 'COD_CLIENTE',
                         align: 'right',
-                        width: 20,
+                        width: 10,
                        
                         hidden: false
                     },
@@ -89,10 +89,10 @@ function cargarGrillaRegistro() {
                     {
                         title: false,
                         name: 'COD_MESA',
-                        label: 'COD MESA',
+                        label: 'MESA',
                         id: 'COD_MESA',
                         align: 'center',
-                        width: 10,
+                        width: 6,
                         hidden: false
                     },
                     {
@@ -112,7 +112,7 @@ function cargarGrillaRegistro() {
                         label: 'PRODUCTO',
                         id: 'PRODUCTO_DESC',
                         align: 'left',
-                        width: 40,
+                        width: 30,
                         hidden: false
                     },
                     {
@@ -285,17 +285,38 @@ function cargarGrillaRegistroModal() {
                         "sortable": false,
                         "hidden": false,
                         width: 7
+                    },{
+                        "title": false,
+                        "name": 'codimpuesto',
+                        "label": 'IVA',
+                        "id": 'codimpuesto',
+                        "align": "center",
+                        "sortable": false,
+                        "hidden": true,
+                        width: 7
+                    },
+                    {
+                        "title": false,
+                        "name": 'impuesto',
+                        "label": 'IVA',
+                        "id": 'impuesto',
+                        "align": "center",
+                        "sortable": false,
+                        "hidden": false,
+                        width: 7,
+                         formatter: 'number', 
+                        formatoptions: { decimalPlaces: 0 }
                     },
                     {
                         "title": false,
                         "name": 'total',
-                        "label": 'TOTALS',
+                        "label": 'TOTAL',
                         "id": 'total',
                         "align": "right",
                         "hidden": false,
                         width: 10,
-                        sorttype: 'float',
-                        formatter: 'number'
+                        formatter: 'number', 
+                        formatoptions: { decimalPlaces: 0 }
                     }
                     
                 ]}).navGrid('#paginadorRegistroModal', {

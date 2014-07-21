@@ -256,7 +256,19 @@ function obtenerJsonDetalles() {
     jsonObject.codUnidadMedida = $('#codUnidadMedida-item').attr("value");
     jsonObject.unidadmedida = $("#unidadmedida-item").attr("value");
     jsonObject.precio = $("#precio-item").attr("value");
-    jsonObject.total = $("#total-item").attr("value");
+    jsonObject.total = parseInt($("#total-item").attr("value"));
+
+    var impuestos = document.getElementById("tipoimpuesto-item");
+    var impuesto = parseInt(impuestos.options[impuestos.selectedIndex].value);
+     if (impuesto == 5) {
+        jsonObject.codimpuesto = impuesto;
+        jsonObject.impuesto = parseInt((jsonObject.total * 5) / 105);
+    }
+    if (impuesto == 10) {
+        jsonObject.codimpuesto = impuesto;
+        
+        jsonObject.impuesto = parseInt((jsonObject.total * 10) / 110);
+    }
 
     mensaje = 'Ingrese:';
     focus= 0;
@@ -273,6 +285,12 @@ function obtenerJsonDetalles() {
         mensaje+= ' | Cantidad ';
         focus++;
         addrequiredattr('cant-item',focus);
+    } 
+     if (impuesto === -1 || impuesto === null) {
+        mensaje+= ' | Impuesto ';
+        focus++;
+        addrequiredattr('tipoimpuesto-item',focus);
+        
     } 
    
 
@@ -358,6 +376,8 @@ function productvalidation(data) {
                     $('#codUnidadMedida-item').attr("value", respuesta.unimedcod);
                     $('#unidadmedida-item').attr("value", respuesta.unimeddesc);
                     $('#precio-item').attr("value", respuesta.precioventa);
+                    $('#tipoimpuesto-item').attr("value", respuesta.COD_IMPUESTO);
+                    $('#tipoimpuesto-item').attr("disabled", true);
                     $('#codproducto-item').attr("disabled", true);
                     $('#descripcionproducto-item').attr("disabled", true);
                     $("#addItem").removeAttr('disabled');
@@ -547,6 +567,8 @@ function CleanFormItems() {
     $('#descripcionproducto-item').attr("value", null);
     $('#codUnidadMedida-item').attr("value", null);
     $("#unidadmedida-item").attr("value", null);
+    $("#tipoimpuesto-item").attr("value", 0);
+    $("#tipoimpuesto-item").attr("disabled", false);
     $('#cant-item').attr("value",'0.000');
     $("#precio-item").attr("value",'0.000');
     $("#total-item").attr("value", '0.000'); 

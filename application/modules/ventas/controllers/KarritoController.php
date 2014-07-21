@@ -115,7 +115,9 @@ class Ventas_KarritoController extends Zend_Controller_Action {
 						'KAR_CANT_PRODUCTO' => (float)$value->cantidad,
                         'KAR_CANT_FACTURAR' => (float)$value->cantidad,
                         'KAR_PRECIO_PRODUCTO' => (float)$value->total,
-						'KAR_PRECIO_FACTURAR' => (float)$value->total,
+                        'KAR_PRECIO_FACTURAR' => (float)$value->total,
+                        'COD_IMPUESTO' => (float)$value->codimpuesto,
+						'MONTO_IMPUESTO' => (float)$value->impuesto,
 						'COD_MOZO' => 1, 
 						'FACT_NRO' => 0,
         			 	'ESTADO' => 'PE'
@@ -342,7 +344,8 @@ private function obtenerPaginas($result, $cantidadFilas, $page) {
         $db = Zend_Db_Table::getDefaultAdapter();
         $select = $db->select()
                 ->from(array('P' => 'PRODUCTO'), array('P.COD_PRODUCTO', 'P.PRODUCTO_DESC', 
-                                                       'P.COD_UNIDAD_MEDIDA', 'U.ISO_UNIDAD_MEDIDA','S.SALDO_STOCK','P.PRECIO_VENTA'))
+                                                       'P.COD_UNIDAD_MEDIDA', 'U.ISO_UNIDAD_MEDIDA',
+                                                       'S.SALDO_STOCK','P.PRECIO_VENTA','P.COD_IMPUESTO'))
                 ->distinct(true)
                 ->join(array('U' => 'UNIDAD_MEDIDA'), 'P.COD_UNIDAD_MEDIDA = U.COD_UNIDAD_MEDIDA', array())
                 ->joinLeft(array('S' => 'STOCK'), 'S.COD_PRODUCTO = P.COD_PRODUCTO', array())
@@ -356,8 +359,9 @@ private function obtenerPaginas($result, $cantidadFilas, $page) {
             $uniMedidaDesc = utf8_encode(trim($value ['ISO_UNIDAD_MEDIDA']));
             $saldo_producto = $value ['SALDO_STOCK'];
              $precio_venta = $value ['PRECIO_VENTA'];
+             $COD_IMPUESTO = $value ['COD_IMPUESTO'];
             $option = array("cod" => $codProducto, "descripcion" => $descripcionProducto, 
-                            "unimedcod" => $uniMedidaCod, "unimeddesc" => $uniMedidaDesc, "saldo" => $saldo_producto, "precioventa" =>$precio_venta );
+                            "unimedcod" => $uniMedidaCod, "unimeddesc" => $uniMedidaDesc, "saldo" => $saldo_producto, "precioventa" =>$precio_venta, "COD_IMPUESTO" =>$COD_IMPUESTO );
         }
         echo json_encode($option);
     }

@@ -203,10 +203,19 @@ function cargarGrillaFacturasModal() {
                        var cantidad_pendiente = parseFloat($("#grillaComprasModal").jqGrid('getCell', rowid, 'KAR_CANT_PRODUCTO'));
                        var precio_unitario = parseFloat(precio/cantidad_pendiente);
                        var cantidad_facturar = parseFloat($("#grillaComprasModal").jqGrid('getCell', rowid, 'KAR_CANT_FACTURAR'));
+                       var cod_impuesto = $("#grillaComprasModal").jqGrid('getCell', rowid, 'COD_IMPUESTO')
                       
                        if(cantidad_facturar<=cantidad_pendiente){
                             var precio_facturar = parseFloat(precio_unitario*cantidad_facturar);
                             $("#grillaComprasModal").jqGrid('setRowData',rowid,{KAR_PRECIO_FACTURAR: precio_facturar});
+                            if(cod_impuesto == 5){
+                                var impuesto = parseInt((precio_facturar * 5) / 105);
+                                $("#grillaComprasModal").jqGrid('setRowData',rowid,{MONTO_IMPUESTO: impuesto});
+                            }else {
+                                var impuesto = parseInt((precio_facturar * 10) / 110);
+                                $("#grillaComprasModal").jqGrid('setRowData',rowid,{MONTO_IMPUESTO: impuesto});
+                            }
+                                
                        }else{
                             mostarVentana("warning", "El valor que desea ingresar supera el monto pendiente");
                             $("#grillaComprasModal").jqGrid('setRowData',rowid,{KAR_CANT_FACTURAR: cantidad_pendiente});
@@ -325,6 +334,27 @@ function cargarGrillaFacturasModal() {
                         formatter: 'number',
                 formatoptions:{thousandsSeparator: ".", decimalPlaces:0},
                         hidden: false
+                    },{
+                        "title": false,
+                        "name": 'COD_IMPUESTO',
+                        "label": 'IVA',
+                        "id": 'COD_IMPUESTO',
+                        "align": "center",
+                        "sortable": false,
+                        "hidden": true,
+                        width: 7
+                    },
+                    {
+                        "title": false,
+                        "name": 'MONTO_IMPUESTO',
+                        "label": 'IVA',
+                        "id": 'MONTO_IMPUESTO',
+                        "align": "center",
+                        "sortable": false,
+                        "hidden": false,
+                        width: 7,
+                         formatter: 'number', 
+                        formatoptions: { decimalPlaces: 0 }
                     },
                     {
                         title: false,
@@ -569,6 +599,28 @@ function cargarGrillaFacturasModalKarrito() {
                 formatoptions:{thousandsSeparator: ".", decimalPlaces:0},
                         width: 20,
                         hidden: false
+                    }
+                    ,{
+                        "title": false,
+                        "name": 'COD_IMPUESTO',
+                        "label": 'IVA',
+                        "id": 'COD_IMPUESTO',
+                        "align": "center",
+                        "sortable": false,
+                        "hidden": true,
+                        width: 7
+                    },
+                    {
+                        "title": false,
+                        "name": 'MONTO_IMPUESTO',
+                        "label": 'IVA',
+                        "id": 'MONTO_IMPUESTO',
+                        "align": "center",
+                        "sortable": false,
+                        "hidden": false,
+                        width: 7,
+                         formatter: 'number', 
+                        formatoptions: { decimalPlaces: 0 }
                     },
                     {
                         title: false,
@@ -787,8 +839,7 @@ function cargarGrillaFacturasDetalle() {
                 formatoptions:{thousandsSeparator: ".", decimalPlaces:2},
                         width: 10,
                         hidden: false
-                    }
-                    ,
+                    },
                     {
                         title: false,
                         name: 'FAC_DET_TOTAL',
