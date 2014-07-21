@@ -54,56 +54,58 @@
 		
 		function PDFFacturaPY($orientation='P',$unit='mm',$format='A4')
 		{
-                    $this->yBlo2 = $this->yBlo1 + 15; //Pos del Inicio del Cuadro de Los Detalles
-                    $this->yBlo3 = $this->yBlo2 + 10; // Alto del Area del titulo de los Detalles
-                    $this->yBlo4 = $this->yBlo3 + 35; // Alto del Area de Detalles
-                    $this->yBlo5 = $this->yBlo4 + 15; // Alto del Area de Totales de los Detalles
-                    $diferencia = 146; // diferencia de separacion entre Facturas
-                    $this->yBlo1_Dup = $this->yBlo1 + $diferencia;
-                    $this->yBlo2_Dup = $this->yBlo2 + $diferencia;
-                    $this->yBlo3_Dup = $this->yBlo3 + $diferencia;
-                    $this->yBlo4_Dup = $this->yBlo4 + $diferencia;
-                    $this->yBlo5_Dup = $this->yBlo5 + $diferencia;
+				$this->yBlo2 = $this->yBlo1 + 15; //Pos del Inicio del Cuadro de Los Detalles
+				$this->yBlo3 = $this->yBlo2 + 10; // Alto del Area del titulo de los Detalles
+				$this->yBlo4 = $this->yBlo3 + 35; // Alto del Area de Detalles
+				$this->yBlo5 = $this->yBlo4 + 15; // Alto del Area de Totales de los Detalles
+				$diferencia = 146; // diferencia de separacion entre Facturas
+				$this->yBlo1_Dup = $this->yBlo1 + $diferencia;
+				$this->yBlo2_Dup = $this->yBlo2 + $diferencia;
+				$this->yBlo3_Dup = $this->yBlo3 + $diferencia;
+				$this->yBlo4_Dup = $this->yBlo4 + $diferencia;
+				$this->yBlo5_Dup = $this->yBlo5 + $diferencia;
 		
-		    //Llama al constructor de la clase padre
-		    $this->FPDF($orientation,$unit,$format);
-		    //Iniciaci�n de variables
-		    //$this->Conn =$conn;		
-		    //$this->tipo = $tipo;
-		    $this->B=0;
-		    $this->I=0;
-		    $this->U=0;
-		    $this->HREF='';   	
-		    $this->SetAutoPageBreak(false);
-                    $this->trans = new N2t();				 	    
+				//Llama al constructor de la clase padre
+				$this->FPDF($orientation,$unit,$format);
+				//Iniciaci�n de variables
+				$this->Conn = new Conexion();	
+				//$this->tipo = $tipo;
+				$this->B=0;
+				$this->I=0;
+				$this->U=0;
+				$this->HREF='';   	
+				$this->SetAutoPageBreak(false);
+				$this->trans = new N2t();				 	    
 		}		
-                //Cabecera de p�gina
-                function Header()
-                {
-                    $this->SetY(0);
-                    $this->setDatosCabecera();
-                    $this->setEsqueleto();
-                    $this->SetY(148);
-                    $this->setDatosCabecera();   		
-                }		
+		//Cabecera de p�gina
+		function Header()
+		{
+			$this->Image("./css/images/infocomedor.jpg",4,15,50,30);
+			$this->SetY(0);
+			$this->setDatosCabecera();
+			$this->setEsqueleto();
+			$this->SetY(148);
+			$this->Image("./css/images/infocomedor.jpg",4,160,50,30);
+			$this->setDatosCabecera();   		
+		}		
 		//Pie de p�gina
-                function Footer2()
-                {
-                    $this->SetY(-15);		    	
-                    $this->Cell(-2);		    						    
-                    //	    $this->printLine(282);					
-                    $this->SetFont('Arial','B',7);
-                    $this->Cell(25,10,"www.conexiongroup.com | Logistic One � it's a ConexionGroup trademark.",0,0,'L');			    		    		    		    		    
-                            $this->Ln(5);				
-                            $this->Cell(-2);		    			
-                    $this->Cell(50,10,"This report is confidential and intended only for internal use. Distribution, disclosing and/or copying the contents of this report is strictly prohibited.",0,0,'L');			    		    		    		    		    		    
-                }		
+		function Footer2()
+		{
+			$this->SetY(-15);		    	
+			$this->Cell(-2);		    						    
+			//	    $this->printLine(282);					
+			$this->SetFont('Arial','B',7);
+			$this->Cell(25,10,"www.conexiongroup.com | Logistic One � it's a ConexionGroup trademark.",0,0,'L');			    		    		    		    		    
+					$this->Ln(5);				
+					$this->Cell(-2);		    			
+			$this->Cell(50,10,"This report is confidential and intended only for internal use. Distribution, disclosing and/or copying the contents of this report is strictly prohibited.",0,0,'L');			    		    		    		    		    		    
+		}		
 		
 		function setEsqueleto()
 		{
 
-                    $this->SetFont('Arial','B',7);		    	    
-                    $this->SetFillColor(200);
+			$this->SetFont('Arial','B',7);		    	    
+			$this->SetFillColor(200);
 
 			$y1 = $this->yBlo2;
 			$y2 = $this->yBlo2 + (($this->yBlo3 -$this->yBlo2) /2);
@@ -127,94 +129,93 @@
 			$l6 = ($this->yBlo5 -$this->yBlo4);// Alto del Pie Sombreado del Detalle
 
 
-                for($i = 1;$i <= 2;$i++){
-                    if($i== 2){		
-                            $y1 = $this->yBlo2_Dup;
-                            $y2 = $this->yBlo2_Dup +(($this->yBlo3_Dup -$this->yBlo2_Dup) /2);
-                            $y3 = $this->yBlo3_Dup;
-                            $y4 = $this->yBlo4_Dup;
-                            $y5 = $this->yBlo5_Dup;
-                            $y1_1 = $this->yBlo2_Dup + $reng1;
-                            $y1_2 = $this->yBlo2_Dup + $reng2;
-                            $y4_1 = $this->yBlo4_Dup + $reng1;
-                            $y4_2 = $this->yBlo4_Dup + $reng2;
-                            $y4_3 = $this->yBlo4_Dup + $reng3;
+			for($i = 1;$i <= 2;$i++){
+				if($i== 2){		
+					$y1 = $this->yBlo2_Dup;
+					$y2 = $this->yBlo2_Dup +(($this->yBlo3_Dup -$this->yBlo2_Dup) /2);
+					$y3 = $this->yBlo3_Dup;
+					$y4 = $this->yBlo4_Dup;
+					$y5 = $this->yBlo5_Dup;
+					$y1_1 = $this->yBlo2_Dup + $reng1;
+					$y1_2 = $this->yBlo2_Dup + $reng2;
+					$y4_1 = $this->yBlo4_Dup + $reng1;
+					$y4_2 = $this->yBlo4_Dup + $reng2;
+					$y4_3 = $this->yBlo4_Dup + $reng3;
+				}
 
-                    }
+				//Pintar el sombreado
+				$this->SetXY(15.1,$y1);	
+				$this->Cell(185,$l5,'',0,0,'L',true);	    
+				$this->SetXY(15.1,$y4);	
+				$this->Cell(185,$l6,'',0,0,'L',true);	   	
+							// Imprimir Lineas
+				$this->printLine(15,$y1,200,$y1);	//1ra linea horizontal
+				$this->printLine(113,$y1,113,$y1+$l3);	// separador de clase vertical
+				$this->printLine(130,$y1,130,$y1+$l3);	// vertical de exentas
+				$this->printLine(15,$y1,15,$y1+$l1);  //1ra linea vertical izq
+				$this->printLine(200,$y1,200,$y1+$l1);//2da linea vertical der			  
 
-                    //Pintar el sombreado
-                    $this->SetXY(15.1,$y1);	
-                    $this->Cell(185,$l5,'',0,0,'L',true);	    
-                    $this->SetXY(15.1,$y4);	
-                    $this->Cell(185,$l6,'',0,0,'L',true);	   	
-                                // Imprimir Lineas
-                    $this->printLine(15,$y1,200,$y1);	//1ra linea horizontal
-                    $this->printLine(113,$y1,113,$y1+$l3);	// separador de clase vertical
-                    $this->printLine(130,$y1,130,$y1+$l3);	// vertical de exentas
-                    $this->printLine(15,$y1,15,$y1+$l1);  //1ra linea vertical izq
-                    $this->printLine(200,$y1,200,$y1+$l1);//2da linea vertical der			  
+				$this->printLine(130,$y2,200,$y2);	// horizontal de valor venta
+				$this->printLine(153,$y2,153,$y2+$l4);	// vertical de 5%
+				$this->printLine(176,$y2,176,$y2+$l4);	// vertical de 10%
 
-                    $this->printLine(130,$y2,200,$y2);	// horizontal de valor venta
-                    $this->printLine(153,$y2,153,$y2+$l4);	// vertical de 5%
-                    $this->printLine(176,$y2,176,$y2+$l4);	// vertical de 10%
+				$this->printLine(35,$y3,35,$y3+$l2);	// separador de articulo vertical
+				$this->printLine(55,$y3,55,$y3+$l2);	// separador de cantidad vertical
+				$this->printLine(15,$y3,200,$y3); //2da linea horizontal	    		    		    		    
 
-                    $this->printLine(35,$y3,35,$y3+$l2);	// separador de articulo vertical
-                    $this->printLine(55,$y3,55,$y3+$l2);	// separador de cantidad vertical
-                    $this->printLine(15,$y3,200,$y3); //2da linea horizontal	    		    		    		    
+				$this->printLine(15,$y4,200,$y4);//3ra linea horizontal
+				$this->printLine(15,$y5,200,$y5);//6ta linea horizontal
 
-                    $this->printLine(15,$y4,200,$y4);//3ra linea horizontal
-                    $this->printLine(15,$y5,200,$y5);//6ta linea horizontal
+					// Imprimir Titulos de Factura
 
-                        // Imprimir Titulos de Factura
+				$this->SetXY(16,$y1_2); $this->Cell(30,3,'Articulo',0,0,'L');
+				$this->SetXY(39,$y1_2); $this->Cell(30,3,'Cantidad',0,0,'L');
+				$this->SetXY(60,$y1_2); $this->Cell(30,3,utf8_decode('Descripción de Producto'),0,0,'L');						
+				$this->SetXY(116,$y1_1); $this->Cell(30,3,'Precio',0,0,'L');			    		    	    			
+				$this->SetXY(116,$y1_2); $this->Cell(30,3,'Unitario',0,0,'L');			    		    	    		
+				$this->SetXY(153,$y1_1); $this->Cell(30,3,'Valor  de  Venta',0,0,'L');			    		    	    				    		    
+				$this->SetXY(135,$y1_2); $this->Cell(30,3,'Exentas',0,0,'L');			    		    	    				    		    	    
+				$this->SetXY(162,$y1_2); $this->Cell(30,3,'5%',0,0,'L');			    		    	    				    		    	    	    
+				$this->SetXY(184,$y1_2); $this->Cell(30,3,'10%',0,0,'L');			    		    	    				    		    	    	    	    						
+				$this->SetXY(16,$y4_1); $this->Cell(30,3,'Subtotales',0,0,'L');			    		    	    				    		    	    	    	    							    
+				$this->SetXY(16,$y4_2); $this->Cell(30,3,'Total a pagar',0,0,'L');
+				$this->SetXY(16,$y4_3); $this->Cell(30,3,utf8_decode('Liquidación del IVA'),0,0,'L');			    		    	    				    		    	    	    	    							    	    
+				$this->SetXY(76,$y4_3); $this->Cell(30,3,'5%',0,0,'L');			    		    	    				    		    	    	    	    							    	    	    
+				$this->SetXY(115,$y4_3); $this->Cell(30,3,'10%',0,0,'L');
+				$this->SetXY(145,$y4_3); $this->Cell(30,3,'Total',0,0,'L');	  
 
-                    $this->SetXY(16,$y1_2); $this->Cell(30,3,'Articulo',0,0,'L');
-                    $this->SetXY(39,$y1_2); $this->Cell(30,3,'Cantidad',0,0,'L');
-                    $this->SetXY(60,$y1_2); $this->Cell(30,3,utf8_decode('Descripción de Producto'),0,0,'L');						
-                    $this->SetXY(116,$y1_1); $this->Cell(30,3,'Precio',0,0,'L');			    		    	    			
-                    $this->SetXY(116,$y1_2); $this->Cell(30,3,'Unitario',0,0,'L');			    		    	    		
-                    $this->SetXY(153,$y1_1); $this->Cell(30,3,'Valor  de  Venta',0,0,'L');			    		    	    				    		    
-                    $this->SetXY(135,$y1_2); $this->Cell(30,3,'Exentas',0,0,'L');			    		    	    				    		    	    
-                    $this->SetXY(162,$y1_2); $this->Cell(30,3,'5%',0,0,'L');			    		    	    				    		    	    	    
-                    $this->SetXY(184,$y1_2); $this->Cell(30,3,'10%',0,0,'L');			    		    	    				    		    	    	    	    						
-                    $this->SetXY(16,$y4_1); $this->Cell(30,3,'Subtotales',0,0,'L');			    		    	    				    		    	    	    	    							    
-                    $this->SetXY(16,$y4_2); $this->Cell(30,3,'Total a pagar',0,0,'L');
-                    $this->SetXY(16,$y4_3); $this->Cell(30,3,utf8_decode('Liquidación del IVA'),0,0,'L');			    		    	    				    		    	    	    	    							    	    
-                    $this->SetXY(76,$y4_3); $this->Cell(30,3,'5%',0,0,'L');			    		    	    				    		    	    	    	    							    	    	    
-                    $this->SetXY(115,$y4_3); $this->Cell(30,3,'10%',0,0,'L');
-                    $this->SetXY(145,$y4_3); $this->Cell(30,3,'Total',0,0,'L');	  
-
-                }
-	}
+			}
+		}
 		function setDatosCabecera()
 		{
-                    $xTit1 = $this->xIniTit1;
-                    $xTit2 = $this->xIniTit2;
-                    $yTit = $this->yBlo1;	
-                    $this->SetFont('Arial','',7);
+			$xTit1 = $this->xIniTit1;
+			$xTit2 = $this->xIniTit2;
+			$yTit = $this->yBlo1;	
+			$this->SetFont('Arial','',7);
 
-                    for($i = 1;$i <= 2;$i++){
-                            if($i== 2){		$yTit = $this->yBlo1_Dup;	}
-                            $this->SetXY($xTit1,$yTit);	$this->Cell(30,3,utf8_decode('Fecha de Emisión:') ,0,0,'L');
-                    //	$this->SetXY($xTit2,$yTit);	$this->Cell(30,3,'Cond. de Venta:CONTADO/   /  CR�DITO/   /',0,0,'L');	
-                            $yTit = $yTit + ($this->sepEncab);
-                            $this->SetXY($xTit1,$yTit);	$this->Cell(30,3,utf8_decode('Nombre o Razón Social:'),0,0,'L');
-                            $this->SetXY($xTit2,$yTit);	$this->Cell(30,3,'R.U.C.  /  C.I.:',0,0,'L');	
-                            $yTit = $yTit + ($this->sepEncab);
-                            $this->SetXY($xTit1,$yTit);	$this->Cell(30,3,utf8_decode('Dirección:'),0,0,'L');
-                            $this->SetXY($xTit2,$yTit);	$this->Cell(30,3,'Vencimiento:',0,0,'L');				
-                            $yTit = $yTit + ($this->sepEncab);
-                            $this->SetXY($xTit1,$yTit);	$this->Cell(30,3,'Barrio / Ciudad:',0,0,'L');
-                            $this->SetXY($xTit2,$yTit);	$this->Cell(30,3,'Control Interno:',0,0,'L');			
-                            $yTit = $yTit + ($this->sepEncab);
-                            $this->SetXY($xTit1,$yTit); $this->Cell(30,3,utf8_decode('Telófono:'),0,0,'L');	
-                            $this->SetXY($xTit2,$yTit);	$this->Cell(30,3,'Cod. Cliente:',0,0,'L');					
-                    }				
+			for($i = 1;$i <= 2;$i++){
+					if($i== 2){		$yTit = $this->yBlo1_Dup;	}
+					$this->SetXY($xTit1,$yTit);	$this->Cell(30,3,utf8_decode('Fecha de Emisión:') ,0,0,'L');
+			//	$this->SetXY($xTit2,$yTit);	$this->Cell(30,3,'Cond. de Venta:CONTADO/   /  CR�DITO/   /',0,0,'L');	
+					$yTit = $yTit + ($this->sepEncab);
+					$this->SetXY($xTit1,$yTit);	$this->Cell(30,3,utf8_decode('Nombre o Razón Social:'),0,0,'L');
+					$this->SetXY($xTit2,$yTit);	$this->Cell(30,3,'R.U.C.  /  C.I.:',0,0,'L');	
+					$yTit = $yTit + ($this->sepEncab);
+					$this->SetXY($xTit1,$yTit);	$this->Cell(30,3,utf8_decode('Dirección:'),0,0,'L');
+					$this->SetXY($xTit2,$yTit);	$this->Cell(30,3,'Vencimiento:',0,0,'L');				
+					$yTit = $yTit + ($this->sepEncab);
+					$this->SetXY($xTit1,$yTit);	$this->Cell(30,3,'Barrio / Ciudad:',0,0,'L');
+					$this->SetXY($xTit2,$yTit);	$this->Cell(30,3,'Control Interno:',0,0,'L');			
+					$yTit = $yTit + ($this->sepEncab);
+					$this->SetXY($xTit1,$yTit); $this->Cell(30,3,utf8_decode('Telófono:'),0,0,'L');	
+					$this->SetXY($xTit2,$yTit);	$this->Cell(30,3,'Cod. Cliente:',0,0,'L');					
+			}				
 		}	
 		function Body($var_empresa,$var_sucursal,$var_codigo,$var_serie_doc, $var_cliid, $var_clisuc,$var_facfemi,$var_mesAntes, $var_facfvtoi, $nombreCliente, $ruc_cli,
 		$direccion_cliente, $barrio_cliente, $telefono_cliente, $FacMonTotF , $eruc, $tipPago)
 		{												
 
-                    $this->codigo_barra =	$this->obtiene_codigoBarra($var_empresa,$var_sucursal,$var_serie_doc,$var_codigo, $FacMonTotF, $var_facfvtoi); 				   
+			$this->codigo_barra =	$this->obtiene_codigoBarra($var_empresa,$var_sucursal,$var_serie_doc,$var_codigo, $FacMonTotF, $var_facfvtoi); 				   
 
 //echo dirname(__FILE__)."/barcode-generator/bgen.php?barcode=".$this->codigo_barra;
 //die();
@@ -222,18 +223,18 @@
  //                   $this->Image(dirname(dirname(__FILE__)).'/barcode-generator/'.$this->codigo_barra.'.gif',78,5,63);
  //                   $this->Image(dirname(dirname(__FILE__)).'/barcode-generator/'.$this->codigo_barra.'.gif',78,155,63);
 
-                    $var_FACEMPID 	= $var_empresa;
-                    $var_FACSUCID		= $var_sucursal;
-                    $var_FACSER			= $var_serie_doc;
-                    $var_FACNRO			= $var_codigo;
-                    $var_CLIID			= $var_cliid;
-                    $var_FACCLISUC	= $var_clisuc;
-                    $var_FACFVTOI 	= $var_facfvtoi;
+			$var_FACEMPID 	= $var_empresa;
+			$var_FACSUCID		= $var_sucursal;
+			$var_FACSER			= $var_serie_doc;
+			$var_FACNRO			= $var_codigo;
+			$var_CLIID			= $var_cliid;
+			$var_FACCLISUC	= $var_clisuc;
+			$var_FACFVTOI 	= $var_facfvtoi;
 			  
-				$this->datosCliente($nombreCliente, $ruc_cli,$direccion_cliente, $barrio_cliente, $telefono_cliente, 
-				$var_CLIID,$var_FACCLISUC,$var_FACFVTOI);
-				$this->calFecha($var_FACEMPID,$var_FACSUCID,$var_FACSER,$var_FACNRO, $var_facfemi);
-				$this->cargaDatos($var_FACEMPID,$var_FACSUCID,$var_FACNRO,$var_FACSER, $eruc, $tipPago);
+			$this->datosCliente($nombreCliente, $ruc_cli,$direccion_cliente, $barrio_cliente, $telefono_cliente, 
+			$var_CLIID,$var_FACCLISUC,$var_FACFVTOI);
+			$this->calFecha($var_FACEMPID,$var_FACSUCID,$var_FACSER,$var_FACNRO, $var_facfemi);
+			$this->cargaDatos($var_FACEMPID,$var_FACSUCID,$var_FACNRO,$var_FACSER, $eruc, $tipPago);
 		}		
 		
 		
@@ -247,9 +248,9 @@
 						 A.FACITEMONF,
 						 COALESCE(C.FIMPPOR,0) as FIMPPOR,
 						 F.FACCONFIS,
-             D.FPAGID,
-             C.FIMPIMPF,
-             A.FACITECAN             
+						 D.FPAGID,
+						 C.FIMPIMPF,
+						 A.FACITECAN             
 						FROM
 						 DBCONEX.".$this->tipo['factur']." F 
 						 INNER JOIN DBCONEX.".$this->tipo['factur1']." A ON
@@ -268,10 +269,10 @@
 						 C.FIMPSER = A.FACSER AND
 						 C.FIMPNRO = A.FACNRO AND
 						 C.FIMPFACITE = A.FACITEID
-             INNER JOIN DBCONEX.KTACLI D ON
-             D.CLIID = F.FACCLIID AND
-             D.CLISUC = F.FACCLISUC AND
-             D.KLICTA = F.FACKLICTA
+						 INNER JOIN DBCONEX.KTACLI D ON
+						 D.CLIID = F.FACCLIID AND
+						 D.CLISUC = F.FACCLISUC AND
+						 D.KLICTA = F.FACKLICTA
 						WHERE  
 						 F.FACEMPID = $var_empresa AND 
 						 F.FACSUCID = $var_sucursal AND
@@ -476,60 +477,34 @@
 			$nombre_cliente = $nombreCliente;
 			$ruc_cliente = $ruc_cli;
 		
-		$xTit1 = $this->xIniDat1;
-		$xTit2 = $this->xIniDat2;
-		$yTit = $this->yBlo1;	
-		$yTit = $yTit + ($this->sepEncab);
-		for($i =1; $i<=2; $i++){
-		if($i == 2){ 
-			$yTit = $this->yBlo1_Dup;
+			$xTit1 = $this->xIniDat1;
+			$xTit2 = $this->xIniDat2;
+			$yTit = $this->yBlo1;	
 			$yTit = $yTit + ($this->sepEncab);
-			}
-		$this->SetFont('Arial','',7);
-		$this->SetXY($xTit1,$yTit);	
-			 $this->Cell(30,3,$nombre_cliente,0,0,'L');			
-		$this->SetXY($xTit2,$yTit);				
-			 $this->Cell(30,3,$ruc_cliente,0,0,'L');
-		$yTit = $yTit + ($this->sepEncab);
-		$this->SetXY($xTit1,$yTit);	
-			 $this->Cell(30,3,$direccion_cliente,0,0,'L');				
-		$this->SetXY($xTit2,$yTit);				
-			 $this->Cell(30,3,$fecha_vencimiento,0,0,'L');
-		$yTit = $yTit + ($this->sepEncab);
-		$this->SetXY($xTit1,$yTit);	
-			  $this->Cell(30,3,$barrio_cliente,0,0,'L');								
-		$yTit = $yTit + ($this->sepEncab);
-		$this->SetXY($xTit1,$yTit);	
-			  $this->Cell(30,3,$telefono_cliente,0,0,'L');				
-		$this->SetXY($xTit2,$yTit);				
-			 $this->Cell(30,3,$var_cliid,0,0,'L');
-		}	 
-			 
-			 
-			 
-//		$xTit1 = 40;
-//		$xTit2 = 165;
-/*		$yTit = 179;	
-		$this->SetFont('Arial','',7);
-		$this->SetXY($xTit1,$yTit);	
-			 $this->Cell(30,10,$nombre_cliente,0,0,'L');			
-		$this->SetXY($xTit2,$yTit);				
-			 $this->Cell(30,10,$ruc_cliente,0,0,'L');
-		$yTit = 182;
-		$this->SetXY($xTit1,$yTit);	
-			 $this->Cell(30,10,$direccion_cliente,0,0,'L');				
-		$this->SetXY($xTit2,$yTit);				
-			 $this->Cell(30,10,$fecha_vencimiento,0,0,'L');
-		$yTit = 185;
-		$this->SetXY($xTit1,$yTit);	
-			  $this->Cell(30,10,$barrio_cliente,0,0,'L');								
-		$yTit = 188;
-		$this->SetXY($xTit1,$yTit);	
-			  $this->Cell(30,10,$telefono_cliente,0,0,'L');				
-		$this->SetXY($xTit2,$yTit);				
-			 $this->Cell(30,10,$var_cliid,0,0,'L');			 */
-
-		
+			for($i =1; $i<=2; $i++){
+				if($i == 2){ 
+					$yTit = $this->yBlo1_Dup;
+					$yTit = $yTit + ($this->sepEncab);
+				}
+				$this->SetFont('Arial','',7);
+				$this->SetXY($xTit1,$yTit);	
+				$this->Cell(30,3,$nombre_cliente,0,0,'L');			
+				$this->SetXY($xTit2,$yTit);				
+				$this->Cell(30,3,$ruc_cliente,0,0,'L');
+				$yTit = $yTit + ($this->sepEncab);
+				$this->SetXY($xTit1,$yTit);	
+				$this->Cell(30,3,$direccion_cliente,0,0,'L');				
+				$this->SetXY($xTit2,$yTit);				
+				$this->Cell(30,3,$fecha_vencimiento,0,0,'L');
+				$yTit = $yTit + ($this->sepEncab);
+				$this->SetXY($xTit1,$yTit);	
+				$this->Cell(30,3,$barrio_cliente,0,0,'L');								
+				$yTit = $yTit + ($this->sepEncab);
+				$this->SetXY($xTit1,$yTit);	
+				$this->Cell(30,3,$telefono_cliente,0,0,'L');				
+				$this->SetXY($xTit2,$yTit);				
+				$this->Cell(30,3,$var_cliid,0,0,'L');
+			}	 		
 		}
 		
 		
@@ -592,33 +567,25 @@
 			  $nomb_mmes = "Diciembre";
 			}
 			$fecha_documento = $ddia." de ".$nomb_mmes." de ".$anho;			
-
 		
-		$xTit1 = $this->xIniDat1;
-		$xTit2 = $this->xIniDat2;
-		$yTit = $this->yBlo1;
-		for($i =1; $i<=2; $i++){
-			if($i == 2){ 
-				$yTit = $this->yBlo1_Dup;
+			$xTit1 = $this->xIniDat1;
+			$xTit2 = $this->xIniDat2;
+			$yTit = $this->yBlo1;
+			for($i =1; $i<=2; $i++){
+				if($i == 2){ 
+					$yTit = $this->yBlo1_Dup;
+				}
+				$this->SetFont('Arial','',7);
+				$this->SetXY($xTit1,$yTit);			
+				$this->Cell(30,3,$fecha_documento,0,0,'L');	
+				$yTit = $yTit +($this->sepEncab *3);	
+				$this->SetXY($xTit2,$yTit);	
+				$this->Cell(30,3,$var_documento,0,0,'L');		    	    
 			}
-			$this->SetFont('Arial','',7);
-			$this->SetXY($xTit1,$yTit);			
-			$this->Cell(30,3,$fecha_documento,0,0,'L');	
-			$yTit = $yTit +($this->sepEncab *3);	
-			$this->SetXY($xTit2,$yTit);	
-			$this->Cell(30,3,$var_documento,0,0,'L');		    	    
-		}
-		/*$yTit = 176;	
-		$this->SetFont('Arial','',7);
-		$this->SetXY($xTit1,$yTit);			
-	    $this->Cell(30,10,$fecha_documento,0,0,'L');	
-		$yTit = 185;	
-		$this->SetXY($xTit2,$yTit);	
-	    $this->Cell(30,10,$var_documento,0,0,'L');		    	    	    */
 		}
 		function printLine($x1,$y1,$x2,$y2)
 		{
-				$this->SetDrawColor(10);
+			$this->SetDrawColor(10);
 		    $this->SetLineWidth(.3);
 		    $this->Line($x1, $y1, $x2, $y2);		
 		}	
