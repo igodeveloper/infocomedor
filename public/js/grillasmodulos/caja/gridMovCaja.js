@@ -266,22 +266,66 @@ function cargarGrillaRegistro() {
 		}
 	});
 }
+function mostarVentana(box,mensaje){
+	$("#success-block").hide();
+	$("#info-block-listado").hide();
+	if(box == "warning") {
+		$("#warning-message").text(mensaje);
+		$("#warning-block").show();
+		setTimeout("ocultarWarningBlock()",5000);
+	} else if(box == "warning-block-title") {
+		$("#warning-message-title").text(mensaje);
+		$("#warning-block-title").show();
+		setTimeout("ocultarWarningBlockTitle()",5000);
+	} else if(box == "success-block-title") {
+//		console.log('entro');
+		$("#success-message-title").text(mensaje);
+		$("#success-block-title").show();
+		setTimeout("ocultarSuccessBlockTitle()",5000);
+	} else if(box == "warning-registro") {
+		$("#warning-message").text(mensaje);
+		$("#warning-block").show();
+		setTimeout("ocultarWarningRegistroBlock()",5000);
+	}  else if(box == "info") {
+		$("#info-message").text(mensaje);
+		$("#info-block-listado").show(500);
+		setTimeout("ocultarInfoClean()",5000);
+	} else if(box == "error"){
+		$("#error-block").text(mensaje);
+		$("#error-block").show(500);
+		setTimeout("ocultarErrorBlock()",5000);
+	} else if(box == "error-registro-listado"){
+		$("#error-block-registro-listado").text(mensaje);
+		$("#error-block-registro-listado").show(500);
+		setTimeout("ocultarErrorBlockList()",5000);
+	} else if(box == "error-modal"){
+		$("#error-block-modal").text(mensaje);
+		$("#error-block-modal").show(500);
+		setTimeout("ocultarErrorBlockModal()",5000);
+	}
+}
 /**
  * Elimina una fila de la tabla visual de registros
  */
 function borrar(){
 	var id = $("#grillaRegistro").jqGrid('getGridParam','selrow');
-	id = $("#grillaRegistro").jqGrid('getCell', id, 'cod_tipo_mov');
+	var cod_tipo_mov = $("#grillaRegistro").jqGrid('getCell', id, 'cod_mov_caja');
+        var arqueo_caja = $("#grillaRegistro").jqGrid('getCell', id, 'arqueo_caja');
 	if( id == false ){
-		alert("Para eliminar un registro debe seleccionarlo previamente.");
+		//alert("Para eliminar un registro debe seleccionarlo previamente.");
+                mostarVentana("warning-block-title","Para eliminar un registro debe seleccionarlo previamente.");
+                return;
 	}else{
 //		if(!confirm("¿Esta seguro de que desea eliminar el registro seleccionado?"))
 //			return;
-
+            if( arqueo_caja == 'Si'){
+                mostarVentana("warning-block-title","La caja ya se encuentra arqueada, no es posible eliminar el movimiento!!"); 
+                return;
+            }
 		$.ajax({
 	        url: table+'/eliminar',
 	        type: 'post',
-	        data: {"id":id},
+	        data: {"id":cod_tipo_mov},
 	        dataType: 'json',
 	        async : false,
 	        success: function(data){

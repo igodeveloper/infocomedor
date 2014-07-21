@@ -192,8 +192,8 @@ class Caja_MovcajaController extends Zend_Controller_Action
 		try{
                     $db = Zend_Db_Table::getDefaultAdapter();
                     $db->beginTransaction();
-                    $servCon = new Application_Model_DataService('Application_Model_DbTable_Tipomovimiento');
-                    $servCon->deleteRowById(array("cod_tipo_mov"=>$id));
+                    $servCon = new Application_Model_DataService('Application_Model_DbTable_Movcaja');
+                    $servCon->deleteRowById(array("cod_mov_caja"=>$id));
                     $db->commit();
 		    echo json_encode(array("result" => "EXITO"));
 	    }catch( Exception $e ) {
@@ -227,8 +227,9 @@ class Caja_MovcajaController extends Zend_Controller_Action
         	$db = Zend_Db_Table::getDefaultAdapter();			
         	$db->beginTransaction();			
                 $rowClass->setCod_caja(trim(utf8_decode($rowData->cod_caja)));
-				if(trim($rowData->cod_mov_caja) == '')
-					$rowClass->setFecha_hora_mov(date('Y-m-d h:i:s'));				
+				//if(trim($rowData->cod_mov_caja) == '')
+                                    $rowClass->setFecha_hora_mov(date('Y-m-d h:i:s'));
+
 				$rowClass->setMonto_mov(trim(utf8_decode($rowData->monto_mov)));
 				$rowClass->setCod_tipo_mov(trim(utf8_decode($rowData->cod_tipo_mov)));
 				if(isset($rowData->factura_mov))
@@ -248,7 +249,8 @@ class Caja_MovcajaController extends Zend_Controller_Action
                                 $rowClass->setTipo_mov('EFECTIVO');
                 $result_pk = $service->saveRow($rowClass);
 	    	$db->commit();
-                
+                if(trim($rowData->cod_mov_caja) <> '')
+                    $result_pk = $rowData->cod_mov_caja;
                 $var_nombrearchivo = 'nro_movimiento_'.trim($result_pk);
                 $path_tmp = './tmp/';
                 $orientation='P';

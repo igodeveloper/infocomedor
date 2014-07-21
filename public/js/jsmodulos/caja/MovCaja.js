@@ -191,8 +191,20 @@ function obtenerJsonFormulario() {
 		return null;            
     }else {
 		//LOS CAMPOS DEBEN LLAMARSE IGUAL QUE EN gridTipoInsumo.js
+                /*
+                 * 	$("#codcaja-modal").attr("value",null);
+                    $("#codmovcaja-modal").attr("value",null);
+                    $("#codigousuariocaja-modal").attr("value",null);
+                    $("#nombreusuariocaja-modal").attr("value",null);
+                    $("#fechaaperturacaja-modal").attr("value",null);
+                    $("#codtipomov-modal").attr("value",-1);
+                    $("#montomov-modal").attr("value",null);
+                    $("#firmante-input").attr("value",null);
+                    $("#observacion-input").attr("value",null); 
+                 */
 		jsonObject.cod_mov_caja = $('#codmovcaja-modal').attr("value");
 		jsonObject.cod_caja = $('#codcaja-modal').attr("value");
+                jsonObject.fecha_hora_mov = $("#fechaaperturacaja-modal").attr("value");
 		jsonObject.cod_tipo_mov = $("#codtipomov-modal option:selected").val();
 		jsonObject.monto_mov = $('#montomov-modal').attr("value");		
                 jsonObject.firmante_mov = $('#firmante-input').attr("value");
@@ -307,6 +319,7 @@ function buscarRegistros(){
 
 function editarRegistro(parametros){
 	limpiarFormulario();
+        cargarTipoMovimiento();
 /*
 cod_usuario
 nombre_apellido
@@ -335,7 +348,7 @@ tipo_mov
         $("#codtipomov-modal").attr("value",parametros.cod_tipo_mov);
         $("#montomov-modal").attr("value",parametros.monto_mov);
         $("#firmante-input").attr("value",parametros.firmante_mov);
-	$("#observacion-input").attr("value",parametros.observacion_mov);
+	$("#observacion-input").attr("value",parametros.observacion_mov);      
 	$("#guardar-registro").html("Modificar");
 }
 
