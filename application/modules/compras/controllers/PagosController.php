@@ -169,12 +169,12 @@ class Compras_PagosController extends Zend_Controller_Action {
                         'ESTADO_PAGO'=>'A',
                  
                      );
-                    $where = "COD_PAGO_PROVEEDOR = " . $data_Pagos->COD_PAGO_PROVEEDOR;
-                    $where = "NRO_FACTURA_COMPRA = " . $data_Pagos->NRO_FACTURA_COMPRA;
+                    $where ="COD_PAGO_PROVEEDOR = ".$data_Pagos->COD_PAGO_PROVEEDOR;
+                                   
             
                      $update_pago = $db->update('PAGO_PROVEEDOR',$data_pago_proveedor,$where); 
 
-                }else if ($data_Pagos->COD_MOV_CAJA > 0){
+                }else {
                     $egreso = array('FACTURA_MOV' => 0,
                                 'TIPO_FACTURA_MOV' => ""  
                                 );
@@ -195,12 +195,10 @@ class Compras_PagosController extends Zend_Controller_Action {
                  
                      );
                     $where = "COD_PAGO_PROVEEDOR = " . $data_Pagos->COD_PAGO_PROVEEDOR;
-                    $where = "NRO_FACTURA_COMPRA = " . $data_Pagos->NRO_FACTURA_COMPRA;
+                    // $where = "NRO_FACTURA_COMPRA = " . $data_Pagos->NRO_FACTURA_COMPRA;
             
                     $result_pagos = $db->update('PAGO_PROVEEDOR',$data_pago_proveedor,$where); 
-                } else{
-                    $resultado = "NARANJA";
-                }
+                } 
                 $db->commit();
                  echo json_encode(array("result" => "EXITO"));
             }else{

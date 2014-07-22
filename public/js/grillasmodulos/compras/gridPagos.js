@@ -217,7 +217,7 @@ function anularPago()
                 }
             });
         } else {
-        	mostarVentana("warning-pagos", "El pago se encuentra anulado");
+        	
         }
     }
     return false;

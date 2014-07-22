@@ -265,8 +265,9 @@ class Compras_Compra2Controller extends Zend_Controller_Action {
         $db = Zend_Db_Table::getDefaultAdapter();
         $select = $db->select()
                 ->from(array('P' => 'PRODUCTO'))
+                ->where("P.COD_RECETA = ?", 0)
                 ->order(array('P.PRODUCTO_DESC'));
-//        print_r($select);die();
+       // print_r($select);die();
         $result = $db->fetchAll($select);
 
         echo json_encode($result);
