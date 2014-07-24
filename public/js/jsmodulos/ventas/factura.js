@@ -783,6 +783,7 @@ $('#modalEditar').show();
                 $('#modalEditar').hide();
                  // $('#modal-footer-ventas').show();
                 cleanFormModalHide("exit");
+                window.open('../tmp/'+respuesta.archivo);
             } else if (respuesta.result == "ERROR") {
                  $('#modalFormaPago').hide();
                   // $('#modal-footer-ventas').show();
