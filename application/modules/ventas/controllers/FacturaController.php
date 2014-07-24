@@ -492,8 +492,27 @@ public function guardarAction() {
                     $insertEgreso = $db->insert('MOV_CAJA', $data_ingreso); 
                 }
                 $db->commit();
-             
-             echo json_encode(array("result" => "EXITO"));
+                //imprime factura
+                $var_nombrearchivo = 'factura';
+                $path_tmp = './tmp/';
+                $orientation='P';
+                $unit='mm';
+                $format='A4';    
+                $parametros = $factura_nro;
+                if(!isset($pdf))
+                  $pdf= new PDFFacturaPY($orientation,$unit,$format,$parametros);
+                $pdf->AliasNbPages();
+                $pdf->AddPage();
+                $pdf->Body();
+
+                $file = basename($var_nombrearchivo."_".date('Ymdhis'));
+                $file .= '.pdf';
+                //Guardar el PDF en un fichero
+                $pdf->Output($path_tmp.$file, 'F');
+                $pdf->close();
+                unset($pdf);              
+                echo json_encode(array("result" => "EXITO","archivo" => $file));
+             //echo json_encode(array("result" => "EXITO"));
        } catch (Exception $e) {
        		$db->rollBack();
             echo json_encode(array("result" => "ERROR", "code" => $e->getCode(),"mensaje" => $e->getMessage()));
