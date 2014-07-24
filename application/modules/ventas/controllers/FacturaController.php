@@ -21,11 +21,12 @@ public function imprimirfacturaAction(){
             $orientation='P';
             $unit='mm';
             $format='A4';    
+            $parametros = 60;
             if(!isset($pdf))
-              $pdf= new PDFFacturaPY();
+              $pdf= new PDFFacturaPY($orientation,$unit,$format,$parametros);
             $pdf->AliasNbPages();
             $pdf->AddPage();
-            //$pdf->Body();
+            $pdf->Body();
 
             $file = basename($var_nombrearchivo."_".date('Ymdhis'));
             $file .= '.pdf';
