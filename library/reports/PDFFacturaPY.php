@@ -158,7 +158,7 @@
                 $this->printLine(15,$y5,200,$y5);//6ta linea horizontal
 
                 // Imprimir Titulos de Factura
-                $this->SetXY(16,$y1_2); $this->Cell(30,3,'Articulo',0,0,'L');
+                $this->SetXY(16,$y1_2); $this->Cell(30,3,'Producto',0,0,'L');
                 $this->SetXY(39,$y1_2); $this->Cell(30,3,'Cantidad',0,0,'L');
                 $this->SetXY(60,$y1_2); $this->Cell(30,3,utf8_decode('Descripción de Producto'),0,0,'L');						
                 $this->SetXY(116,$y1_1); $this->Cell(30,3,'Precio',0,0,'L');			    		    	    			
@@ -213,13 +213,7 @@
 //                   $this->Image(dirname(dirname(__FILE__)).'/barcode-generator/'.$this->codigo_barra.'.gif',78,5,63);
 //                   $this->Image(dirname(dirname(__FILE__)).'/barcode-generator/'.$this->codigo_barra.'.gif',78,155,63);
 
-            $var_FACEMPID 	= $var_empresa;
-            $var_FACSUCID		= $var_sucursal;
-            $var_FACSER			= $var_serie_doc;
-            $var_FACNRO			= $var_codigo;
-            $var_CLIID			= $var_cliid;
-            $var_FACCLISUC	= $var_clisuc;
-            $var_FACFVTOI 	= $var_facfvtoi;
+
 
             $this->datosCabecera();            
             $this->cargaDatos();
@@ -237,14 +231,14 @@
             
             while($row = mysql_fetch_assoc($dtDatos))
             {                
-                $CLIENTE_DES    = $row['CLIENTE_DES'];
-                $FAC_FECHA_EMI    = substr($row['FAC_FECHA_EMI'],8,2).'/'.substr($row['FAC_FECHA_EMI'],5,2).'/'.substr($row['FAC_FECHA_EMI'],0,4);
-                $CLIENTE_DIRECCION    = $row['CLIENTE_DIRECCION'];
-                $CLIENTE_TELEFONO    = $row['CLIENTE_TELEFONO'];
-                $CLIENTE_RUC    = $row['CLIENTE_RUC'];
-                $FAC_FECH_VTO    = substr($row['FAC_FECH_VTO'],8,2).'/'.substr($row['FAC_FECH_VTO'],5,2).'/'.substr($row['FAC_FECH_VTO'],0,4);
-                $FAC_NRO    = $row['FAC_NRO'];
-                $COD_CLIENTE    = $row['COD_CLIENTE'];
+                $CLIENTE_DES        = $row['CLIENTE_DES'];
+                $FAC_FECHA_EMI      = substr($row['FAC_FECHA_EMI'],8,2).'/'.substr($row['FAC_FECHA_EMI'],5,2).'/'.substr($row['FAC_FECHA_EMI'],0,4);
+                $CLIENTE_DIRECCION  = $row['CLIENTE_DIRECCION'];
+                $CLIENTE_TELEFONO   = $row['CLIENTE_TELEFONO'];
+                $CLIENTE_RUC        = $row['CLIENTE_RUC'];
+                $FAC_FECH_VTO       = substr($row['FAC_FECH_VTO'],8,2).'/'.substr($row['FAC_FECH_VTO'],5,2).'/'.substr($row['FAC_FECH_VTO'],0,4);
+                $FAC_NRO            = $row['FAC_NRO'];
+                $COD_CLIENTE        = $row['COD_CLIENTE'];
 
                 $this->calFecha($row['FAC_FECHA_EMI']);
                 
@@ -337,9 +331,9 @@
                 $this->SetXY(55,$salto_doble);	
                 $this->Cell(30,3,substr($PRODUCTO_DESC,0,40),0,0,'L');						    					
                 $this->SetXY(100,$salto);	
-                $this->Cell(30,3,substr($PRECIO_VENTA,0,40),0,0,'R');						    					
+                $this->Cell(30,3,number_format(CEIL($PRECIO_VENTA),0,',','.'),0,0,'R');
                 $this->SetXY(100,$salto_doble);	
-                $this->Cell(30,3,substr($PRECIO_VENTA,0,40),0,0,'R');
+                $this->Cell(30,3,number_format(CEIL($PRECIO_VENTA),0,',','.'),0,0,'R');
 
                 if($IMP_PORCENTAJE == 0)
                 {					
