@@ -548,8 +548,8 @@ function obtenerPagosDetalles() {
             data.NRO_CHEQUE = $("#cheque-modal-pagos").val();
         } else {
             data.FORMA_PAGO = 'EFECTIVO';
-            data.nombre_banco = "0";
-            data.numero_cheque = 0;
+            data.DES_BANCO = "0";
+            data.NRO_CHEQUE = 0;
         }
        
     }
@@ -1097,7 +1097,8 @@ function cleanFormModalHide(from) {
     $('#FechaFactura-modal').attr("value", new Date());
     $("#grillaComprasModal").jqGrid("clearGridData");
     if (from === "exit") {
-        $("#grillaComprasModal").trigger("reloadGrid");
+        // $("#grillaComprasModal").trigger("reloadGrid");
+        $("#grillaCompras").trigger("reloadGrid");
         $("#codigocliente-modal").attr("disabled", false);
         $("#ruc-modal").attr("disabled", false);
         $("#razonsocial-modal").attr("disabled", false);

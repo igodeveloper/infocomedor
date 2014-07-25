@@ -644,11 +644,40 @@ public function anularcompraAction() {
         $verifica_pago = self::verifica_pagos($nro_factura);
         if($verifica_pago < 1 ){
 	        try {
+
+                //anulamos la faactura
 	            $db = Zend_Db_Table::getDefaultAdapter();
 	            $db->beginTransaction();
 	            $data = array('ESTADO' => 'A');
 	            $where = "NRO_FACTURA_COMPRA = " . $nro_factura;
 	            $upd = $db->update('COMPRA', $data, $where);
+
+
+                 $select_compra_det = $db->select()
+                        ->from(array('S' => 'COMPRA_DETALLE'), array('S.COD_PRODUCTO_ITEM','S.CANTIDAD_COMPRA'))
+                        ->where("S.NRO_FACTURA_COMPRA = ?", $nro_factura);
+                $resultado_compra_det = $db->fetchAll($select_compra_det);
+
+
+                foreach ($resultado_compra_det as $value) {
+
+                $select = $db->select()
+                        ->from(array('S' => 'STOCK'), array('S.COD_PRODUCTO','S.SALDO_STOCK'))
+                        ->distinct(true)
+                        ->where("S.COD_PRODUCTO = ?", $value["COD_PRODUCTO_ITEM"]);
+                $resultado_select = $db->fetchAll($select);
+                
+                $existe = ($resultado_select[0]['COD_PRODUCTO'] <> null)?$resultado_select[0]['COD_PRODUCTO']:0;
+                $saldo_producto = $resultado_select[0]['SALDO_STOCK'];
+                    $data = array(
+                        'SALDO_STOCK' => ($saldo_producto-$value["CANTIDAD_COMPRA"]),
+                        'STOCK_FECHA_ACTUALIZA' => ( date("Y-m-d H:i:s"))
+                    );   
+                    $where = "COD_PRODUCTO= " . $value["COD_PRODUCTO_ITEM"];
+                    $upd = $db->update('STOCK', $data, $where);
+                }
+
+
 	            $db->commit();
 	
 	

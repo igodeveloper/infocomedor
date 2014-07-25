@@ -253,8 +253,8 @@ private function obtenerPaginas($result, $cantidadFilas, $page) {
                 	  		'C.ESTADO'))
                 ->joinLeft(array('P' => 'CLIENTE'), 'C.COD_CLIENTE = P.COD_CLIENTE')
                 ->join(array('M' => 'PRODUCTO'), 'C.COD_PRODUCTO = M.COD_PRODUCTO')
-                ->where("C.ESTADO = ?", 'PE')
-                ->where("C.FACT_NRO = ?", 0);
+                ->where("C.ESTADO = ?", 'PE');
+                // ->where("C.FACT_NRO = ?", 0);
 
 
 			if ($Obj['codigocliente'] != null && $Obj['codigomesa'] == null) {	
@@ -466,6 +466,7 @@ public function guardarAction() {
                              $impuesto_pendiente = (int)(($saldo_precio_facturar * 10) / 110);
                         }
                         $dataKarrito = array(
+                            'FACT_NRO'=>$factura_nro,
                             'KAR_CANT_FACTURAR'=>$saldo_cant_facturar,
                             'KAR_PRECIO_FACTURAR'=>$saldo_precio_facturar,
                             'MONTO_IMPUESTO'=>$impuesto_pendiente
@@ -490,6 +491,18 @@ public function guardarAction() {
                         'TIPO_MOV' => $value->FORMA_PAGO
                     );
                     $insertEgreso = $db->insert('MOV_CAJA', $data_ingreso); 
+
+                    $data_pago = array(
+                        'COD_PAGO_CLIENTE' => 0,
+                        'FAC_NRO' => $factura_nro,
+                        'MONTO_PAGO' => $value->MONTO_PAGO,
+                        'NRO_CHEQUE' => $value->NRO_CHEQUE,
+                        'DES_BANCO' => $value->DES_BANCO,
+                        'ESTADO_PAGO' => 'T'
+                    );
+                    $insertEgreso_pago = $db->insert('PAGO_CLIENTE', $data_pago); 
+
+
                 }
                 $db->commit();
                 //imprime factura
@@ -565,18 +578,116 @@ public function modaleditarAction() {
             $db = Zend_Db_Table::getDefaultAdapter();
             $db->beginTransaction();
 
-                     $data = array(
+                $caja_abierta=self::verificacaja($codigoFactura);
+
+                 if($caja_abierta){
+
+                    $data = array(
                         'ESTADO' => 'A'
-                        );  
-                        $where = "FAC_NRO = " . $codigoFactura;
-                        $upd = $db->update('FACTURA', $data, $where);
-                        $db->commit();
-                echo json_encode(array("result" => "EXITO"));
+                    );  
+                    $where = "FAC_NRO = " . $codigoFactura;
+                    $upd = $db->update('FACTURA', $data, $where);
+
+                    // devolvemos lo facturado a karrito
+                    $select_fac_det = $db->select()
+                        ->from(array('C' => 'FACTURA_DETALLE'), 
+                              array('C.COD_PRODUCTO',
+                                    'C.FAC_DET_CANTIDAD',
+                                    'C.FAC_DET_TOTAL',
+                                    'M.FACT_IMP_MONTO' ))
+                        ->join(array('M' => 'FACTURA_IMPUESTO'), 'C.FAC_DET_ITEM = M.FAC_IMPUESTO_ITEM AND C.FAC_NRO = M.FAC_NRO')
+                        ->where("C.FAC_NRO = ?", $codigoFactura);
+                    $result_fac_det = $db->fetchAll($select_fac_det);
+                    
+                    foreach ($result_fac_det as $value) {
+                        $select_karrito = $db->select()
+                            ->from(array('C' => 'KARRITO'), 
+                                    array(  'C.COD_KARRITO', 
+                                            'C.KAR_CANT_PRODUCTO',
+                                            'C.KAR_CANT_FACTURAR',
+                                            'C.KAR_PRECIO_FACTURAR',
+                                            'C.MONTO_IMPUESTO',
+                                            'C.ESTADO'))
+                            ->where("C.FACT_NRO = ?", $codigoFactura)
+                            ->where("C.COD_PRODUCTO = ?", $value['COD_PRODUCTO']);
+                        $result_karrito = $db->fetchAll($select_karrito);
+                        
+                        if($result_karrito[0]['ESTADO'] == 'PE'){
+                            $dataKarrito = array(
+                                'KAR_CANT_FACTURAR'=>($result_karrito[0]['KAR_CANT_FACTURAR']+$value['FAC_DET_CANTIDAD']),
+                                'KAR_PRECIO_FACTURAR'=>($result_karrito[0]['KAR_PRECIO_FACTURAR']+$value['FAC_DET_TOTAL']),
+                                'MONTO_IMPUESTO'=>($result_karrito[0]['MONTO_IMPUESTO']+$value['FACT_IMP_MONTO']),
+                                'ESTADO'=>'PE'
+                             );
+                            $devolver_saldo = false;
+                        }else{
+                            $dataKarrito = array(
+                                'ESTADO'=>'AN'
+                             );
+                             $devolver_saldo = true;
+                        }
+                        $where_karrito = "COD_KARRITO = " . $result_karrito[0]['COD_KARRITO'];
+                        $updatekarrito = $db->update('KARRITO', $dataKarrito, $where_karrito);  
+
+                        // devolvemos saldo stock
+                        if($devolver_saldo){
+                            $select_stock = $db->select()
+                                ->from(array('S' => 'STOCK'), array('S.COD_PRODUCTO','S.SALDO_STOCK'))
+                                ->distinct(true)
+                                ->where("S.COD_PRODUCTO = ?", $value['COD_PRODUCTO']);
+                            $resultado_stock = $db->fetchAll($select_stock);
+                        
+                            $saldo_producto = $resultado_stock[0]['SALDO_STOCK'];
+
+                            $data_stock = array(
+                                'SALDO_STOCK' => ($saldo_producto+$value['FAC_DET_CANTIDAD']),
+                                'STOCK_FECHA_ACTUALIZA' => ( date("Y-m-d H:i:s"))
+                            );   
+                            $where_stock = "COD_PRODUCTO= " . $value['COD_PRODUCTO'];
+                            $upd = $db->update('STOCK', $data_stock , $where_stock);
+
+                        }
+                        
+                    }
+                    // anulamos pagos
+                    $data_pago = array('ESTADO_PAGO' => 'A');
+                        $where_pag = "FAC_NRO = ".$codigoFactura;
+                    $upd_pago = $db->update('PAGO_CLIENTE', $data_pago, $where_pag);
+
+                    $data_mov = array('ESTADO' => 'A');
+                        $where_mov = "FACTURA_MOV = ".$codigoFactura. " AND COD_TIPO_MOV = 2";
+                    $upd_mov = $db->update('MOV_CAJA', $data_mov, $where_mov);
+
+                    $db->commit();
+                    echo json_encode(array("result" => "EXITO"));
+                } else{
+                    echo json_encode(array("result" => "CERRADA"));
+                }
+                
             }catch (Exception $e) {
-                echo json_encode(array("result" => "ERROR","errotname" => $e->getMessage()));
+                echo json_encode(array("result" => "ERROR","errotname" => $e->getTrace()));
                 $db->rollBack();
             
             }
+    }
+
+        public function verificacaja($codigoFactura){
+
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $select = $db->select()
+                 ->from(array('C' => 'CAJA'), array('COUNT(C.COD_CAJA)'))
+                  ->join(array('M' => 'MOV_CAJA'), 'C.COD_CAJA = M.COD_CAJA')
+                 ->where("M.FACTURA_MOV = ?", $codigoFactura)
+                 ->where("M.COD_TIPO_MOV = ?", 2)
+                 ->where("C.FECHA_HORA_CIERRE IS NULL");
+        // print_r($select);
+        $result = $db->fetchAll($select);
+        
+        if($result[0]['COUNT(C.COD_CAJA)'] > 0){
+           return true;
+        }else {
+           return false;
+        }
     }
 
         public function ventasusuarioAction() {

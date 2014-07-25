@@ -74,10 +74,10 @@ function cargarGrillaCompras() {
                     {
                         title: false,
                         name: 'COD_PROVEEDOR',
-                        label: 'COD. PROV.',
+                        label: 'PROV.',
                         id: 'COD_PROVEEDOR',
                         align: 'right',
-                        width: 7,
+                        width: 5,
                         hidden: false
                     },
                     {
@@ -86,7 +86,7 @@ function cargarGrillaCompras() {
                         label: 'PROVEEDOR',
                         id: 'PROVEEDOR_NOMBRE',
                         align: 'left',
-                        width: 40,
+                        width: 30,
                         hidden: false
                     },
                     {
@@ -95,7 +95,7 @@ function cargarGrillaCompras() {
                         label: 'CONTROL INTERNO',
                         id: 'NRO_FACTURA_COMPRA',
                         align: 'right',
-                        width: 13,
+                        width: 15,
                         hidden: false
                     },
                     {
@@ -110,7 +110,7 @@ function cargarGrillaCompras() {
                     {
                         title: false,
                         name: 'FECHA_EMISION_FACTURA',
-                        label: 'FECHA EMISION',
+                        label: 'EMISION',
                         id: 'FECHA_EMISION_FACTURA',
                         width: 15,
                         align: 'center',
@@ -121,7 +121,7 @@ function cargarGrillaCompras() {
                     {
                         title: false,
                         name: 'FECHA_VENCIMIENTO_FACTURA',
-                        label: 'FECHA VENCIMIENTO',
+                        label: 'VENCIMIENTO',
                         id: 'FECHA_VENCIMIENTO_FACTURA',
                         width: 15,
                         align: 'center',
@@ -132,7 +132,7 @@ function cargarGrillaCompras() {
                     {
                         title: false,
                         name: 'MONTO_TOTAL_COMPRA',
-                        label: 'MONTO COMPRA',
+                        label: 'MONTO',
                         id: 'MONTO_TOTAL_COMPRA',
                         align: 'right',
                         width: 14,

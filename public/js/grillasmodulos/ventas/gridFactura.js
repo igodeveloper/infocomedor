@@ -109,7 +109,7 @@ function cargarGrillaFacturas() {
                     {
                         title: false,
                         name: 'FAC_FECHA_EMI',
-                        label: 'FECHA EMISION',
+                        label: 'EMISION',
                         id: 'FAC_FECHA_EMI',
                         width: 15,
                         align: 'center',
@@ -120,7 +120,7 @@ function cargarGrillaFacturas() {
                     {
                         title: false,
                         name: 'FAC_FECH_VTO',
-                        label: 'FECHA VENCIMIENTO',
+                        label: 'VENCIMIENTO',
                         id: 'FAC_FECH_VTO',
                         width: 15,
                         formatter: 'date', 
@@ -131,7 +131,7 @@ function cargarGrillaFacturas() {
                     {
                         title: false,
                         name: 'FAC_MONTO_TOTAL',
-                        label: 'MONTO COMPRA',
+                        label: 'MONTO',
                         id: 'FAC_MONTO_TOTAL',
                         align: 'right',
                         width: 14,

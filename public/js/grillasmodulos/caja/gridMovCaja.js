@@ -77,11 +77,11 @@ function cargarGrillaRegistro() {
        	  {
 	       		"title" : false,
 	       		"name" : "nombre_apellido",
-	       		"label" : "USUARIO CAJA",
+	       		"label" : "CAJA",
 	       		"id" : "nombre_apellido",
 	       		"search" : false,
 	       		"remove" : false,
-	       		"width" : 130,
+	       		"width" : 110,
 	       		"align":"left",
 	       		"sortable" : false,
 	       		"hidden" : false
@@ -93,7 +93,7 @@ function cargarGrillaRegistro() {
 	       		"id" : "cod_caja",
 	       		"search" : false,
 	       		"remove" : false,
-	       		"width" : 50,
+	       		"width" : 60,
 	       		"align":"right",
 	       		"sortable" : false,
 	       		formatter: 'number',
@@ -103,11 +103,11 @@ function cargarGrillaRegistro() {
 			{
 	       		"title" : false,
 	       		"name" : "cod_mov_caja",
-	       		"label" : "NRO. MOVIMIENTO",
+	       		"label" : "MOVIMIENTO",
 	       		"id" : "cod_mov_caja",
 	       		"search" : false,
 	       		"remove" : false,
-	       		"width" : 70,
+	       		"width" : 75,
 	       		"align":"right",
 	       		"sortable" : false,
 	       		formatter: 'number',
@@ -117,11 +117,11 @@ function cargarGrillaRegistro() {
        	  {
 	       		"title" : false,
 	       		"name" : "fecha_hora_mov",
-	       		"label" : "FECHA MOVIMIENTO",
+	       		"label" : "FECHA",
 	       		"id" : "fecha_hora_mov",
 	       		"search" : false,
 	       		"remove" : false,
-	       		"width" : 140,
+	       		"width" : 100,
 	       		"align":"left",
 	       		"sortable" : false,
 	       		"hidden" : false
@@ -129,7 +129,7 @@ function cargarGrillaRegistro() {
        	  {
 	       		"title" : false,
 	       		"name" : "monto_mov",
-	       		"label" : "MONTO MOVIMIENTO",
+	       		"label" : "MONTO",
 	       		"id" : "monto_mov",
 	       		"search" : false,
 	       		"remove" : false,
@@ -143,7 +143,7 @@ function cargarGrillaRegistro() {
        	  {
 	       		"title" : false,
 	       		"name" : "desc_tipo_mov",
-	       		"label" : "TIPO MOVIMIENTO",
+	       		"label" : "TIPO ",
 	       		"id" : "desc_tipo_mov",
 	       		"search" : false,
 	       		"remove" : false,
@@ -227,7 +227,7 @@ function cargarGrillaRegistro() {
        	  {
 	       		"title" : false,
 	       		"name" : "arqueo_caja",
-	       		"label" : "Caja Arqueada",
+	       		"label" : "ARQUEO",
 	       		"id" : "arqueo_caja",
 	       		"search" : false,
 	       		"remove" : false,
@@ -239,7 +239,7 @@ function cargarGrillaRegistro() {
        	  {
 	       		"title" : false,
 	       		"name" : "firmante_mov",
-	       		"label" : "Firmante",
+	       		"label" : "FIRMA",
 	       		"id" : "firmante_mov",
 	       		"search" : false,
 	       		"remove" : false,

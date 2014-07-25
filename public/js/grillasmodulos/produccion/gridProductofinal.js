@@ -73,7 +73,7 @@ function cargarGrillaRegistro() {
                         label: 'DESCRIPCION',
                         id: 'PRODUCTO_DESC',
                         align: 'left',
-                        width: 40,
+                        width: 30,
                         hidden: false
                     },
                     {
@@ -93,7 +93,7 @@ function cargarGrillaRegistro() {
                         label: 'UNI MEDIDA',
                         id: 'DESC_UNIDAD_MEDIDA',
                         align: 'left',
-                        width: 20,
+                        width: 15,
                         hidden: false
                     },
                     {
@@ -102,7 +102,7 @@ function cargarGrillaRegistro() {
                         label: 'TIPO PRODUCTO',
                         id: 'TIPO_PRODUCTO_DESCRIPCION',
                         align: 'left',
-                        width: 30,
+                        width: 20,
                         hidden: false
                     }
                 

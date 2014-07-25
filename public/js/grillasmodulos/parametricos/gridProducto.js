@@ -3,7 +3,11 @@ var table = pathname;
 $(document).ready(function(){
 	cargarGrillaRegistro();
 });
-
+function widthOfGrid() {
+    var windowsWidth = $(window).width();
+    var gridWidth = ((98 * 97 * windowsWidth) / (100 * 100));
+    return gridWidth;
+}
 function setTooltipsOnColumnHeader(grid, iColumn, text){
     var thd = jQuery("thead:first", grid[0].grid.hDiv)[0];
     jQuery("tr.ui-jqgrid-labels th:eq(" + iColumn + ")", thd).attr("title", text);
@@ -65,7 +69,7 @@ function cargarGrillaRegistro() {
 	       		"name" : "COD_PRODUCTO",
 	       		"label" :"CODIGO",
 	       		"id" : "COD_PRODUCTO",
-	       		"width" : 10,
+	       		"width" : 5,
 	       		"sortable" : false,
 	       		"align":"right",
 	       		"search" : false,
@@ -81,7 +85,7 @@ function cargarGrillaRegistro() {
 	       		"id" : "PRODUCTO_DESC",
 	       		"search" : false,
 	       		"remove" : false,
-	       		"width" : 50,
+	       		"width" : 40,
 	       		"align":"left",
 	       		"sortable" : false,
 	       		"hidden" : false
@@ -106,7 +110,7 @@ function cargarGrillaRegistro() {
 	       		"id" : "TIPO_PRODUCTO_DESCRIPCION",
 	       		"search" : false,
 	       		"remove" : false,
-	       		"width" : 20,
+	       		"width" : 15,
 	       		"align":"left",
 	       		"sortable" : false,
 	       		"hidden" : false
@@ -130,7 +134,7 @@ function cargarGrillaRegistro() {
 	       		"id" : "DESC_UNIDAD_MEDIDA",
 	       		"search" : false,
 	       		"remove" : false,
-	       		"width" : 18,
+	       		"width" : 13,
 	       		"align":"left",
 	       		"sortable" : false,
 	       		"hidden" : false
@@ -174,11 +178,11 @@ function cargarGrillaRegistro() {
        	  {
 	       		"title" : false,
 	       		"name" : "IMP_PORCENTAJE",
-	       		"label" : "IMPUESTO %",
+	       		"label" : "IVA",
 	       		"id" : "IMP_PORCENTAJE",
 	       		"search" : false,
 	       		"remove" : false,
-	       		"width" : 12,
+	       		"width" : 8,
 	       		"align":"right",
 	       		"sortable" : false,
 	       		"hidden" : false
@@ -190,7 +194,7 @@ function cargarGrillaRegistro() {
 	       		"id" : "PRECIO_VENTA",
 	       		"search" : false,
 	       		"remove" : false,
-	       		"width" : 20,
+	       		"width" : 12,
 	       		"align":"right",
 	       		"sortable" : false,
 	       		formatter: 'number',
@@ -213,7 +217,7 @@ function cargarGrillaRegistro() {
         view:true,
         search:false,
         refresh:false});
-	$("#grillaRegistro").setGridWidth($('#contenedor').width());
+	$("#grillaRegistro").setGridWidth(widthOfGrid());
 
 	$("#grillaRegistro").jqGrid('navButtonAdd','#paginadorRegistro',{
 		buttonicon :'ui-icon-trash',

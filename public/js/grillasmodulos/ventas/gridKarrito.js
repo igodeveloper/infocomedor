@@ -48,7 +48,7 @@ function cargarGrillaRegistro() {
                     {
                         title: false,
                         name: 'COD_KARRITO',
-                        label: 'COD KARRITO',
+                        label: 'PEDIDO',
                         id: 'COD_KARRITO',  
                         align: 'right',
                         width: 10,
@@ -64,16 +64,16 @@ function cargarGrillaRegistro() {
                         align: 'center',
                         formatter: 'date', 
                         formatoptions: { srcformat: 'Y/m/d', newformat: 'd/m/Y'},
-                        width: 25,
+                        width: 15,
                         hidden: false
                     },
                     {
                         title: false,
                         name: 'COD_CLIENTE',
-                        label: 'COD CLIENTE',
+                        label: 'COD',
                         id: 'COD_CLIENTE',
                         align: 'right',
-                        width: 10,
+                        width: 8,
                        
                         hidden: false
                     },
@@ -83,7 +83,7 @@ function cargarGrillaRegistro() {
                         label: 'CLIENTE',
                         id: 'CLIENTE_DES',
                         align: 'left',
-                        width: 40,
+                        width: 35,
                         hidden: false
                     },
                     {
@@ -143,7 +143,7 @@ function cargarGrillaRegistro() {
                         label: 'PRECIO',
                         id: 'KAR_PRECIO_PRODUCTO',
                         align: 'right',
-                        width: 20,
+                        width: 16,
                         formatter: 'number',
                 formatoptions:{thousandsSeparator: ".", decimalPlaces:0},
                         hidden: false
