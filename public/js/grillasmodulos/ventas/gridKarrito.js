@@ -361,18 +361,20 @@ function anularPedido()
     parametrosPagos.COD_KARRITO = $("#grillaRegistro").jqGrid('getCell', id, 'COD_KARRITO');
     parametrosPagos.ESTADO = $("#grillaRegistro").jqGrid('getCell', id, 'ESTADO');
     parametrosPagos.FACT_NRO = $("#grillaRegistro").jqGrid('getCell', id, 'FACT_NRO');
+    parametrosPagos.KAR_CANT_PRODUCTO = $("#grillaRegistro").jqGrid('getCell', id, 'KAR_CANT_PRODUCTO');
+    parametrosPagos.KAR_CANT_FACTURAR = $("#grillaRegistro").jqGrid('getCell', id, 'KAR_CANT_FACTURAR');
+    parametrosPagos.COD_PRODUCTO = $("#grillaRegistro").jqGrid('getCell', id, 'COD_PRODUCTO');
    
+   console.log(JSON.stringify(parametrosPagos));
     if (id == false) {
         alert("Para anular un pedido debe seleccionarlo previamente.");
     } else {
-        if (!confirm("Esta seguro de que desea anular el pedido?"))
-            return;
-        else if (parametrosPagos.ESTADO == 'PE' && parametrosPagos.FACT_NRO == 0 ) {
+        if (parametrosPagos.ESTADO == 'Pendiente' && ( parametrosPagos.KAR_CANT_PRODUCTO == parametrosPagos.KAR_CANT_FACTURAR)) {
             var codigokarrito = parametrosPagos.COD_KARRITO;
             $.ajax({
                 url: table+'/anularpedido',
                 type: 'post',
-                data: {"codigokarrito": codigokarrito},
+                data: {"codigokarrito": codigokarrito, "cantidad_devolver": parametrosPagos.KAR_CANT_PRODUCTO, "cod_producto": parametrosPagos.COD_PRODUCTO },
                 dataType: 'json',
                 async: false,
                 success: function(data) {
@@ -390,7 +392,7 @@ function anularPedido()
                 }
             });
         } else {
-        	mostarVentana("warning-title", "El Pedido se encuentra anulado o ya ha sido facturado"); 
+        	mostarVentana("warning-title", "El Pedido se encuentra anulado o ya ha sido facturado parcial o totalmente"); 
          
         }
     }

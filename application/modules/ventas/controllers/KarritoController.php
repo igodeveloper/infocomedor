@@ -302,16 +302,33 @@ private function obtenerPaginas($result, $cantidadFilas, $page) {
 
         $this->_helper->viewRenderer->setNoRender(true);
         $codigokarrito = json_decode($this->getRequest()->getParam("codigokarrito"));
+        $cantidad_devolver = json_decode($this->getRequest()->getParam("cantidad_devolver"));
+        $cod_producto = json_decode($this->getRequest()->getParam("cod_producto"));
         
         try {
         	$db = Zend_Db_Table::getDefaultAdapter();
        		$db->beginTransaction();
 
-        			 $data = array(
+                    $data = array(
         			 	'ESTADO' => 'AN'
         				);	
         				$where = "COD_KARRITO = " . $codigokarrito;
-	           					            	$upd = $db->update('KARRITO', $data, $where);
+	            	$upd = $db->update('KARRITO', $data, $where);
+
+                     $select_stock = $db->select()
+                                ->from(array('S' => 'STOCK'), array('S.COD_PRODUCTO','S.SALDO_STOCK'))
+                                ->distinct(true)
+                                ->where("S.COD_PRODUCTO = ?", $cod_producto);
+                            $resultado_stock = $db->fetchAll($select_stock);
+                        
+                            $saldo_producto = $resultado_stock[0]['SALDO_STOCK'];
+
+                            $data_stock = array(
+                                'SALDO_STOCK' => ($saldo_producto+((int)$cantidad_devolver)),
+                                'STOCK_FECHA_ACTUALIZA' => ( date("Y-m-d H:i:s"))
+                            );   
+                            $where_stock = "COD_PRODUCTO= " . $cod_producto;
+                            $upd = $db->update('STOCK', $data_stock , $where_stock);
 						
                 $db->commit();
                 echo json_encode(array("result" => "EXITO"));

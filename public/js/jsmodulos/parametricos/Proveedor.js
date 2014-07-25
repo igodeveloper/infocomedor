@@ -180,7 +180,7 @@ function obtenerJsonFormulario() {
     var jsonObject = new Object();
     var mensaje = 'Complete los campos:';
     
-    for ( var i = 1; i < 8; i++ ) {
+    for ( var i = 1; i < 7; i++ ) {
     	console.log(idCamposGrilla[i]);
     	if ($('#' + idCamposGrilla[i]).attr("value") == null || $('#' + idCamposGrilla[i]).attr("value").length == 0) {
     		mensaje+= mensajeWarning[i] ;

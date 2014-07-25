@@ -171,7 +171,7 @@ function cargarGrillaRegistro() {
                         "width": 40,
                         "align": "right",
                         "sortable": false,
-                        "hidden": false,
+                        "hidden": true,
                         formatter: 'number',
                 formatoptions:{thousandsSeparator: ".", decimalPlaces: 0},
                     }
@@ -203,8 +203,8 @@ function borrar() {
     if (id == false) {
         alert("Para eliminar un registro debe seleccionarlo previamente.");
     } else {
-        if (!confirm("�Esta seguro de que desea eliminar el registro seleccionado?"))
-            return;
+        // if (!confirm("�Esta seguro de que desea eliminar el registro seleccionado?"))
+        //     return;
 
         $.ajax({
             url: table + '/eliminar',

@@ -179,7 +179,7 @@ class Parametricos_ProveedorController extends Zend_Controller_Action {
                 'PROVEEDOR_TELEFONO' => $rowData->telefonoProveedor,
                 'PROVEEDOR_CONTACTO' => $rowData->nombrecontactoProveedor,
                 'PROVEEDOR_EMAIL' => $rowData->emailProveedor,
-                'PROVEEDOR_LIMITE_CREDITO' => (int) (trim($rowData->limitecreditoProveedor))
+                'PROVEEDOR_LIMITE_CREDITO' => (int)0
             );
             $where = "COD_PROVEEDOR= " . $rowData->idRegistro;
 
@@ -205,7 +205,7 @@ class Parametricos_ProveedorController extends Zend_Controller_Action {
             $rowClass->setTel_Proveedor($rowData->telefonoProveedor);
             $rowClass->setCont_nom_Proveedor(trim(utf8_decode($rowData->nombrecontactoProveedor)));
             $rowClass->setEmail_Proveedor(trim(utf8_decode($rowData->emailProveedor)));
-            $rowClass->setLimite_credito_Proveedor(trim(utf8_decode($rowData->limitecreditoProveedor)));
+            $rowClass->setLimite_credito_Proveedor(0);
 
 //                print_r($rowClass); die();
             $result = $service->saveRow($rowClass);
