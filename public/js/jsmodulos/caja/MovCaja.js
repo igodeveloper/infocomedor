@@ -322,7 +322,7 @@ function editarRegistro(parametros){
         if(parametros.arqueo_caja == 'Si'){
             mostarVentana("warning-block-title","La caja ya se encuentra arqueada, no es posible modificar el movimiento!!"); 
             return;
-        }
+        }       
         if(parametros.factura_mov != 0){
             mostarVentana("warning-block-title","El movimiento se encuentra asociado a una factura, no es posible modificar el movimiento!!"); 
             return;

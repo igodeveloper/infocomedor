@@ -54,7 +54,7 @@ class Caja_MovcajaController extends Zend_Controller_Action
 								 'T.tipo_mov',
                                                                  'D.arqueo_caja',
                                                                  'M.firmante_mov',
-                                                                 'M.factura_mov'))
+                                                                 'M.estado',))
 					->join(array('D' => 'caja'), 'D.cod_usuario_caja = C.cod_usuario')
 					->join(array('M' => 'mov_caja'), 'M.cod_caja = D.cod_caja')
 					->join(array('T' => 'tipo_movimiento'), 'T.cod_tipo_mov = M.cod_tipo_mov')
@@ -77,6 +77,10 @@ class Caja_MovcajaController extends Zend_Controller_Action
             $pagina ['rows'] = array();
             foreach ($this->_paginator as $item) {
                             $desc_tipo_mov = '';
+                if($item['estado']== 'A')
+                    $desc_estado = 'Anulado';
+                else
+                    $desc_estado = 'Activo';                            
                 if($item['tipo_mov']== 'R')
                     $desc_tipo_mov = 'Egreso';
                 else
@@ -109,6 +113,7 @@ class Caja_MovcajaController extends Zend_Controller_Action
                     $item['tipo_mov'],
                     $arqueo_caja,
                     $item['firmante_mov'],
+                    $desc_estado
                     
                 );
                 $arrayDatos ['columns'] = array(
@@ -127,7 +132,8 @@ class Caja_MovcajaController extends Zend_Controller_Action
                     'observacion_mov',				
                     'tipo_mov',
                     'arqueo_caja',
-                    'firmante_mov'
+                    'firmante_mov',
+                    'desc_estado'
                 );
                 array_push($pagina ['rows'], $arrayDatos);
             }
@@ -195,14 +201,19 @@ class Caja_MovcajaController extends Zend_Controller_Action
 		try{
                     $db = Zend_Db_Table::getDefaultAdapter();
                     $db->beginTransaction();
-                    $servCon = new Application_Model_DataService('Application_Model_DbTable_Movcaja');
-                    $servCon->deleteRowById(array("cod_mov_caja"=>$id));
+                    //$servCon = new Application_Model_DataService('Application_Model_DbTable_Movcaja');
+                    //$servCon->deleteRowById(array("cod_mov_caja"=>$id));
+                    $data_pago_proveedor = array(                    
+                        'estado'=>'A',                 
+                    );
+                    $where ="cod_mov_caja = ".$id;                                               
+                    $update_pago = $db->update('mov_caja',$data_pago_proveedor,$where);                    
                     $db->commit();
 		    echo json_encode(array("result" => "EXITO"));
 	    }catch( Exception $e ) {
 	    	echo json_encode(array("result" => "ERROR","mensaje"=>$e->getCode()));
 			$db->rollBack();
-		}
+            }
 	}
 
 	public function guardarAction(){

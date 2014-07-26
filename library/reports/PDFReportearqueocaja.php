@@ -43,11 +43,12 @@
             {
                  $nombre_apellido                   = $row['NOMBRE_APELLIDO'];
                  $fecha_hora_apertura               = $row['fecha_hora_apertura'];
+                 $fecha_hora_apertura               = substr($fecha_hora_apertura,8,2).'/'.substr($fecha_hora_apertura,5,2).'/'.substr($fecha_hora_apertura,0,4).' '.substr($fecha_hora_apertura,11);
                  $fecha_hora_cierre                 = $row['fecha_hora_cierre'];
-                 $monto_caja_apertura               = $row['monto_caja_apertura'];
-                 $monto_caja_cierre                 = $row['monto_caja_cierre'];
-                 $monto_diferencia_arqueo           = $row['monto_diferencia_arqueo'];
-                 $monto_diferencia_arqueo_cheque    = $row['monto_diferencia_arqueo_cheque'];
+                 $monto_caja_apertura               = number_format(CEIL($row['monto_caja_apertura']),0,',','.');
+                 $monto_caja_cierre                 = number_format(CEIL($row['monto_caja_cierre']),0,',','.');
+                 $monto_diferencia_arqueo           = number_format(CEIL($row['monto_diferencia_arqueo']),0,',','.');
+                 $monto_diferencia_arqueo_cheque    = number_format(CEIL($row['monto_diferencia_arqueo_cheque']),0,',','.');
                  $arqueo_caja                       = $row['arqueo_caja'];
                  if(trim($arqueo_caja) <> '')
                      $arqueo_caja = 'Si';
@@ -105,6 +106,8 @@
             $this->SetX(147+$y); 
             if(trim($fecha_hora_cierre) == 'Abierto')
                 $this->SetTextColor(255,0,0);
+            else
+                $fecha_hora_cierre = substr($fecha_hora_cierre,8,2).'/'.substr($fecha_hora_cierre,5,2).'/'.substr($fecha_hora_cierre,0,4);
             $this->Cell(80,10,  utf8_decode($fecha_hora_cierre),0,0,'L');      
             $this->SetTextColor(0,0,0);
             $this->Ln(10);//Salto de l�nea   
@@ -146,18 +149,18 @@
             $count = 1;
             while($row = mysql_fetch_assoc($dtDatos))
             {
-                $fecha_hora_mov     = $row['fecha_hora_mov'];
-                $monto_mov          = $row['monto_mov'];
+                $fecha_hora_mov     = substr($row['fecha_hora_mov'],8,2).'/'.substr($row['fecha_hora_mov'],5,2).'/'.substr($row['fecha_hora_mov'],0,4).' '.substr($row['fecha_hora_mov'],11);;                
+                $monto_mov          = number_format(CEIL($row['monto_mov']),0,',','.');
                 $desc_tipo_mov      = $row['desc_tipo_mov'];
                 $tipo_mov           = $row['tipo_mov'];
                 $factura_mov        = $row['factura_mov'];
                 $tipo_factura_mov   = $row['tipo_factura_mov'];
                 $tipo               = $row['tipo'];
-                $monto_caja_apertura= $row['monto_caja_apertura'];
-                $monto_caja_cierre  = $row['monto_caja_cierre'];
-                $monto_caja_cierre_cheque  = $row['monto_caja_cierre_cheque'];
-                $monto_diferencia_arqueo    = $row['monto_diferencia_arqueo'];
-                $monto_diferencia_arqueo_cheque = $row['monto_diferencia_arqueo_cheque'];
+                $monto_caja_apertura= number_format(CEIL($row['monto_caja_apertura']),0,',','.');
+                $monto_caja_cierre  = number_format(CEIL($row['monto_caja_cierre']),0,',','.');
+                $monto_caja_cierre_cheque  = number_format(CEIL($row['monto_caja_cierre_cheque']),0,',','.');
+                $monto_diferencia_arqueo    = number_format(CEIL($row['monto_diferencia_arqueo']),0,',','.');
+                $monto_diferencia_arqueo_cheque = number_format(CEIL($row['monto_diferencia_arqueo_cheque']),0,',','.');
                 if(trim($factura_mov) <> '' and $factura_mov > 0){                    
                     if($tipo_factura_mov == 'C')
                         $tipo_factura_mov = 'Compra';

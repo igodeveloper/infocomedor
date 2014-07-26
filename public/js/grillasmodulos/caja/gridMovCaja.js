@@ -247,6 +247,18 @@ function cargarGrillaRegistro() {
 	       		"align":"left",
 	       		"sortable" : false,
 	       		"hidden" : false
+       		},
+       	  {
+	       		"title" : false,
+	       		"name" : "desc_estado",
+	       		"label" : "Estado",
+	       		"id" : "desc_estado",
+	       		"search" : false,
+	       		"remove" : false,
+	       		"width" : 80,
+	       		"align":"left",
+	       		"sortable" : false,
+	       		"hidden" : false
        		}]
     }).navGrid('#paginadorRegistro',{
         add:false,
@@ -311,6 +323,8 @@ function borrar(){
 	var id = $("#grillaRegistro").jqGrid('getGridParam','selrow');
 	var cod_tipo_mov = $("#grillaRegistro").jqGrid('getCell', id, 'cod_mov_caja');
         var arqueo_caja = $("#grillaRegistro").jqGrid('getCell', id, 'arqueo_caja');
+        var factura_mov = $("#grillaRegistro").jqGrid('getCell', id, 'factura_mov');
+        var desc_estado = $("#grillaRegistro").jqGrid('getCell', id, 'desc_estado');
 	if( id == false ){
 		//alert("Para eliminar un registro debe seleccionarlo previamente.");
                 mostarVentana("warning-block-title","Para eliminar un registro debe seleccionarlo previamente.");
@@ -318,10 +332,19 @@ function borrar(){
 	}else{
 //		if(!confirm("¿Esta seguro de que desea eliminar el registro seleccionado?"))
 //			return;
+
             if( arqueo_caja == 'Si'){
                 mostarVentana("warning-block-title","La caja ya se encuentra arqueada, no es posible eliminar el movimiento!!"); 
                 return;
             }
+        if(desc_estado == 'Anulado'){
+            mostarVentana("warning-block-title","El movimiento ya se encuentra anulado!!"); 
+            return;
+        }              
+            if( factura_mov != 0){
+                mostarVentana("warning-block-title","El movimiento se encuentra asociado a una factura, no es posible anular el movimiento!!"); 
+                return;
+            }            
 		$.ajax({
 	        url: table+'/eliminar',
 	        type: 'post',
@@ -336,7 +359,7 @@ function borrar(){
 //				        	mostarVentana("warning-block-title","Ha ocurrido un error");
 					    }
 				} else {
-					mostarVentana("success-block-title","Los datos han sido eliminados exitosamente");
+					mostarVentana("success-block-title","Los datos han sido anulados con exitosamente");
 				    $("#grillaRegistro").trigger("reloadGrid");
 				}
 	        },
@@ -384,6 +407,7 @@ tipo_mov
         parametros.tipo_mov = rowObject[13];        
         parametros.arqueo_caja = rowObject[14];
         parametros.firmante_mov = rowObject[15];
+        parametros.desc_estado = rowObject[16];
 	json = JSON.stringify(parametros);
 	return "<a><img title='Editar' src='../../css/images/edit.png' data-toggle='modal'  onclick='editarRegistro("+json+");'/></a>";
 }
