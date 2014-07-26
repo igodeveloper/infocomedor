@@ -53,7 +53,8 @@ class Caja_MovcajaController extends Zend_Controller_Action
 								 'T.desc_tipo_mov',
 								 'T.tipo_mov',
                                                                  'D.arqueo_caja',
-                                                                 'M.firmante_mov'))
+                                                                 'M.firmante_mov',
+                                                                 'M.factura_mov'))
 					->join(array('D' => 'caja'), 'D.cod_usuario_caja = C.cod_usuario')
 					->join(array('M' => 'mov_caja'), 'M.cod_caja = D.cod_caja')
 					->join(array('T' => 'tipo_movimiento'), 'T.cod_tipo_mov = M.cod_tipo_mov')
@@ -81,9 +82,12 @@ class Caja_MovcajaController extends Zend_Controller_Action
                 else
                     $desc_tipo_mov = 'Ingreso';
                             $desc_factura_mov = '';
-                if($item['factura_mov']== 'P')
+                $factura_mov = '';
+                if(trim($item['factura_mov'])<> '')
+                    $factura_mov = $item['factura_mov'];                            
+                if($item['tipo_factura_mov']== 'P')
                     $desc_factura_mov = 'Proveedor';
-                else if($item['factura_mov']== 'C')
+                else if($item['tipo_factura_mov']== 'C')
                     $desc_factura_mov = 'Compra en Local';
                 $arqueo_caja = 'No';
                 if(trim($item['arqueo_caja']) == 'S')
@@ -96,9 +100,9 @@ class Caja_MovcajaController extends Zend_Controller_Action
                     $item['cod_mov_caja'],
                     $item['fecha_hora_mov'],
                     $item['monto_mov'],
-                                    $desc_tipo_mov,
+                    $desc_tipo_mov,
                     $item['cod_tipo_mov'],
-                    $item['factura_mov'],
+                    $factura_mov,
                     $desc_factura_mov,
                     $item['tipo_factura_mov'],
                     $item['observacion_mov'],                

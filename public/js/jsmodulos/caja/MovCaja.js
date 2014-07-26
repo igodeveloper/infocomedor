@@ -319,6 +319,14 @@ function buscarRegistros(){
 
 function editarRegistro(parametros){
 	limpiarFormulario();
+        if(parametros.arqueo_caja == 'Si'){
+            mostarVentana("warning-block-title","La caja ya se encuentra arqueada, no es posible modificar el movimiento!!"); 
+            return;
+        }
+        if(parametros.factura_mov != 0){
+            mostarVentana("warning-block-title","El movimiento se encuentra asociado a una factura, no es posible modificar el movimiento!!"); 
+            return;
+        }           
         cargarTipoMovimiento();
 /*
 cod_usuario
@@ -334,10 +342,7 @@ desc_factura_mov
 tipo_factura_mov
 observacion_mov
 tipo_mov    
-*/      if(parametros.arqueo_caja == 'Si'){
-            mostarVentana("warning-block-title","La caja ya se encuentra arqueada, no es posible modificar el movimiento!!"); 
-            return;
-        }   
+*/              
 	$("#modalEditar").show();
 	$("#editar-nuevo").html("Editar Registro");
 	$("#codcaja-modal").attr("value",parametros.cod_caja);
