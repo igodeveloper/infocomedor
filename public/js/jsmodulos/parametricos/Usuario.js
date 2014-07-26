@@ -134,9 +134,15 @@ function obtenerJsonFormulario() {
     	addrequiredattr('descripcionusuario-modal',focus);
 	}  
 	if($('#passwordusuario-modal').attr("value") != $('#passwordusuario2-modal').attr("value")){
+		console.log($('#passwordusuario-modal').attr("value") ,$('#passwordusuario2-modal').attr("value"));
 		mensaje+= ' | Los passwords no coniciden ';
     	focus++;
     	addrequiredattr('passwordusuario-modal',focus);
+	} 
+	if($('#perfil-modal').attr("value") == -1){
+		mensaje+= ' |  Perfil del usuario ';
+    	focus++;
+    	addrequiredattr('perfil-modal',focus);
 	}    
 	
 	if (mensaje != 'Ingrese los campos: '){
@@ -148,6 +154,7 @@ function obtenerJsonFormulario() {
                 jsonObject.ID_USUARIO = $('#idusuario-modal').attr("value");
                 jsonObject.NOMBRE_APELLIDO = $("#descripcionusuario-modal").attr("value");
                 jsonObject.USUARIO_PASSWORD = $('#passwordusuario-modal').attr("value");    
+                jsonObject.PERMISO = $('#perfil-modal').attr("value");    
                 return jsonObject;
 	}
 }
@@ -261,6 +268,7 @@ function editarRegistro(parametros){
 	$("#codigousuario-modal").attr("value",parametros.COD_USUARIO);
 	$("#idusuario-modal").attr("value",parametros.ID_USUARIO);
     $('#descripcionusuario-modal').attr("value",parametros.NOMBRE_APELLIDO);
+    $('#perfil-modal').attr("value",parametros.PERMISO);
 	$("#guardar-registro").html("Modificar");
 }
 

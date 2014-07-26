@@ -104,6 +104,15 @@ function cargarGrillaRegistro() {
 	       		"align":"left",
 	       		"sortable" : false,
 	       		"hidden" : true
+       		},
+       	  {
+	       		"title" : false,
+	       		"name" : "PERMISO",
+	       		"label" : "PERMISO",
+	       		"id" : "PERMISO",
+	       		"width" : 30,
+	       		"align":"left",
+	       		"hidden" : true
        		}]
     }).navGrid('#paginadorRegistro',{
         add:false,
@@ -171,6 +180,7 @@ function cargarLinkModificar ( cellvalue, options, rowObject )
 	parametros.ID_USUARIO = rowObject[2];
 	parametros.NOMBRE_APELLIDO = rowObject[3];
 	parametros.USUARIO_PASSWORD = rowObject[4];
+	parametros.PERMISO = rowObject[5];
 	json = JSON.stringify(parametros);
 	return "<a><img title='Editar' src='../../css/images/edit.png' data-toggle='modal'  onclick='editarRegistro("+json+");'/></a>";
 }

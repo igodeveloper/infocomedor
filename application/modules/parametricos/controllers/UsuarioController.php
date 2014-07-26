@@ -11,6 +11,11 @@ class Parametricos_UsuarioController extends Zend_Controller_Action
             if(!$parametrosNamespace->username){
                 $r = Zend_Controller_Action_HelperBroker::getStaticHelper('redirector');
                 $r->gotoUrl('/menus/menu')->redirectAndExit();
+            }else{
+                 if($parametrosNamespace->PERMISO!=1){
+                    $r = Zend_Controller_Action_HelperBroker::getStaticHelper('redirector');
+                    $r->gotoUrl('/error')->redirectAndExit();
+                }
             }
         $parametrosNamespace->lock();
     }
@@ -33,7 +38,8 @@ class Parametricos_UsuarioController extends Zend_Controller_Action
                 $item['COD_USUARIO'],
                 $item['ID_USUARIO'],
                 $item['NOMBRE_APELLIDO'],
-                $item['USUARIO_PASSWORD']
+                $item['USUARIO_PASSWORD'],
+                $item['PERMISO']
                 
             );
             $arrayDatos ['columns'] = array(
@@ -41,7 +47,8 @@ class Parametricos_UsuarioController extends Zend_Controller_Action
                 'COD_USUARIO',
                 'ID_USUARIO',
                 'NOMBRE_APELLIDO',
-                'USUARIO_PASSWORD'
+                'USUARIO_PASSWORD',
+                'PERMISO'
                
             );
             array_push($pagina ['rows'], $arrayDatos);
@@ -88,7 +95,8 @@ class Parametricos_UsuarioController extends Zend_Controller_Action
                        array('C.COD_USUARIO',
                              'C.ID_USUARIO',
                              'C.NOMBRE_APELLIDO',
-                             'C.USUARIO_PASSWORD'))
+                             'C.USUARIO_PASSWORD',
+                             'C.PERMISO'))
                  ->order(array('C.COD_USUARIO DESC'));
 
         if ($Obj != null) {
@@ -136,7 +144,8 @@ class Parametricos_UsuarioController extends Zend_Controller_Action
                 'COD_USUARIO' => 0,
                 'ID_USUARIO' => $rowData->ID_USUARIO,
                 'NOMBRE_APELLIDO' => (trim($rowData->NOMBRE_APELLIDO)),
-                'USUARIO_PASSWORD' => (trim($rowData->USUARIO_PASSWORD))
+                'USUARIO_PASSWORD' => (trim($rowData->USUARIO_PASSWORD)),
+                'PERMISO' => ($rowData->PERMISO)
                 
                 
             );
@@ -163,7 +172,8 @@ class Parametricos_UsuarioController extends Zend_Controller_Action
                 'COD_USUARIO' => $rowData->COD_USUARIO,
                 'ID_USUARIO' => $rowData->ID_USUARIO,
                 'NOMBRE_APELLIDO' => (trim($rowData->NOMBRE_APELLIDO)),
-                'USUARIO_PASSWORD' => (trim($rowData->USUARIO_PASSWORD))
+                'USUARIO_PASSWORD' => (trim($rowData->USUARIO_PASSWORD)),
+                'PERMISO' => (trim($rowData->PERMISO))
                 
             );
             $where = "COD_USUARIO= " . $rowData->COD_USUARIO;

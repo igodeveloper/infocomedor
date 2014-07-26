@@ -9,6 +9,11 @@ class Compras_PagosController extends Zend_Controller_Action {
             if(!$parametrosNamespace->username){
                 $r = Zend_Controller_Action_HelperBroker::getStaticHelper('redirector');
                 $r->gotoUrl('/menus/menu')->redirectAndExit();
+            }else{
+                 if($parametrosNamespace->PERMISO!=1){
+                    $r = Zend_Controller_Action_HelperBroker::getStaticHelper('redirector');
+                    $r->gotoUrl('/error')->redirectAndExit();
+                }
             }
         $parametrosNamespace->lock();
       
@@ -164,7 +169,7 @@ class Compras_PagosController extends Zend_Controller_Action {
                             'FACTURA_MOV = ?' => $data_Pagos->NRO_FACTURA_COMPRA
 
                         ));
-                        $data_pago_proveedor = array(
+                    $data_pago_proveedor = array(
                     
                         'ESTADO_PAGO'=>'A',
                  

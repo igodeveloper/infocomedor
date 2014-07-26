@@ -43,7 +43,7 @@ class Menus_MenuController extends Zend_Controller_Action
         $db = Zend_Db_Table::getDefaultAdapter();
         $htmlResult['resultado'] = '-1';
         $select = $db->select()
-                 ->from(array('C' => 'usuario'), array('C.COD_USUARIO','C.NOMBRE_APELLIDO'))
+                 ->from(array('C' => 'usuario'), array('C.COD_USUARIO','C.NOMBRE_APELLIDO','C.PERMISO'))
                  ->where(" UPPER(ID_USUARIO) = '".strtoupper(trim($rowData->username))."'")
                  ->where("USUARIO_PASSWORD = '".$password."'");
                  //->where("A.cod_sucursal = ".trim($rowData->SelecAgencia));
@@ -59,10 +59,12 @@ class Menus_MenuController extends Zend_Controller_Action
             $_SESSION['username'] = trim($rowData->username);
             $_SESSION['cod_usuario'] = trim(utf8_encode($arr["COD_USUARIO"]));
             $_SESSION['desc_usuario'] = trim(utf8_encode($arr["NOMBRE_APELLIDO"]));
+            $_SESSION['PERMISO'] = trim(utf8_encode($arr["PERMISO"]));
 //echo 'usuario secion: '.$_SESSION['desc_usuario'].' sucursal secion: '.$_SESSION['nomAgencia'].'<br>'; 
             $parametrosNamespace->username = trim($rowData->username);
             $parametrosNamespace->cod_usuario = trim(utf8_encode($arr["COD_USUARIO"]));
             $parametrosNamespace->desc_usuario = trim(utf8_encode($arr["NOMBRE_APELLIDO"]));            
+            $parametrosNamespace->PERMISO = trim(utf8_encode($arr["PERMISO"]));            
         }
         $parametrosNamespace->lock ();                       
         echo $this->_helper->json ( $htmlResult);

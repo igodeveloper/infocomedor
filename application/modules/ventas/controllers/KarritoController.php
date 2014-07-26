@@ -8,6 +8,8 @@ class Ventas_KarritoController extends Zend_Controller_Action {
          if(!$parametrosNamespace->username){
             $r = Zend_Controller_Action_HelperBroker::getStaticHelper('redirector');
             $r->gotoUrl('/menus/menu')->redirectAndExit();
+        }else{
+           
         }
         $parametrosNamespace->lock();
                 
