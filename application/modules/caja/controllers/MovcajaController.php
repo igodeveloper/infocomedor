@@ -331,6 +331,7 @@ class Caja_MovcajaController extends Zend_Controller_Action
 		     $db = Zend_Db_Table::getDefaultAdapter();
              $select = $db->select()
                 ->from(array('T' => 'tipo_movimiento'), array('T.cod_tipo_mov', 'T.desc_tipo_mov'))
+                     ->where('T.cod_tipo_mov > 2')
                 ->distinct(true);
                 
         	$result = $db->fetchAll($select);
