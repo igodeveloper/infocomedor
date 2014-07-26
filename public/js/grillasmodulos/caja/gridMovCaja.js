@@ -272,7 +272,7 @@ function cargarGrillaRegistro() {
 	$("#grillaRegistro").jqGrid('navButtonAdd','#paginadorRegistro',{
 		buttonicon :'ui-icon-trash',
 		caption: "",
-		title: "Eliminar fila seleccionada",
+		title: "Anular fila seleccionada",
 		onClickButton : function (){
 			borrar();	//Funcion de borrar
 		}
@@ -337,10 +337,10 @@ function borrar(){
                 mostarVentana("warning-block-title","La caja ya se encuentra arqueada, no es posible eliminar el movimiento!!"); 
                 return;
             }
-        if(desc_estado == 'Anulado'){
-            mostarVentana("warning-block-title","El movimiento ya se encuentra anulado!!"); 
-            return;
-        }              
+            if(desc_estado == 'Anulado'){
+                mostarVentana("warning-block-title","El movimiento ya se encuentra anulado!!"); 
+                return;
+            }              
             if( factura_mov != 0){
                 mostarVentana("warning-block-title","El movimiento se encuentra asociado a una factura, no es posible anular el movimiento!!"); 
                 return;

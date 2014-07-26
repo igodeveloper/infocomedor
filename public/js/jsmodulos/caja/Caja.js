@@ -47,6 +47,12 @@ $().ready(function() {
                 $('#montoentrantecheque-modal').css("display", "none");
                 $('#montosalientecheque-label').css("display", "none");
                 $('#montosalientecheque-modal').css("display", "none");
+
+                $('#montoanuladocheque-modal').css("display", "none");
+                $('#montoanuladocheque-label').css("display", "none");
+                $('#montoanuladoefectivo-modal').css("display", "none");
+                $('#montoanuladoefectivo-label').css("display", "none");    
+
                 $('#fechacierrecaja-modal-idioma').css("display", "none");
                 $('#fechacierrecaja-modal').css("display", "none");
                 $('#montocierrecaja-modal-idioma').css("display", "none");
@@ -344,6 +350,12 @@ function editarRegistro(parametros){
         $('#montoentrantecheque-label').css("display", "block");
         $('#montoentrantecheque-modal').css("display", "block");
         $('#montosalientecheque-label').css("display", "block");
+
+        $('#montoanuladocheque-modal').css("display", "block");
+        $('#montoanuladocheque-label').css("display", "block");
+        $('#montoanuladoefectivo-modal').css("display", "block");
+        $('#montoanuladoefectivo-label').css("display", "block");        
+        
         $('#montosalientecheque-modal').css("display", "block");
         $('#fechacierrecaja-modal-idioma').css("display", "block");
         $('#fechacierrecaja-modal').css("display", "block");
@@ -467,6 +479,10 @@ function cargarCierreCaja(){
 				$("#montosalientecheque-modal").attr("value",respuesta.monto_saliente_cheque);
 				$('#montoentrantecheque-modal').attr("readonly", true);
 				$('#montosalientecheque-modal').attr("readonly", true);				
+				$("#montoanuladoefectivo-modal").attr("value",respuesta.monto_efectivo_anulado);
+				$("#montoanuladocheque-modal").attr("value",respuesta.monto_cheque_anulado);
+				$('#montoanuladoefectivo-modal').attr("readonly", true);
+				$('#montoanuladocheque-modal').attr("readonly", true);				                                
         	}
         },
         error: function(event, request, settings){

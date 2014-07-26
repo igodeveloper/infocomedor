@@ -339,16 +339,17 @@ class Caja_CajaController extends Zend_Controller_Action
                                  'D.fecha_hora_apertura',
                                  'D.monto_caja_apertura',))
                     ->joinLeft(array('M' => 'mov_caja'), 'M.cod_caja = D.cod_caja',array('total_monto_mov' =>'SUM(M.monto_mov)',
-					'tipo_forma_pago' =>'M.tipo_mov'))
+					'tipo_forma_pago' =>'M.tipo_mov','estado' =>'M.estado'))
                     ->joinLeft(array('T' => 'tipo_movimiento'), 'T.cod_tipo_mov = M.cod_tipo_mov',array('T.tipo_mov'))
                     ->where("D.cod_caja = ".$cod_caja)
-                                        ->group('C.nombre_apellido')
-                                        ->group('D.cod_caja')
-                                        ->group('D.cod_usuario_caja')
-                                        ->group('D.fecha_hora_apertura')
-                                        ->group('D.monto_caja_apertura')
-                                       ->group('T.tipo_mov')
-									   ->group('M.tipo_mov');   
+                    ->group('C.nombre_apellido')
+                    ->group('D.cod_caja')
+                    ->group('D.cod_usuario_caja')
+                    ->group('D.fecha_hora_apertura')
+                    ->group('D.monto_caja_apertura')
+                    ->group('T.tipo_mov')
+                    ->group('M.tipo_mov')
+                    ->group('M.estado');   
 //die($select);                   
             $result = $db->fetchAll($select);           
             $monto_entrante_efectivo = 0;
@@ -356,14 +357,21 @@ class Caja_CajaController extends Zend_Controller_Action
             $monto_entrante_cheque = 0;
             $monto_saliente_cheque = 0;			
             foreach ($result as $arr) {
-                if($arr['tipo_mov'] == 'R' and $arr['tipo_forma_pago'] == 'EFECTIVO')
-                    $monto_saliente_efectivo = $arr['total_monto_mov'];
-                if($arr['tipo_mov'] == 'S' and $arr['tipo_forma_pago'] == 'EFECTIVO')
-                    $monto_entrante_efectivo = $arr['total_monto_mov'];                
-                if($arr['tipo_mov'] == 'R' and $arr['tipo_forma_pago'] == 'CHEQUE')
-                    $monto_saliente_cheque = $arr['total_monto_mov'];
-                if($arr['tipo_mov'] == 'S' and $arr['tipo_forma_pago'] == 'CHEQUE')
-                    $monto_entrante_cheque = $arr['total_monto_mov'];                					
+                if($arr['estado'] <> 'A'){
+                    if($arr['tipo_mov'] == 'R' and $arr['tipo_forma_pago'] == 'EFECTIVO')
+                        $monto_saliente_efectivo = $arr['total_monto_mov'];
+                    if($arr['tipo_mov'] == 'S' and $arr['tipo_forma_pago'] == 'EFECTIVO')
+                        $monto_entrante_efectivo = $arr['total_monto_mov'];                
+                    if($arr['tipo_mov'] == 'R' and $arr['tipo_forma_pago'] == 'CHEQUE')
+                        $monto_saliente_cheque = $arr['total_monto_mov'];
+                    if($arr['tipo_mov'] == 'S' and $arr['tipo_forma_pago'] == 'CHEQUE')
+                        $monto_entrante_cheque = $arr['total_monto_mov'];
+                }elseif ($arr['estado'] == 'A') {
+                    if($arr['tipo_forma_pago'] == 'EFECTIVO')
+                        $monto_efectivo_anulado = $arr['total_monto_mov'];
+                    if($arr['tipo_forma_pago'] == 'CHEQUE')
+                        $monto_cheque_anulado = $arr['total_monto_mov'];
+                }
                 $jsonResultado = json_encode(array("resultado" => 'abierto',
                     "cod_caja" => $arr["cod_caja"],
                     "cod_usuario_caja" => $arr["cod_usuario_caja"],
@@ -374,7 +382,9 @@ class Caja_CajaController extends Zend_Controller_Action
                     "monto_entrante_efectivo" => $monto_entrante_efectivo,
                     "monto_saliente_efectivo" => $monto_saliente_efectivo,
                     "monto_entrante_cheque" => $monto_entrante_cheque,
-                    "monto_saliente_cheque" => $monto_saliente_cheque));
+                    "monto_saliente_cheque" => $monto_saliente_cheque,
+                    "monto_efectivo_anulado" => $monto_efectivo_anulado,
+                    "monto_cheque_anulado" => $monto_cheque_anulado));
             }
         } catch (Exception $e) {
                 $jsonResultado = json_encode(array("resultado" => 'error'));
