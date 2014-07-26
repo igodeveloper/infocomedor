@@ -123,8 +123,12 @@
             $this->Cell(18,10,"Monto movimiento",0,0,'L');
             $this->SetX(90);
             $this->Cell(25,10,"Tipo movimiento",0,0,'L');
-            $this->SetX(150);
+            $this->SetX(130);
             $this->Cell(19,10,"Nro. Factura",0,0,'L');
+            $this->SetX(160);
+            $this->Cell(19,10,"Estado",0,0,'L');            
+            $this->SetX(180);
+            $this->Cell(19,10,"Efec./Cheque",0,0,'L');                        
             $this->printLine(63);
             $this->Ln(10);          
         }
@@ -134,7 +138,7 @@
             $sql="select 
              b.fecha_hora_mov,b.monto_mov,d.desc_tipo_mov,d.tipo_mov,b.factura_mov,b.tipo_factura_mov,b.tipo_mov as tipo,
              a.monto_caja_apertura,a.monto_caja_cierre,a.monto_caja_cierre_cheque
-             ,a.monto_diferencia_arqueo,a.monto_diferencia_arqueo_cheque
+             ,a.monto_diferencia_arqueo,a.monto_diferencia_arqueo_cheque,b.estado
              from caja a
              inner join mov_caja b on
              a.cod_caja = b.cod_caja
@@ -142,11 +146,13 @@
              c.COD_USUARIO = a.cod_usuario_caja
              inner join tipo_movimiento d on
              d.cod_tipo_mov = b.cod_tipo_mov
-             where a.cod_caja = ".$this->parametros->nro_caja."
+             where a.cod_caja = ".$this->parametros->nro_caja." and b.estado <> 'A'
              order by b.fecha_hora_mov desc";               
             //echo $sql."<br>";                              
             $dtDatos = $this->Conn->query($sql); 
             $count = 1;
+            $total_efectivo = 0;
+            $total_cheque = 0;
             while($row = mysql_fetch_assoc($dtDatos))
             {
                 $fecha_hora_mov     = substr($row['fecha_hora_mov'],8,2).'/'.substr($row['fecha_hora_mov'],5,2).'/'.substr($row['fecha_hora_mov'],0,4).' '.substr($row['fecha_hora_mov'],11);;                
@@ -156,6 +162,11 @@
                 $factura_mov        = $row['factura_mov'];
                 $tipo_factura_mov   = $row['tipo_factura_mov'];
                 $tipo               = $row['tipo'];
+                $estado             = $row['estado'];
+                if($tipo == 'EFECTIVO')
+                    $total_efectivo += $row['monto_mov'];
+                if($tipo == 'CHEQUE')
+                    $total_cheque += $row['monto_mov'];                
                 $monto_caja_apertura= number_format(CEIL($row['monto_caja_apertura']),0,',','.');
                 $monto_caja_cierre  = number_format(CEIL($row['monto_caja_cierre']),0,',','.');
                 $monto_caja_cierre_cheque  = number_format(CEIL($row['monto_caja_cierre_cheque']),0,',','.');
@@ -167,8 +178,11 @@
                     if($tipo_factura_mov == 'V')
                         $tipo_factura_mov = 'Venta';              
                     $factura = $factura_mov.'('.$tipo_factura_mov.')';
-                }
-                else $factura = '';
+                }                
+                else $factura = '';                
+                if($estado == 'A')
+                    $estado = 'Anulado';                
+                else $estado = 'Activo';
                 $x=-2;
                 $this->SetX(11+$x);
                 $this->SetFont('Arial','',9);
@@ -180,13 +194,18 @@
                 $this->Cell(18,10,$monto_mov,0,0,'L');
                 $this->SetX(90);
                 $this->Cell(25,10,$desc_tipo_mov.'('.$tipo_mov.')',0,0,'L');
-                $this->SetX(150);
+                $this->SetX(130);
                 $this->Cell(19,10,$factura,0,0,'L');
+                $this->SetX(160);
+                $this->Cell(19,10,$estado,0,0,'L');                
+                $this->SetX(180);
+                $this->Cell(19,10,$tipo,0,0,'L');                                
                 $this->fila++;
                 $count++;
                 $this->Ln(5);                  
             }
-           
+                                            
+            
             $this->Ln(10);
             $this->SetX(11+$x);
             $this->SetFont('Arial','',9);
@@ -194,6 +213,15 @@
             $this->Cell(24,10,"Apertura Caja",0,0,'L');                
             $this->SetX(45);
             $this->Cell(17,10,': '.$monto_caja_apertura,0,0,'L');
+            $this->Ln(5);
+            $this->SetX(10);
+            $this->Cell(18,10,"Total Efectivo",0,0,'L');
+            $this->SetX(45);
+            $this->Cell(25,10,': '.number_format(CEIL($total_efectivo),0,',','.'),0,0,'L');
+            $this->SetX(100);
+            $this->Cell(18,10,"Total Cheque",0,0,'L');
+            $this->SetX(135);
+            $this->Cell(25,10,': '.number_format(CEIL($total_cheque),0,',','.'),0,0,'L');             
             $this->Ln(5);
             $this->SetX(10);
             $this->Cell(18,10,"Cierre Caja efectivo",0,0,'L');
@@ -212,6 +240,86 @@
             $this->Cell(18,10,"Diferencia Caja cheque",0,0,'L');
             $this->SetX(135);
             $this->Cell(25,10,': '.$monto_diferencia_arqueo_cheque,0,0,'L'); 
+            
+            $this->AddPage();
+            //imprime los anulados
+            $sql="select 
+             b.fecha_hora_mov,b.monto_mov,d.desc_tipo_mov,d.tipo_mov,b.factura_mov,b.tipo_factura_mov,
+             b.tipo_mov as tipo,
+             a.monto_caja_apertura,a.monto_caja_cierre,a.monto_caja_cierre_cheque
+             ,a.monto_diferencia_arqueo,a.monto_diferencia_arqueo_cheque,b.estado
+             from caja a
+             inner join mov_caja b on
+             a.cod_caja = b.cod_caja
+             inner join usuario c on
+             c.COD_USUARIO = a.cod_usuario_caja
+             inner join tipo_movimiento d on
+             d.cod_tipo_mov = b.cod_tipo_mov
+             where a.cod_caja = ".$this->parametros->nro_caja." and b.estado = 'A'
+             order by b.fecha_hora_mov desc";               
+            //echo $sql."<br>";                              
+            $dtDatos = $this->Conn->query($sql); 
+            $count = 1;
+            $total_anulacion_efectivo = 0;
+            $total_anulacion_cheque = 0;
+            while($row = mysql_fetch_assoc($dtDatos))
+            {
+                $fecha_hora_mov     = substr($row['fecha_hora_mov'],8,2).'/'.substr($row['fecha_hora_mov'],5,2).'/'.substr($row['fecha_hora_mov'],0,4).' '.substr($row['fecha_hora_mov'],11);;                
+                $monto_mov          = number_format(CEIL($row['monto_mov']),0,',','.');
+                $desc_tipo_mov      = $row['desc_tipo_mov'];
+                $tipo_mov           = $row['tipo_mov'];
+                $factura_mov        = $row['factura_mov'];
+                $tipo_factura_mov   = $row['tipo_factura_mov'];
+                $tipo               = $row['tipo'];
+                $estado               = $row['estado'];
+                if($tipo == 'EFECTIVO')
+                    $total_anulacion_efectivo += $row['monto_mov'];
+                if($tipo == 'CHEQUE')
+                    $total_anulacion_cheque += $row['monto_mov'];                
+                if(trim($factura_mov) <> '' and $factura_mov > 0){                    
+                    if($tipo_factura_mov == 'C')
+                        $tipo_factura_mov = 'Compra';
+                    if($tipo_factura_mov == 'V')
+                        $tipo_factura_mov = 'Venta';              
+                    $factura = $factura_mov.'('.$tipo_factura_mov.')';
+                }
+                else $factura = '';
+                if($estado == 'A')
+                    $estado = 'Anulado';                
+                else $estado = 'Activo';                
+                $x=-2;
+                $this->SetX(11+$x);
+                $this->SetFont('Arial','',9);
+                $this->SetX(10);
+                $this->Cell(24,10,$this->fila,0,0,'L');                
+                $this->SetX(20);
+                $this->Cell(17,10,$fecha_hora_mov,0,0,'L');
+                $this->SetX(60);
+                $this->Cell(18,10,$monto_mov,0,0,'L');
+                $this->SetX(90);
+                $this->Cell(25,10,$desc_tipo_mov.'('.$tipo_mov.')',0,0,'L');
+                $this->SetX(130);
+                $this->Cell(19,10,$factura,0,0,'L');
+                $this->SetX(160);
+                $this->Cell(19,10,$estado,0,0,'L');                
+                $this->SetX(180);
+                $this->Cell(19,10,$tipo,0,0,'L');                                
+                $this->fila++;
+                $count++;
+                $this->Ln(5);                  
+            }     
+            $this->Ln(10);
+            $this->SetX(11+$x);
+            $this->SetFont('Arial','',9);
+            $this->SetX(10);
+            $this->Cell(24,10,"Total anulaciones de cheque",0,0,'L');                
+            $this->SetX(55);
+            $this->Cell(17,10,': '.$total_anulacion_cheque,0,0,'L');
+            $this->Ln(5);
+            $this->SetX(10);
+            $this->Cell(18,10,"Total anulaciones efectivo",0,0,'L');
+            $this->SetX(55);
+            $this->Cell(25,10,': '.$total_anulacion_efectivo,0,0,'L');            
         }
         //Pie de p�gina
         function Footer()
