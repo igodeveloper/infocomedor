@@ -89,9 +89,9 @@
                 {
                     $PROVEEDOR_NOMBRE           = $row['PROVEEDOR_NOMBRE'];
                     $NRO_FACTURA_COMPRA         = $row['NRO_FACTURA_COMPRA'];
-                    $FECHA_EMISION_FACTURA      = $row['FECHA_EMISION_FACTURA'];
-                    $FECHA_VENCIMIENTO_FACTURA  = $row['FECHA_VENCIMIENTO_FACTURA'];
-                    $MONTO_TOTAL_COMPRA         = $row['MONTO_TOTAL_COMPRA'];
+                    $FECHA_EMISION_FACTURA      = substr($row['FECHA_EMISION_FACTURA'],8,2).'/'.substr($row['FECHA_EMISION_FACTURA'],5,2).'/'.substr($row['FECHA_EMISION_FACTURA'],0,4).' '.substr($row['FECHA_EMISION_FACTURA'],11);                    
+                    $FECHA_VENCIMIENTO_FACTURA  = substr($row['FECHA_VENCIMIENTO_FACTURA'],8,2).'/'.substr($row['FECHA_VENCIMIENTO_FACTURA'],5,2).'/'.substr($row['FECHA_VENCIMIENTO_FACTURA'],0,4).' '.substr($row['FECHA_VENCIMIENTO_FACTURA'],11);                    
+                    $MONTO_TOTAL_COMPRA         = number_format(CEIL($row['MONTO_TOTAL_COMPRA']),0,',','.');                    
                     $CONTROL_FISCAL             = $row['CONTROL_FISCAL'];
 
                     $x=-2;
@@ -176,7 +176,7 @@
                         $this->Cell(24,10,$item,0,0,'L');  
                         $item++;
                         $this->SetX(35);
-                        $this->Cell(17,10,$row['MONTO_PAGO'],0,0,'L');
+                        $this->Cell(17,10,number_format(CEIL($row['MONTO_PAGO']),0,',','.'),0,0,'L');                                                
                         $this->SetX(65);
                         $this->Cell(18,10,$row['DESC_MONEDA'],0,0,'L');
                         $this->SetX(100);

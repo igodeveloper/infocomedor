@@ -71,9 +71,9 @@
             {
                 $NOMBRE_APELLIDO    = $row['NOMBRE_APELLIDO'];
                 $cod_caja           = $row['cod_caja'];
-                $fecha_hora_apertura= $row['fecha_hora_apertura'];
-                $fecha_hora_mov     = $row['fecha_hora_mov'];
-                $monto_mov          = $row['monto_mov'];
+                $fecha_hora_apertura= substr($row['fecha_hora_apertura'],8,2).'/'.substr($row['fecha_hora_apertura'],5,2).'/'.substr($row['fecha_hora_apertura'],0,4).' '.substr($row['fecha_hora_apertura'],11);                
+                $fecha_hora_mov     = substr($row['fecha_hora_mov'],8,2).'/'.substr($row['fecha_hora_mov'],5,2).'/'.substr($row['fecha_hora_mov'],0,4).' '.substr($row['fecha_hora_mov'],11);                
+                $monto_mov          = number_format(CEIL($row['monto_mov']),0,',','.');
                 $desc_tipo_mov      = $row['desc_tipo_mov'];
                 $firmante_mov       = $row['firmante_mov'];
                 $observacion_mov    = $row['observacion_mov'];

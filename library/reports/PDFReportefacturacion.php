@@ -96,9 +96,9 @@
             {
                 $cliente_des     = $row['cliente_des'];
                 $fac_nro          = $row['fac_nro'];
-                $fac_fecha_emi     = $row['fac_fecha_emi'];
-                $fac_fech_vto           = $row['fac_fech_vto'];
-                $fac_monto_total        = $row['fac_monto_total'];
+                $fac_fecha_emi     = substr($row['fac_fecha_emi'],8,2).'/'.substr($row['fac_fecha_emi'],5,2).'/'.substr($row['fac_fecha_emi'],0,4).' '.substr($row['fac_fecha_emi'],11);                
+                $fac_fech_vto      = substr($row['fac_fech_vto'],8,2).'/'.substr($row['fac_fech_vto'],5,2).'/'.substr($row['fac_fech_vto'],0,4).' '.substr($row['fac_fech_vto'],11);                
+                $fac_monto_total        = number_format(CEIL($row['fac_monto_total']),0,',','.');                
                 $control_fiscal= $row['control_fiscal'];
 
                 $x=-2;
@@ -181,15 +181,15 @@
                     $this->SetX(35);
                     $this->Cell(17,10,$row['PRODUCTO_DESC'],0,0,'L');
                     $this->SetX(65);
-                    $this->Cell(18,10,$row['fac_det_total'],0,0,'L');
+                    $this->Cell(18,10,number_format(CEIL($row['fac_det_total']),0,',','.'),0,0,'L');                    
                     $this->SetX(100);
                     $this->Cell(25,10,$row['IMP_SIGLA'],0,0,'L');
                     $this->SetX(130);
-                    $this->Cell(19,10,$row['fact_imp_monto'],0,0,'L');
-					if(trim($row['fac_det_total']) <> '')
-						$monto_total_cobrado = $monto_total_cobrado + $row['fac_det_total'];
-					if(trim($row['fact_imp_monto']) <> '')
-						$monto_total_iva_cobrado = $monto_total_iva_cobrado + $row['fact_imp_monto'];
+                    $this->Cell(19,10,number_format(CEIL($row['fact_imp_monto']),0,',','.'),0,0,'L');                    
+                    if(trim($row['fac_det_total']) <> '')
+                            $monto_total_cobrado = $monto_total_cobrado + $row['fac_det_total'];
+                    if(trim($row['fact_imp_monto']) <> '')
+                            $monto_total_iva_cobrado = $monto_total_iva_cobrado + $row['fact_imp_monto'];
                     $this->Ln(5);					
                 } 
                 $this->Ln(10);
@@ -200,12 +200,12 @@
             $this->SetX(10);
             $this->Cell(24,10,"Total Facturacion",0,0,'L');                
             $this->SetX(45);
-            $this->Cell(17,10,': '.$monto_total_cobrado,0,0,'L');
+            $this->Cell(17,10,': '.number_format(CEIL($monto_total_cobrado),0,',','.'),0,0,'L');
             $this->Ln(5);
             $this->SetX(10);
             $this->Cell(18,10,"Total Iva",0,0,'L');
             $this->SetX(45);
-            $this->Cell(25,10,': '.$monto_total_iva_cobrado,0,0,'L'); 			
+            $this->Cell(25,10,': '.number_format(CEIL($monto_total_iva_cobrado),0,',','.'),0,0,'L'); 			
         }
         //Pie de p�gina
         function Footer()

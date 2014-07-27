@@ -264,7 +264,7 @@
             $total_anulacion_cheque = 0;
             while($row = mysql_fetch_assoc($dtDatos))
             {
-                $fecha_hora_mov     = substr($row['fecha_hora_mov'],8,2).'/'.substr($row['fecha_hora_mov'],5,2).'/'.substr($row['fecha_hora_mov'],0,4).' '.substr($row['fecha_hora_mov'],11);;                
+                $fecha_hora_mov     = substr($row['fecha_hora_mov'],8,2).'/'.substr($row['fecha_hora_mov'],5,2).'/'.substr($row['fecha_hora_mov'],0,4).' '.substr($row['fecha_hora_mov'],11);                
                 $monto_mov          = number_format(CEIL($row['monto_mov']),0,',','.');
                 $desc_tipo_mov      = $row['desc_tipo_mov'];
                 $tipo_mov           = $row['tipo_mov'];

@@ -121,9 +121,9 @@
             {
                 $PROVEEDOR_NOMBRE     = $row['PROVEEDOR_NOMBRE'];
                 $NRO_FACTURA_COMPRA          = $row['NRO_FACTURA_COMPRA'];
-                $FECHA_EMISION_FACTURA     = $row['FECHA_EMISION_FACTURA'];
-                $FECHA_VENCIMIENTO_FACTURA           = $row['FECHA_VENCIMIENTO_FACTURA'];
-                $MONTO_TOTAL_COMPRA        = $row['MONTO_TOTAL_COMPRA'];
+                $FECHA_EMISION_FACTURA     = substr($row['FECHA_EMISION_FACTURA'],8,2).'/'.substr($row['FECHA_EMISION_FACTURA'],5,2).'/'.substr($row['FECHA_EMISION_FACTURA'],0,4).' '.substr($row['FECHA_EMISION_FACTURA'],11);                
+                $FECHA_VENCIMIENTO_FACTURA           = substr($row['FECHA_VENCIMIENTO_FACTURA'],8,2).'/'.substr($row['FECHA_VENCIMIENTO_FACTURA'],5,2).'/'.substr($row['FECHA_VENCIMIENTO_FACTURA'],0,4).' '.substr($row['FECHA_VENCIMIENTO_FACTURA'],11);                
+                $MONTO_TOTAL_COMPRA        = number_format(CEIL($row['MONTO_TOTAL_COMPRA']),0,',','.');
                 $DESC_MONEDA   = $row['DESC_MONEDA'];
                 $DES_FORMA_PAGO               = $row['DES_FORMA_PAGO'];
                 $CONTROL_FISCAL= $row['CONTROL_FISCAL'];
@@ -226,11 +226,11 @@
                     $this->SetX(65);
                     $this->Cell(18,10,$row['CANTIDAD_COMPRA'].' '.$row['DESC_UNIDAD_MEDIDA'],0,0,'L');
                     $this->SetX(100);
-                    $this->Cell(25,10,$row['MONTO_COMPRA'],0,0,'L');
+                    $this->Cell(25,10,number_format(CEIL($row['MONTO_COMPRA']),0,',','.'),0,0,'L');
                     $this->SetX(130);
                     $this->Cell(19,10,$row['IMP_SIGLA'],0,0,'L');
                     $this->SetX(160);
-                    $this->Cell(24,10,$row['MONTO_IMPUESTO'],0,0,'L');
+                    $this->Cell(24,10,number_format(CEIL($row['MONTO_IMPUESTO']),0,',','.'),0,0,'L');
                     $this->Ln(5);
                 } 
                 $this->Ln(10);
