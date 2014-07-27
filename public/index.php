@@ -30,7 +30,7 @@ require_once '../library/reports/PDFReporteinventarioajuste.php';
 require_once '../library/reports/PDFReportefacturacion.php';
 require_once '../library/reports/PDFReporteegresocaja.php';
 require_once '../library/reports/PDFFacturaPY.php';
-
+require_once '../library/reports/PDFReportepedidos.php';
 // Create application, bootstrap, and run
 $application = new Zend_Application(
     APPLICATION_ENV,

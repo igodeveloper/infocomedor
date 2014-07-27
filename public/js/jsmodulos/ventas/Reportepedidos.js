@@ -99,8 +99,33 @@ $().ready(function() {
             enviarParametrosRegistros(data);
         }
     });
-
+    $("#imprimirReporte").click(function() {                           
+            imprimirreporte();
+    }); 
 }); // cerramos el ready de js
+function imprimirreporte(){
+    var dataString = JSON.stringify(filtrosbusqueda());      
+    $.ajax({
+        url: table+'/imprimirreporte',
+        type: 'post',
+        data: {"parametros":dataString},
+        dataType: 'json',
+        async: false,
+        success: function(respuesta) {
+            if (respuesta == null) {
+                mostarVentana("error", "TIMEOUT");
+            } else if (respuesta.result == "EXITO") {
+                window.open('../tmp/'+respuesta.archivo);
+            }                                        
+            $.unblockUI();
+        },
+        error: function(event, request, settings) {
+            $.unblockUI();
+            //alert(mostrarError("OCURRIO UN ERROR"));
+            mostarVentana("warning-block-title", "Ocurrio un error en la generacion del reporte");
+        }        
+    });                  	
+}
 function loadAutocompleteClient(){
 	
 	$.getJSON(table+"/clientdata", function(data) {

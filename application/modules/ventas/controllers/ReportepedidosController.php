@@ -21,6 +21,85 @@ class Ventas_ReportepedidosController extends Zend_Controller_Action
     {
 
     }
+    public function imprimirreporteAction() {
+    //        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
+        $json_rowData = $this->getRequest ()->getParam ( "parametros" );
+        //{"codcliente":"","namecliente":"","codmesa":"","estado":null}
+       // die($json_rowData);
+       // die();
+        $rowData = json_decode($json_rowData);
+
+        $codcliente = '';
+        if(trim($rowData->codcliente) <> '')
+            $codcliente = $rowData->codcliente;
+        $namecliente = '';
+        if(trim($rowData->namecliente) <> '')
+            $namecliente = $rowData->namecliente;
+        $codigointerno = '';
+        if(trim($rowData->codmesa) <> '')
+            $codigointerno = $rowData->codigointerno;        
+        $controlfiscal = '';
+        if(trim($rowData->controlfiscal) <> 'NULL')
+            $controlfiscal = $rowData->controlfiscal;
+        $fechaemision = '';
+        if(trim($rowData->fechaemision) <> '')
+            $fechaemision = $rowData->fechaemision;
+        $fechavencimiento = '';
+        if(trim($rowData->fechavencimiento) <> '')
+            $fechavencimiento = $rowData->fechavencimiento;
+        $formapago = '';
+        if($rowData->formapago <> -1)
+            $formapago = $rowData->formapago;
+        
+        //$curso = $rowData->curso;
+        
+        $var_nombrearchivo = 'compras_';
+        $path_tmp = './tmp/';
+        $orientation='P';
+        $unit='mm';
+        $format='A4';
+        
+        if(!isset($pdf))
+          $pdf= new PDFReportepedidos($orientation,$unit,$format,$json_rowData);
+        $pdf->AliasNbPages();
+        $pdf->AddPage();
+        $pdf->Body($json_rowData);
+
+        $file = basename($var_nombrearchivo."_".date('Ymdhis'));
+        $file .= '.pdf';
+        //Guardar el PDF en un fichero
+        $pdf->Output($path_tmp.$file, 'F');
+        $pdf->close();
+        unset($pdf);
+        echo json_encode(array("result" => "EXITO","archivo" => $file));
+       // echo json_encode(array("result" => "EXITO","archivo" => $file));
+        //echo "<script>  window.open('".$path_tmp.$file."');  </script>";                      
+    }
+    
+  public function productodataAction() {
+//        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $select = $db->select()
+                ->from(array('P' => 'PRODUCTO'))
+                ->order(array('P.PRODUCTO_DESC'));
+//        print_r($select);die();
+        $result = $db->fetchAll($select);
+
+        echo json_encode($result);
+    }
+    public function clientdataAction() {
+//        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $select = $db->select()
+                ->from(array('P' => 'CLIENTE'))
+                ->order(array('P.CLIENTE_DES'));
+        $result = $db->fetchAll($select);
+
+        echo json_encode($result);
+    }    
    public function existecajaAction()
     {
 //      $this->_helper->layout->disableLayout();
