@@ -7,7 +7,7 @@
             appendFile($this->baseUrl() . '/js/i18n/grid.locale-es.js')->
             appendFile($this->baseUrl() . '/js/jquery.jqGrid.min.js')->
             appendFile($this->baseUrl() . "/js/bootstrap.js")->
-            appendFile($this->baseUrl() . "/js/jsmodulos/caja/Reportearqueocaja.js")->
+            appendFile($this->baseUrl() . "/js/jsmodulos/ventas/Reportepedidos.js")->
             appendFile($this->baseUrl() . "/js/jquery.tablescroll.js")->
             appendFile($this->baseUrl() . "/js/jquery.blockUI.js");
 
@@ -20,10 +20,10 @@
             ->prependStylesheet($this->baseUrl() . "/css/cssgenerico/ui.jqgrid.css")
             ->prependStylesheet($this->baseUrl() . "/css/cssgenerico/bootstrap.css")
             ->prependStylesheet($this->baseUrl() . "/css/cssgenerico/bootstrap-responsive.css")
-   			->prependStylesheet($this->baseUrl() . "/css/cssgenerico/contenedor.css")
-            ->prependStylesheet($this->baseUrl() . "/css/cssmodulos/CssGeneral.css")
-            ->prependStylesheet($this->baseUrl() . "/css/cssgenerico/ui.jqgrid.css")
+            ->prependStylesheet($this->baseUrl() . "/css/cssmodulos/compras/compra.css")
             ->prependStylesheet($this->baseUrl() . "/css/cssgenerico/default.css")
+            ->prependStylesheet($this->baseUrl() . "/css/cssgenerico/contenedor.css")
+            ->prependStylesheet($this->baseUrl() . "/css/cssgenerico/ui.jqgrid.css")
             ->prependStylesheet($this->baseUrl() . "/css/cssmodulos/parametricos/menucss3/css/cool_nav.css")
     ?>
     <head>
@@ -33,13 +33,12 @@
         <title>Infocomedor</title>
     </head>
     <body>
-             
-        <div class="container-fluid"> 
 
+        <div class="container-fluid"> 
             <div class="row-fluid">
                 <div class="span10">
-                    <div  class="titulo-cabecera" style="text-align: left">
-                                              <nav id="colorNav" >
+                 <div  class="titulo-cabecera" style="text-align: left">
+                                           <nav id="colorNav" >
                         <ul>
                             <li class="menu">
                                 <a href="<?php echo $this->baseUrl() ."/parametricos/menu";?>" class="">MENU</a>
@@ -103,12 +102,13 @@
 
                         </ul>
                     </nav>
-	            </div> 
+	                </div> 
                     <div  class="titulo-cabecera">
-                        <h1 id="cabecera-titulo">Reporte de Pedidos</h1>
+                        <h1 id="cabecera-titulo">Pedidos</h1>
 
                     </div>
-                   
+               
+
                     <div>
                         <div class="alert alert-block hide" id="warning-block-title">
                             <div id="warning-message-title"></div>
@@ -119,25 +119,186 @@
                         <div class="alert alert-info hide" id="info-block-listado">
                             <div id="info-message"></div>
                         </div>
-                        <div id="contenedor" class="filtro" align=center>
+                       <div id="contenedor" class="filtro" align=center>
                             <table style="width: 90%; padding: 1%;">
                                 <tr>
-                                   <td style="width: 25%; text-align: center">
-                                        <label for="nrocajabusqueda-filtro" id="nrocajabusqueda-filtro-idioma">Nro de Caja: </label>
-										<input id="nrocajabusqueda-filtro"  class="input-block-level" >
+                                    <td style="width: 8%; text-align: right;">C&oacutedigo Cliente</td>
+                                    <td style="width: 10%">
+                                        <input id="codcliente-filtro"  class="input-block-level just-number" >
                                     </td>
-                                    
+                                   <td style="width: 8%; text-align: right;">Nombre Cliente</td>
+                                    <td style="width: 18%">
+                                        <input id="namecliente-filtro"  class="input-block-level">
+                                    </td>
+
+                                    <td style="width: 8%; text-align: right;">C&oacutedigo Mesa</td>
+                                    <td style="width: 10%">
+                                        <input id="codmesa-filtro"  maxlength="10" class="input-block-level just-number" >
+                                    </td>
+                                       <td style="width: 8%; text-align: right;">Estado</td>
+
+                                    <td style="width: 15%">
+                                        <select class="input-block-level" name="estado-filtro-idioma" id="estado-filtro" onchange="">
+                                            <option value="-1">Seleccione</option>
+                                            <option value="PA">Facturado</option>
+                                            <option value="PE">Pendiente</option>
+                                            <option value="AN">Anulado</option>
+                                        </select>
+                                    </td>
+                                    <td style="width: 5%">
+                                       
+                                    </td>
+                                    <td style="width: 5%">
+                                     <button title="Recargar" class="btn-compra" type="button" id="reloadFilter"><img src="<?= $this->baseUrl() . "/css/Icons/thumbails/_Reload.png"; ?>"/></button>
+                                    </td>
+
                                 </tr>
                             </table>
-                           
+                            
                         </div>
                         <div  id="tab-content">
-                            <div id="contenedor" align=center>                               
-                                <a id="imprimirReporte"  class="btn btn-info"><img src="<?php echo $this->baseUrl() . "/css/images/buscar.png"; ?>" id="buscar-img" title="Generar Reporte Arqueo de Caja"  style="cursor: hand;"/></a>
+                            <div id="contenedor" align=center>
+                                
+                                <a id="buscar-registro"  class="btn btn-info"><img src="<?= $this->baseUrl() . "/css/images/buscar.png"; ?>" id="buscar-img" title="Buscar"  style="cursor: hand;"/></a>
+                                <a id="nuevo-registro"  class="btn btn-info" <?php echo $this->guardar ?>><img src="<?= $this->baseUrl() . "/css/images/nuevo.png"; ?>" id="nuevo-img" title="Nuevo"  style="cursor: hand;"/></a>
+                                
+
                             </div> 
                         </div>
                     </div>
-                </div>               
+                    <div id="contenedor" >
+                        <div class="contenedor-grid">
+                            <table id="grillaRegistro"></table>
+                            <div id="paginadorRegistro"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal hide" id="modalEditar">
+                    <div class="modal-header">
+
+                        <div id="cabeceraModal" class="btn btn-info">
+                            <h3 id="editar-nuevo" style="color:white; display: inline;"></h3>
+                            <button data-dismiss="modal" class="close" type="button" id="cerrar-bot" style="display: inline">x</button>
+                        </div>
+                        <div class="alert alert-block hide" id="warning-block">
+                            <div id="warning-message"></div>
+                        </div>
+                        <div class="alert alert-success hide" id="success-block"><?php echo 'datosalmacenadosexitosamente'; ?></div>
+                        <div class="alert alert-error hide" id="error-block"></div>
+                        <div class="alert alert-success hide" id="limpiar-block"></div>
+                    </div>
+                    <!-- NUEVO - EDITAR --->
+                    <div class="modal-body">
+                        <!-- agregar productos-->
+                         <table id="clientzone" class="table table-bordered well form-inline" >
+                         	<tr>
+                         			<td style="width:11%">
+                                	<div class="btn-confirmar" style="width: 80%">
+                                		<input id="clientecod"  maxlength="10" class="input-block-level just-number" disabled="disabled" style="display: none" >
+                                        RUC  
+                                        <input id="clienteruc"  maxlength="10" class="input-block-level" onchange="" 
+                                               style="width: 80%"  >
+                                        <button title="Validar" class="btn-compra" onclick="clientevalidation('documento');">
+                                        <img src="<?= $this->baseUrl() . "/css/Icons/thumbails/_0007_Tick.png"; ?>"/>
+                                        </button>
+                                    </div>
+                                </td >
+                                <td style="width: 20%">
+                                	<div class="btn-confirmar" style="width: 90%">
+                                        Cliente  
+                                        <input id="clientenombre"  class="input-block-level" onchange="" style="width: 95%" >
+                                        <button title="Validar" class="btn-compra" onclick="clientevalidation('nombre');"> <img  src="<?= $this->baseUrl() . "/css/Icons/thumbails/_0007_Tick.png"; ?>" alt="Confirmar Codigo"/></button>
+                                    </div> 
+                                </td>
+                         	
+                         			<td style="width:11%; text-align: center;">
+                                	 Mesa
+                                    <div class="btn-confirmar" style="width: 80%">
+                                       
+                                        <input id="numeromesa"  maxlength="10" class="input-block-level just-number" onchange="" 
+                                               style="width: 50%; float: right;"  >
+<!--                                        <button class="btn-compra" style="float: right;" onclick="clientevalidation('mesa');"><img src="<?= $this->baseUrl() . "/css/Icons/thumbails/_0007_Tick.png"; ?>"/></button>-->
+                                    </div>
+                                </td >
+                                <td style="width:2%">
+                                <button title="Recargar" class="btn-compra" type="button" id="reloadClient"><img src="<?= $this->baseUrl() . "/css/Icons/thumbails/_Reload.png"; ?>"/></button>
+                         	</td >
+                         	</tr>
+                         
+                         </table>
+                        <table id="addProductos" class=" table well form-inline">
+                           
+                            <!-- Valores de los items a ingresar-->
+                            <tr id="detalle-receta">  
+                                <td style="width:8%">
+                                	<label for="codproducto-title" id="factura-title-idioma">C&oacuted Producto</label>
+                                    <div class="btn-confirmar" style="width: 80%">
+                                        <input id="codproducto-item"  maxlength="10" class="input-block-level just-number" onchange="" 
+                                               style="width: 80%" >
+                                        <button class="btn-compra" onclick="productvalidation('cod');"><img src="<?= $this->baseUrl() . "/css/Icons/thumbails/_0007_Tick.png"; ?>"/></button>
+                                    </div>
+                                </td >
+                                <td style="width: 16%">
+                                <label for="descripcionproducto-title" id="factura-title-idioma">Descripci&oacuten</label>
+                                    <div class="btn-confirmar" style="width: 90%">  
+                                        <input id="descripcionproducto-item"  class="input-block-level" onchange="" style="width: 95%"  >
+                                        <button class="btn-compra" onclick="productvalidation('descripcion');"> <img  src="<?= $this->baseUrl() . "/css/Icons/thumbails/_0007_Tick.png"; ?>" alt="Confirmar Código"/></button>
+                                    </div> 
+                                </td>
+                                <td style="width:2%">
+                                	<label for="unidadmedida-title" id="unidadmedida-title-idioma">Medida</label>
+                                    <input id="codUnidadMedida-item" type="hidden" value="0">
+                                    <input id="unidadmedida-item"  class="input-block-level" onchange="">
+                                </td>
+                                <td style="width: 4%; text-align: center;">
+                                    <label for="precio-title" id="precio-title-idioma">Precio</label>
+                                    <input id="precio-item"   class="input-block-level just-number"  value="0" type="number" step="100"  >
+                                </td> 
+                                <td style="width: 3%; text-align: center;">
+                                	<label for="tipoimpuesto-title" id="tipoimpuesto-title-idioma">IVA</label>
+                                    
+                                    <select class="input-block-level" name="tipoimpuesto-item" id="tipoimpuesto-item" onchange="">
+                                        <option value="0">Exenta</option>
+                                        <option value="5">5%</option>
+                                        <option value="10">10%</option>
+                                    </select>
+                        
+                                </td>
+                                </td>
+                                <td style="width: 2%; text-align: center;">
+                                	<label for="cant-title" id="cant-title-idioma">Cant</label>
+                                    <input id="cant-item"   class="input-block-level just-number" value="0.000" type="number" step="0.1" >
+                                </td>
+                                <td style="width: 4%; text-align: center;">
+                                	<label for="total-title" id="total-title-idioma">Total</label>
+                                    <input id="total-item"  class="input-block-level"  value="0" type="number" step="100" >
+                                </td>
+                            
+                                <td style="width: 4%">
+                               		<br>
+                                    <button title="Agregar" class="btn-compra" type="button" id="addItem"><img src="<?= $this->baseUrl() . "/css/Icons/thumbails/_0009_Add.png"; ?>"/></button>
+                             		<button title="Recargar" class="btn-compra" type="button" id="reloadItem"><img src="<?= $this->baseUrl() . "/css/Icons/thumbails/_Reload.png"; ?>"/></button>
+                                </td>
+                            </tr>
+
+                        </table>
+
+                    </div>
+                    <div id="contenedormodal" style="width: 97%"> 
+                        <div id="contenedor-grid" class="contenedor-grid">
+
+                            <!--                            Aca se pone la grilla para el modal-->
+                            <table id="grillaRegistroModal"></table>
+                            <div id="paginadorRegistroModal"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a data-dismiss="modal" class="btn" id="cancelar-bot"><?php echo 'Cancelar'; ?></a>
+                        <a class="btn btn-info" id="guardar"><?php echo 'Guardar'; ?></a>
+                    </div>
+                </div>
+
             </div>
         </div>
     </body>

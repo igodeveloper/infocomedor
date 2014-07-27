@@ -78,6 +78,36 @@ function enviarParametrosRegistro(data){
     }
 });
 }
+function mostarVentana(box, mensaje) {
+    $("#success-block").hide();
+    $("#info-block-listado").hide();
+    if (box == "warning") {
+        $("#warning-message").text(mensaje);
+        $("#warning-block").show();
+        setTimeout("ocultarWarningBlock()", 5000);
+    } else if (box == "warning-title") {
+        $("#warning-message-title").text(mensaje);
+        $("#warning-block-title").show();
+        setTimeout("ocultarWarningBlockTitle()", 5000);
+    } else if (box == "success-title") {
+        $("#success-message-title").text(mensaje);
+        $("#success-block-title").show();
+        setTimeout("ocultarSuccessBlockTitle()", 5000);
+    } else if (box == "info") {
+        $("#info-message").text(mensaje);
+        $("#info-block-listado").show(500);
+        setTimeout("ocultarInfoClean()", 5000);
+    } else if (box == "error") {
+        $("#error-block").text(mensaje);
+        $("#error-block").show(500);
+        setTimeout("ocultarErrorBlock()", 5000);
+    } else if (box == "error-title") {
+        $("#error-message").text(mensaje);
+        $("#error-block-title").show(500);
+        setTimeout("ocultarErrorBlockTitle()", 5000);
+    }
+    
+}
 function obtenerJsonFormulario() {
     var jsonObject = new Object();
     jsonObject.username = $('#username').attr("value");
