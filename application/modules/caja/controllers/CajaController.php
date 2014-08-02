@@ -52,9 +52,10 @@ class Caja_CajaController extends Zend_Controller_Action
                             'C.monto_caja_cierre_cheque',
                             'C.monto_diferencia_arqueo_cheque',
                            ))
-                ->join(array('U' => 'usuario'), 'U.cod_usuario = C.cod_usuario_caja')
-                ->where('C.cod_usuario_caja = '.$cod_usuario)
+                ->join(array('U' => 'usuario'), 'U.cod_usuario = C.cod_usuario_caja')                
                 ->order('C.cod_caja desc'); 
+        if($parametrosNamespace->PERMISO != 1)
+            $select->where('C.cod_usuario_caja = '.$cod_usuario);
         $result = $db->fetchAll($select);
         $this->view->headScript()->appendFile($this->view->baseUrl() . '/js/bootstrap.js');
         $this->view->headScript()->appendFile($this->view->baseUrl() . '/js/gridCaja.js');
