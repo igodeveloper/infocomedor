@@ -109,7 +109,9 @@ function validarNumerosCampo(){
 			// Allow: Ctrl+A
 		   (event.keyCode == 65 && event.ctrlKey === true) ||
 			// Allow: home, end, left, right
-		   (event.keyCode >= 35 && event.keyCode <= 39)) {
+		   (event.keyCode >= 35 && event.keyCode <= 39) ||
+		   (event.keyCode == 110 || event.keyCode ==190)
+		   ) {
 				// let it happen, don't do anything
 				return;
 	   }
