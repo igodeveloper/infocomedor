@@ -115,12 +115,12 @@
                 $this->SetFont('Arial','B',7);
                 $this->SetX(20);
                 $this->Cell(24,10,"Producto",0,0,'L');                
-                $this->SetX(55);
-                $this->Cell(17,10,"Cantidad",0,0,'L');
                 $this->SetX(85);
+                $this->Cell(17,10,"Cantidad",0,0,'L');
+                $this->SetX(110);
                 $this->Cell(18,10,"Precio Uni.",0,0,'L');
-                $this->SetX(120);
-                $this->Cell(25,10,"Costo",0,0,'L');
+                // $this->SetX(150);
+                // $this->Cell(25,10,"Costo",0,0,'L');
                 $this->SetX(150);
                 $this->Cell(19,10,"Estado",0,0,'L');                                   
                 $this->Ln(5); 
@@ -151,12 +151,12 @@
                     $this->SetFont('Arial','',7);
                     $this->SetX(20);
                     $this->Cell(24,10,$row['PRODUCTO_DESC'],0,0,'L');                
-                    $this->SetX(55);
-                    $this->Cell(17,10,number_format(CEIL($row['KAR_CANT_PRODUCTO']),0,',','.'),0,0,'L');
                     $this->SetX(85);
+                    $this->Cell(17,10,number_format(CEIL($row['KAR_CANT_PRODUCTO']),0,',','.'),0,0,'L');
+                    $this->SetX(110);
                     $this->Cell(18,10,number_format(CEIL($row['KAR_PRECIO_PRODUCTO']),0,',','.'),0,0,'L');                    
-                    $this->SetX(120);
-                    $this->Cell(25,10,number_format(CEIL($row['KAR_PRECIO_FACTURAR']),0,',','.'),0,0,'L');
+                    // $this->SetX(150);
+                    // $this->Cell(25,10,number_format(CEIL($row['KAR_PRECIO_FACTURAR']),0,',','.'),0,0,'L');
                     $this->SetX(150);
                     $this->Cell(19,10,$estado,0,0,'L');                    
                     if(trim($row['KAR_PRECIO_FACTURAR']) <> '')

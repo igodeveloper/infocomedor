@@ -604,7 +604,8 @@ class Compras_Compra2Controller extends Zend_Controller_Action {
                                 'FACTURA_MOV'=>$data_Pagos->NRO_FACTURA_COMPRA,
                                 'TIPO_FACTURA_MOV'=>'C',
                                 'OBSERVACION_MOV' => 'Vuelto Factura Compra: '.$data_Pagos->NRO_FACTURA_COMPRA,
-                                'TIPO_MOV' => 'EFECTIVO'
+                                'TIPO_MOV' => 'EFECTIVO',
+                                'FIRMANTE_MOV' => $data_Pagos->FIRMANTE_MOV
                         );
         
                         $update_ingreso_caja = $db->insert('MOV_CAJA', $data_ingreso_caja);  
@@ -622,7 +623,8 @@ class Compras_Compra2Controller extends Zend_Controller_Action {
                         'FACTURA_MOV'=>$data_Pagos->NRO_FACTURA_COMPRA,
                         'TIPO_FACTURA_MOV'=>'C',
                         'OBSERVACION_MOV' => 'Pago Factura Compra: '.$data_Pagos->NRO_FACTURA_COMPRA,
-                        'TIPO_MOV' => $data_Pagos->FORMA_PAGO
+                        'TIPO_MOV' => $data_Pagos->FORMA_PAGO,
+                        'FIRMANTE_MOV' => $data_Pagos->FIRMANTE_MOV
                         );
         
                         $updateEgreso = $db->insert('MOV_CAJA', $data_Egreso_Caja);  
@@ -712,7 +714,8 @@ public function anularcompraAction() {
              $select = $db->select()
                 ->from(array('R' => 'TIPO_MOVIMIENTO'), array('R.COD_TIPO_MOV', 'R.DESC_TIPO_MOV'))
                 ->distinct(true)
-                ->where("R.TIPO_MOV = ?", 'R');
+                ->where("R.TIPO_MOV = ?", 'R')
+                ->where("R.COD_TIPO_MOV > ?", 3);
             $result = $db->fetchAll($select);
             $htmlResultado = '<option value="0">Seleccione</option>';
             foreach ($result as $arr) {
@@ -740,10 +743,12 @@ public function anularcompraAction() {
                         'M.COD_MOV_CAJA',
                         'M.FECHA_HORA_MOV',
                         'M.MONTO_MOV',
-                        'T.DESC_TIPO_MOV'
+                        'T.DESC_TIPO_MOV',
+                        'M.FIRMANTE_MOV'
                         ))
                 ->join(array('T' => 'TIPO_MOVIMIENTO'), 'M.COD_TIPO_MOV = T.COD_TIPO_MOV')
                 ->where("M.COD_TIPO_MOV = ?",$cod)
+                ->where("M.ESTADO = ?",'T')
                 ->where("M.FACTURA_MOV = ?", 0);
 //        print_r($select);
 //        die();
@@ -755,7 +760,8 @@ public function anularcompraAction() {
                 "COD_MOV_CAJA"=> $value ['COD_MOV_CAJA'],
                 "FECHA_HORA_MOV" => $value ['FECHA_HORA_MOV'],
                 "MONTO_MOV" => $value ['MONTO_MOV'],
-                "DESC_TIPO_MOV" => $value ['DESC_TIPO_MOV']
+                "DESC_TIPO_MOV" => $value ['DESC_TIPO_MOV'],
+                "FIRMANTE_MOV" => $value ['FIRMANTE_MOV']
             );
             array_push($option, $option1);
         }

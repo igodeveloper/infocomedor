@@ -148,7 +148,7 @@
                                     <td style="width: 40%">
                                         <input id="controlfiscal-filtro_1"  class="input-block-level" maxlength="3" value="001" style="width: 10%; display: inline; " >
                                         <input id="controlfiscal-filtro_2"  maxlength="3" class="input-block-level" max="3" value="001" style="width: 10%; display: inline;" >
-                                        <input id="controlfiscal-filtro_3"  maxlength="10" class="input-block-level just-number" style="width: 30%; display: inline;" >
+                                        <input id="controlfiscal-filtro_3"  maxlength="7" class="input-block-level just-number" style="width: 30%; display: inline;" >
                                     </td>
                                 </tr>
                             </table>
@@ -275,7 +275,7 @@
                                 <td style="width: 15%">
                                     <input id="controlfiscal-modal_1"  class="input-block-level" maxlength="3" value="001" style="width: 20%" >
                                     <input id="controlfiscal-modal_2"  maxlength="10" class="input-block-level" max="3" value="001" style="width: 20%" >
-                                    <input id="controlfiscal-modal_3"  maxlength="10" class="input-block-level just-number" style="width: 50%" >
+                                    <input id="controlfiscal-modal_3"  maxlength="7" class="input-block-level just-number" style="width: 50%" >
 
                                 </td>
                                 <td style="width: 10%" class="hide">
@@ -465,7 +465,7 @@
                                 <td style="width: 20%">
                                     <input id="controlfiscal-modal_1-pagos"  class="input-block-level" maxlength="3" value="001" style="width: 20%" >
                                     <input id="controlfiscal-modal_2-pagos"  maxlength="10" class="input-block-level" max="3" value="001" style="width: 20%" >
-                                    <input id="controlfiscal-modal_3-pagos"  maxlength="10" class="input-block-level just-number" style="width: 50%"  >
+                                    <input id="controlfiscal-modal_3-pagos"  maxlength="7" class="input-block-level just-number" style="width: 50%"  >
 
                                 </td>
                                 <td style="width: 5%">
@@ -501,29 +501,35 @@
                                     Egreso : <input type="checkbox" name="formaPagoEgreso" id="formaPagoEgreso" value="EG"  onclick="selectFormaPago('egreso');" >
                                 </td>
                                 <td class="cheque">
-                                    <label for="banco-modal-pagos" id="banco-modal-pagos-idioma">Banco:</label>
+                                    <label for="banco-modal-pagos" id="banco-modal-pagos-idioma">Banco</label>
                                 </td>
                                 <td class="cheque">
                                     <input id="banco-modal-pagos"  class="input-block-level" onchange="" >
                                 </td>
                                 <td class="cheque">
-                                    <label for="cheque-modal-pagos" id="cheque-modal-pagos-idioma">Cheque:</label>
+                                    <label for="cheque-modal-pagos" id="cheque-modal-pagos-idioma">Cheque</label>
                                 </td>
                                  <td class="cheque">
                                     <input id="cheque-modal-pagos"  class="input-block-level just-number" onchange="" >
                                 </td>
                                 <td>
-                                    <label for="montoPago-modal-pagos" id="montoPago-modal-pagos-idioma">Monto pago:</label>
+                                    <label for="montoPago-modal-pagos" id="montoPago-modal-pagos-idioma">Monto pago</label>
                                 </td>
                                 <td >
                                     <input id="montoPago-modal-pagos"  class="input-block-level just-number" onchange="" >
                                 </td>
                                 <td>
-                                    <label for="vuelto-modal-pagos" id="vuelto-modal-pagos-idioma">Vuelto:</label>
+                                    <label for="vuelto-modal-pagos" id="vuelto-modal-pagos-idioma">Vuelto</label>
                                 </td>
                                 <td >
                                     <input id="vuelto-modal-pagos"  class="input-block-level" onchange="" >
                                     <input id="idEgreso-modal-pagos"  class="input-block-level just-number" style="visibility: hidden" >
+                                </td>
+                                <td>
+                                    <label for="firma-modal-pagos" id="firma-modal-pagos-idioma">Firmante</label>
+                                </td>
+                                <td >
+                                    <input id="firma-modal-pagos"  class="input-block-level" onchange="" >
                                 </td>
                                 <td>
                                     <button class="btn" type="button" id="addPagos"><img src="<?= $this->baseUrl() . "/css/Icons/thumbails/_0009_Add.png"; ?>"/></button>

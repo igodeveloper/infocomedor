@@ -486,6 +486,15 @@ function cargarGrillaComprasModalPagos() {
                         formatter: 'number',
                         formatoptions:{thousandsSeparator: ".", decimalPlaces: 0},
                         hidden: true
+                    },
+                    {
+                        title: false,
+                        name: 'FIRMANTE_MOV',
+                        label: 'FIRMANTE_MOV',
+                        id: 'FIRMANTE_MOV',
+                        width: 8,
+                        align: 'center',
+                     
                     }
                 ]
 
@@ -677,7 +686,16 @@ function cargarGrillaEgreso() {
                         hidden: false,
                         width: 5,
                         align: 'left'
+                    },
+                    {
+                        name: 'FIRMANTE_MOV',
+                        label: 'FIRMANTE',
+                        id: "FIRMANTE_MOV",
+                        hidden: false,
+                        width: 5,
+                        align: 'left'
                     }
+
                 ]
 
             }).navGrid('#paginadorModalEgreso', {

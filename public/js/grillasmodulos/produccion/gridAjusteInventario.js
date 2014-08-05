@@ -332,15 +332,7 @@ function cargarGrillaRegistroModal() {
         search: false,
         refresh: false});
     $("#grillaRegistroModal").jqGrid('setGridWidth', widthOfGrid(), true);
-    $("#grillaRegistroModal").jqGrid('navButtonAdd', '#paginadorRegistroModal', {
-        buttonicon: 'ui-icon-trash',
-        caption: "",
-        title: "Borrar Item",
-        onClickButton: function() {
-            eliminarItem();	
-        }
-    }
-    );
+
 }
 
 function eliminarItem(){

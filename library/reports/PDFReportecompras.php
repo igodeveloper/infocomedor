@@ -86,11 +86,11 @@
             }            
             if(trim($this->parametros->fechaemision) <> ''){
                 if(trim($where) <> 'where') $where .= ' and ';
-                $where .= " a.FECHA_EMISION_FACTURA = '".$this->parametros->fechaemision."'";
+                $where .= " a.FECHA_EMISION_FACTURA = '".date('Y-m-d', strtotime($this->parametros->fechaemision))."'";
             }                
             if(trim($this->parametros->fechavencimiento) <> ''){
                 if(trim($where) <> 'where') $where .= ' and ';
-                $where .= " a.FECHA_VENCIMIENTO_FACTURA = '".$this->parametros->fechavencimiento."'";
+                $where .= " a.FECHA_VENCIMIENTO_FACTURA = '".date('Y-m-d', strtotime($this->parametros->fechavencimiento))."'";
             }                
             if($this->parametros->formapago <> -1){
                 if(trim($where) <> 'where') $where .= ' and ';
@@ -113,7 +113,8 @@
             if(trim($where) <> 'where')
                 $sql .= ' '.$where;
             $sql .= ' '.$orderby;
-          
+            // echo $sql."query";
+            // die();
             $dtDatos = $this->Conn->query($sql); 
             $count = 1;
           

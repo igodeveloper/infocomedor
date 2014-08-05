@@ -1,8 +1,9 @@
 //table = '/infocomedor/infocomedor/public/index.php/caja/caja/';
 var pathname = window.location.pathname;
 var table = pathname;
-$().ready(function() {    
-         jQuery('.just-number').keypress(function(tecla) {
+$().ready(function() {
+
+     jQuery('.just-number').keypress(function(tecla) {
         console.log(tecla.charCode);
         if(tecla.charCode < 48 || tecla.charCode > 57){
             if(tecla.charCode == 0 || tecla.charCode == 46){
@@ -12,6 +13,8 @@ $().ready(function() {
             }
         } 
     });
+    
+
     $('#descripciontipoproducto-filtro').attr("value",null);
     $("#buscarregistro").click(function() {
              buscarRegistros();

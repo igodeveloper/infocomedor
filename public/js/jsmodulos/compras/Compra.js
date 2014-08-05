@@ -1181,6 +1181,7 @@ function obtenerMontoPago() {
         dataGrid.CODIGO_EGRESO=data.CODIGO_EGRESO;
         dataGrid.VUELTO=data.VUELTO;
         dataGrid.NRO_FACTURA_COMPRA=data.NRO_FACTURA_COMPRA;
+        dataGrid.FIRMANTE_MOV=$("#firma-modal-pagos").val();
 
 //        alert(data.monto_pago);
 // console.log(dataGrid);
@@ -1228,6 +1229,7 @@ function insertaEgreso(){
     var rowGridEgreso = $("#grillaModalEgreso").jqGrid('getGridParam', 'selrow');
     var codMovCaja = $("#grillaModalEgreso").jqGrid('getCell', rowGridEgreso, 'COD_MOV_CAJA');
      $("#idEgreso-modal-pagos").val(codMovCaja);
+     $("#firma-modal-pagos").val($("#grillaModalEgreso").jqGrid('getCell', rowGridEgreso, 'FIRMANTE_MOV'));
     var montoMovCaja = parseInt($("#grillaModalEgreso").jqGrid('getCell', rowGridEgreso, 'MONTO_MOV'));
     var saldoPediente = parseInt($("#saldoPendiente-modal-pagos").val());
     //verificar si el egreso es mayor, menor o igual

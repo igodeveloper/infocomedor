@@ -66,7 +66,7 @@
             if(trim($where) <> 'where')
                 $sql_principal .= ' '.$where;
             $sql_principal .= ' '.$group_principal;
-            
+            // echo $sql_principal; die();
             $dtDatos_principal = $this->Conn->query($sql_principal); 
        
             while($row_principal = mysql_fetch_assoc($dtDatos_principal))

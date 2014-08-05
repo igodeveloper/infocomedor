@@ -234,7 +234,7 @@ function formatearFechas(){
         $("#fechavencimiento-filtro").datepicker();
         $("#fechavencimiento-filtro").datepicker("option", "dateFormat", "dd-mm-yy");
         $("#fechaemision-filtro").datepicker();
-        $("#fechaemision-filtro").datepicker("option", "dateFormat", "dd-mm-yyd");
+        $("#fechaemision-filtro").datepicker("option", "dateFormat", "dd-mm-yy");
         $("#FechaFactura").datepicker();
         $("#FechaFactura").datepicker("option", "dateFormat", "dd-mm-yy");
         $("#FechaFactura").datepicker("setDate", new Date());

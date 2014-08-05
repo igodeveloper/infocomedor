@@ -163,7 +163,12 @@ class Compras_PagosController extends Zend_Controller_Action {
             $db->beginTransaction();
             if($caja_abierta){
                 if($data_Pagos->COD_MOV_CAJA == 0){
-                     $delete_mov = $db->delete('MOV_CAJA', array(
+                    $data_pagos = array(
+                    
+                        'ESTADO'=>'A',
+                 
+                     );
+                    $delete_mov = $db->udpate('MOV_CAJA', $data_pagos ,array(
                             'COD_TIPO_MOV = ?' =>1,
                             'TIPO_FACTURA_MOV = ?' =>'C',
                             'FACTURA_MOV = ?' => $data_Pagos->NRO_FACTURA_COMPRA
@@ -175,8 +180,6 @@ class Compras_PagosController extends Zend_Controller_Action {
                  
                      );
                     $where ="COD_PAGO_PROVEEDOR = ".$data_Pagos->COD_PAGO_PROVEEDOR;
-                                   
-            
                      $update_pago = $db->update('PAGO_PROVEEDOR',$data_pago_proveedor,$where); 
 
                 }else {
@@ -188,7 +191,13 @@ class Compras_PagosController extends Zend_Controller_Action {
                     $cod_vuelto = self::buscaVuelto($data_Pagos->NRO_FACTURA_COMPRA);
                     // echo $cod_vuelto."vuelto";
                     if($cod_vuelto != null){
-                        $delete_vuelto = $db->delete('MOV_CAJA', array(
+                        $data_pagos_vuelto = array(
+                    
+                        'ESTADO'=>'A',
+                 
+                     );
+
+                        $delete_vuelto = $db->update('MOV_CAJA',$data_pagos_vuelto ,array(
                             'COD_MOV_CAJA = ?' => $cod_vuelto,
                             'COD_TIPO_MOV = ?' =>3,
                             'TIPO_FACTURA_MOV = ?' =>'C'

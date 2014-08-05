@@ -67,7 +67,7 @@
             }            
             if(trim($this->parametros->fechaemision) <> ''){
                 if(trim($where) <> 'where') $where .= ' and ';
-                $where .= " a.fac_fecha_emi = '".$this->parametros->fechaemision."'";
+                $where .= " a.fac_fecha_emi = '".date('Y-m-d', strtotime($this->parametros->fechaemision))."'";
             }                
             if(trim($this->parametros->estado) <> '-1'){
                 if(trim($where) <> 'where') $where .= ' and ';
@@ -96,8 +96,10 @@
             {
                 $cliente_des     = $row['cliente_des'];
                 $fac_nro          = $row['fac_nro'];
+                // $fac_fecha_emi     = date('Y-m-d', strtotime($row['fac_fecha_emi']));                
                 $fac_fecha_emi     = substr($row['fac_fecha_emi'],8,2).'/'.substr($row['fac_fecha_emi'],5,2).'/'.substr($row['fac_fecha_emi'],0,4).' '.substr($row['fac_fecha_emi'],11);                
                 $fac_fech_vto      = substr($row['fac_fech_vto'],8,2).'/'.substr($row['fac_fech_vto'],5,2).'/'.substr($row['fac_fech_vto'],0,4).' '.substr($row['fac_fech_vto'],11);                
+                // $fac_fech_vto      = date('Y-m-d', strtotime($row['fac_fech_vto']));   
                 $fac_monto_total        = number_format(CEIL($row['fac_monto_total']),0,',','.');                
                 $control_fiscal= $row['control_fiscal'];
 
@@ -149,11 +151,11 @@
                 $this->Cell(24,10,"Item",0,0,'L');                
                 $this->SetX(35);
                 $this->Cell(17,10,"Producto",0,0,'L');
-                $this->SetX(65);
+                $this->SetX(90);
                 $this->Cell(18,10,"Monto Detalle",0,0,'L');
-                $this->SetX(100);
-                $this->Cell(25,10,"Iva",0,0,'L');
                 $this->SetX(130);
+                $this->Cell(25,10,"Iva",0,0,'L');
+                $this->SetX(160);
                 $this->Cell(19,10,"Monto Iva",0,0,'L');                                   
                 $this->Ln(5); 
                 $sql_detalle = 'select b.fac_det_item,d.PRODUCTO_DESC,
@@ -180,11 +182,11 @@
                     $this->Cell(24,10,$row['fac_det_item'],0,0,'L');                
                     $this->SetX(35);
                     $this->Cell(17,10,$row['PRODUCTO_DESC'],0,0,'L');
-                    $this->SetX(65);
+                    $this->SetX(90);
                     $this->Cell(18,10,number_format(CEIL($row['fac_det_total']),0,',','.'),0,0,'L');                    
-                    $this->SetX(100);
-                    $this->Cell(25,10,$row['IMP_SIGLA'],0,0,'L');
                     $this->SetX(130);
+                    $this->Cell(25,10,$row['IMP_SIGLA'],0,0,'L');
+                    $this->SetX(160);
                     $this->Cell(19,10,number_format(CEIL($row['fact_imp_monto']),0,',','.'),0,0,'L');                    
                     if(trim($row['fac_det_total']) <> '')
                             $monto_total_cobrado = $monto_total_cobrado + $row['fac_det_total'];
