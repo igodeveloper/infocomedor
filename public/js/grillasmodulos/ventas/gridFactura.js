@@ -671,10 +671,12 @@ function eliminarItem(){
 	}else{
         
         var rows = jQuery("#grillaRegistroKarrito").jqGrid('getRowData');
-        if(rows.length > 0){
+        
+        // alert(JSON.stringify(rows)+"ho");
+        // if(rows.length > 0){
             
             jQuery("#grillaRegistroKarrito").jqGrid('addRowData', (rows.length) + 1, rowdata);
-        }
+        // }
         $('#grillaComprasModal').jqGrid('delRowData',id);
 	}
 }
