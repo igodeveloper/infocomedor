@@ -734,6 +734,7 @@ function bloqueamosCeldas(action){
         $('#descripcionproducto-item').attr("disabled", true);
         $('#unidadmedida-item').attr("disabled", true);
         $('#tipoimpuesto-item').attr("disabled", true);
+        $('#precio-item').attr("disabled", true);
         
     }else{
         $('#codproducto-item').attr("disabled", false);

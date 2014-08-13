@@ -380,6 +380,7 @@ function productvalidation(data) {
                     $('#tipoimpuesto-item').attr("disabled", true);
                     $('#codproducto-item').attr("disabled", true);
                     $('#descripcionproducto-item').attr("disabled", true);
+                    $('#precio-item').attr("disabled", true);
                     $("#addItem").removeAttr('disabled');
                 }else{
                     mostarVentana("warning","No se encontraron datos, verifique los datos ingresados");

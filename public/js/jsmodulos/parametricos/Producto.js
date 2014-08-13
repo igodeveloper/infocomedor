@@ -34,8 +34,6 @@ $().ready(function() {
 		$('#codigoproducto-modal').attr("value",null);
 		$("#guardar").html("Guardar");
 		$("#editar-nuevo").html("Nuevo Registro");
-		 
-		
 	});
 
 	$('#guardar').click(function() {
@@ -44,7 +42,6 @@ $().ready(function() {
 			enviarParametrosRegistro(data);
 		}
 	 });
-
 
 	//validarNumerosCampo();
 
@@ -73,6 +70,22 @@ function validarNumerosLetrasPorcentageEspacio(e) { // 1
     return patron.test(te); // 6
 }
 
+function bloqueaReceta(){
+    
+    var tipoProducto = $("#tipoproducto-modal").val();
+    if(tipoProducto== 1){
+
+        $("#receta-modal").val(0);
+        $("#receta-modal").attr("disabled",true);
+        $("#precioventa-modal").val(0);
+        $("#precioventa-modal").attr("disabled",true);
+
+    }else{
+        $("#receta-modal").attr("disabled",false);   
+        $("#precioventa-modal").attr("disabled",false);     
+    }
+
+}
 
 function enviarParametrosRegistro(data){
 	$.blockUI({
@@ -305,6 +318,8 @@ function limpiarFormulario(){
 	$("#codigoproducto-modal").attr("value",null);
 	$("#descripcionproducto-modal").attr("value",null);
 	$("#precioventa-modal").attr("value",null);
+    $("#receta-modal").attr("disabled",false);
+    $("#precioventa-modal").attr("disabled",false);
 
 }
 
