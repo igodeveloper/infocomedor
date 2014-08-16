@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 16-08-2014 a las 02:48:04
+-- Tiempo de generación: 16-08-2014 a las 03:00:07
 -- Versión del servidor: 5.5.32
 -- Versión de PHP: 5.4.19
 
@@ -32,21 +32,23 @@ CREATE TABLE IF NOT EXISTS `baja_stock` (
   `cod_baja_stock` int(11) NOT NULL AUTO_INCREMENT,
   `cod_producto` int(11) NOT NULL,
   `cod_unidad_medida` int(11) NOT NULL,
-  `cantidad_baja` int(11) NOT NULL,
+  `cantidad_baja` float(15,5) NOT NULL,
   `fecha_hora_baja` datetime NOT NULL,
   `observacion_mov` varchar(100) DEFAULT NULL,
   `estado` varchar(1) DEFAULT NULL,
   PRIMARY KEY (`cod_baja_stock`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
 
 --
 -- Volcado de datos para la tabla `baja_stock`
 --
 
 INSERT INTO `baja_stock` (`cod_baja_stock`, `cod_producto`, `cod_unidad_medida`, `cantidad_baja`, `fecha_hora_baja`, `observacion_mov`, `estado`) VALUES
-(4, 62, 5, 1, '2014-08-16 01:54:39', 'descompuesto', 'A'),
-(5, 62, 5, 1, '2014-08-16 02:24:22', 'descompuesto', 'A'),
-(6, 62, 5, 1, '2014-08-16 02:46:17', 'vencido', 'A');
+(4, 62, 5, 1.00000, '2014-08-16 01:54:39', 'descompuesto', 'A'),
+(5, 62, 5, 1.00000, '2014-08-16 02:24:22', 'descompuesto', 'A'),
+(6, 62, 5, 1.00000, '2014-08-16 02:46:17', 'vencido', 'A'),
+(7, 62, 5, 2.00000, '2014-08-16 02:53:13', 'DSFFDS', NULL),
+(8, 62, 5, 1.50000, '2014-08-16 02:59:01', 'dekjdskjhd', 'A');
 
 --
 -- Disparadores `baja_stock`
@@ -755,7 +757,7 @@ INSERT INTO `stock` (`COD_PRODUCTO`, `SALDO_STOCK`, `STOCK_FECHA_ACTUALIZA`) VAL
 (57, '0.38', '2014-08-02'),
 (58, '-0.40', '2014-08-02'),
 (61, '1.50', '2014-08-02'),
-(62, '16.00', '2014-08-02'),
+(62, '14.00', '2014-08-02'),
 (63, '1.00', '2014-08-02'),
 (64, '0.60', '2014-08-02');
 

@@ -54,7 +54,7 @@ class Caja_CajaController extends Zend_Controller_Action
                            ))
                 ->join(array('U' => 'usuario'), 'U.cod_usuario = C.cod_usuario_caja')                
                 ->order('C.cod_caja desc'); 
-        if($parametrosNamespace->PERMISO != 1)
+        //if($parametrosNamespace->PERMISO != 1)
             $select->where('C.cod_usuario_caja = '.$cod_usuario);
         $result = $db->fetchAll($select);
         $this->view->headScript()->appendFile($this->view->baseUrl() . '/js/bootstrap.js');
@@ -225,8 +225,7 @@ class Caja_CajaController extends Zend_Controller_Action
                         $salida_cheque  = 0;						
                         $entrada_efectivo = $rowData->monto_caja_apertura + $rowData->monto_entrante_efectivo;
                         $salida_efectivo = $rowData->monto_saliente_efectivo; 
-                        $monto_diferencia_efectivo = $entrada_efectivo - $salida_efectivo;
-                        $monto_diferencia_arqueo_efectivo = $monto_diferencia_efectivo - $rowData->monto_caja_cierre_efectivo;
+                        $monto_diferencia_arqueo_efectivo = ($entrada_efectivo + $rowData->monto_caja_cierre_efectivo) - $salida_efectivo;
                         $rowClass->setMonto_diferencia_arqueo($monto_diferencia_arqueo_efectivo);
 						
                         $entrada_cheque = $rowData->monto_entrante_cheque;
