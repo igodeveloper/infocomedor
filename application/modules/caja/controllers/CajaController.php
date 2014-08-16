@@ -226,14 +226,14 @@ class Caja_CajaController extends Zend_Controller_Action
                         $salida_cheque  = 0;						
                         $entrada_efectivo = $rowData->monto_caja_apertura + $rowData->monto_entrante_efectivo;
                         $salida_efectivo = $rowData->monto_saliente_efectivo; 
-                        $monto_diferencia_arqueo_efectivo = ($entrada_efectivo + $rowData->monto_caja_cierre_efectivo) - $salida_efectivo;
+                        $monto_diferencia_arqueo_efectivo = $rowData->monto_caja_cierre_efectivo - ($entrada_efectivo -$salida_efectivo ) ;
                         $rowClass->setMonto_diferencia_arqueo($monto_diferencia_arqueo_efectivo);
 						
                         $entrada_cheque = $rowData->monto_entrante_cheque;
                         $salida_cheque = $rowData->monto_saliente_cheque; 
                         //$monto_diferencia_cheque = $entrada_cheque - $salida_cheque;
                         $monto_diferencia_cheque = $entrada_cheque;
-                        $monto_diferencia_arqueo_cheque = $monto_diferencia_cheque - $rowData->monto_caja_cierre_cheque;
+                        $monto_diferencia_arqueo_cheque = $rowData->monto_caja_cierre_cheque - $monto_diferencia_cheque;
                         $rowClass->setMonto_diferencia_arqueo_cheque($monto_diferencia_arqueo_cheque);
                         $rowClass->setMonto_caja_cierre_cheque($rowData->monto_caja_cierre_cheque);
                         
