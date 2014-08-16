@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 16-08-2014 a las 16:27:28
+-- Tiempo de generación: 16-08-2014 a las 16:37:38
 -- Versión del servidor: 5.1.50
 -- Versión de PHP: 5.3.9-ZS5.6.0
 
@@ -148,14 +148,15 @@ CREATE TABLE IF NOT EXISTS `compra` (
   KEY `COD_PROVEEDOR` (`COD_PROVEEDOR`),
   KEY `COD_MONEDA_COMPRA` (`COD_MONEDA_COMPRA`),
   KEY `COD_FORMA_PAGO` (`COD_FORMA_PAGO`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=52 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=53 ;
 
 --
 -- Volcar la base de datos para la tabla `compra`
 --
 
 INSERT INTO `compra` (`COD_PROVEEDOR`, `NRO_FACTURA_COMPRA`, `FECHA_EMISION_FACTURA`, `FECHA_VENCIMIENTO_FACTURA`, `MONTO_TOTAL_COMPRA`, `COD_MONEDA_COMPRA`, `COD_FORMA_PAGO`, `COD_USUARIO`, `CONTROL_FISCAL`, `ESTADO`) VALUES
-(16, 51, '2014-08-16', '2014-08-16', '100000.00', 1, 1, 1, '001-001-9000001', 'T');
+(16, 51, '2014-08-16', '2014-08-16', '100000.00', 1, 1, 1, '001-001-9000001', 'T'),
+(19, 52, '2014-08-16', '2014-08-16', '14400.00', 1, 1, 1, '001-001-9000010', 'T');
 
 -- --------------------------------------------------------
 
@@ -181,7 +182,8 @@ INSERT INTO `compra_detalle` (`NRO_FACTURA_COMPRA`, `DET_ITEM_COMPRA`, `COD_PROD
 (51, 1, 58, '1.00', '12000.00', 5),
 (51, 2, 57, '1.00', '2000.00', 2),
 (51, 3, 54, '12.00', '6000.00', 1),
-(51, 4, 61, '4.00', '80000.00', 2);
+(51, 4, 61, '4.00', '80000.00', 2),
+(52, 1, 65, '24.00', '14400.00', 1);
 
 -- --------------------------------------------------------
 
@@ -207,7 +209,8 @@ INSERT INTO `compra_impuesto` (`NRO_FACTURA_COMPRA`, `DET_ITEM_IMPUESTO`, `COD_I
 (51, 1, 10, '1090.00'),
 (51, 2, 10, '181.00'),
 (51, 3, 10, '545.00'),
-(51, 4, 10, '7272.00');
+(51, 4, 10, '7272.00'),
+(52, 1, 10, '1309.00');
 
 -- --------------------------------------------------------
 
@@ -524,14 +527,15 @@ CREATE TABLE IF NOT EXISTS `mov_caja` (
   `firmante_mov` varchar(100) DEFAULT NULL,
   `estado` varchar(1) DEFAULT 'T',
   PRIMARY KEY (`cod_mov_caja`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=145 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=146 ;
 
 --
 -- Volcar la base de datos para la tabla `mov_caja`
 --
 
 INSERT INTO `mov_caja` (`cod_mov_caja`, `cod_caja`, `fecha_hora_mov`, `monto_mov`, `cod_tipo_mov`, `factura_mov`, `tipo_factura_mov`, `observacion_mov`, `tipo_mov`, `firmante_mov`, `estado`) VALUES
-(144, 30, '2014-08-16 04:22:09', 100000, 4, 0, '', 'para compras varias', 'EFECTIVO', 'Ivan Gomez', 'T');
+(144, 30, '2014-08-16 04:22:09', 100000, 4, 0, '', 'para compras varias', 'EFECTIVO', 'Ivan Gomez', 'T'),
+(145, 30, '2014-08-16 16:37:03', 14400, 1, 52, 'C', 'Pago Factura Compra: 52', 'EFECTIVO', 'Proveedor', 'T');
 
 -- --------------------------------------------------------
 
@@ -574,12 +578,14 @@ CREATE TABLE IF NOT EXISTS `pago_proveedor` (
   PRIMARY KEY (`COD_PAGO_PROVEEDOR`),
   KEY `NRO_FACTURA_COMPRA` (`NRO_FACTURA_COMPRA`),
   KEY `COD_MONEDA_PAGO` (`COD_MONEDA_PAGO`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=100 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=101 ;
 
 --
 -- Volcar la base de datos para la tabla `pago_proveedor`
 --
 
+INSERT INTO `pago_proveedor` (`COD_PAGO_PROVEEDOR`, `NRO_FACTURA_COMPRA`, `MONTO_PAGO`, `COD_MONEDA_PAGO`, `NRO_CHEQUE`, `DES_BANCO`, `ESTADO_PAGO`, `COD_CAJA`, `COD_MOV_CAJA`) VALUES
+(100, 52, '14400.00', 1, 0, '-', 'T', 30, 0);
 
 -- --------------------------------------------------------
 
@@ -598,7 +604,7 @@ CREATE TABLE IF NOT EXISTS `producto` (
   PRIMARY KEY (`COD_PRODUCTO`),
   KEY `fk_product_tipoproduto` (`COD_PRODUCTO_TIPO`),
   KEY `fk_producto_unidadmedida` (`COD_UNIDAD_MEDIDA`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=65 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=66 ;
 
 --
 -- Volcar la base de datos para la tabla `producto`
@@ -614,7 +620,8 @@ INSERT INTO `producto` (`COD_PRODUCTO`, `COD_IMPUESTO`, `PRECIO_VENTA`, `PRODUCT
 (58, 10, '0.00', 'ACEITE', 1, 5, 0),
 (61, 10, '0.00', 'CHORIZO PICANTE', 1, 2, 0),
 (63, 10, '45000.00', 'MILANESA DE CARNE POR KG', 2, 2, 16),
-(64, 10, '30000.00', 'CHORIZO CON HUEVO POR KG', 2, 2, 17);
+(64, 10, '30000.00', 'CHORIZO CON HUEVO POR KG', 2, 2, 17),
+(65, 10, '1500.00', 'COCA COLA 125 ML', 2, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -633,7 +640,7 @@ CREATE TABLE IF NOT EXISTS `proveedor` (
   `PROVEEDOR_LIMITE_CREDITO` int(12) NOT NULL,
   PRIMARY KEY (`COD_PROVEEDOR`),
   UNIQUE KEY `PROVEEDOR_RUC_UNIQUE` (`PROVEEDOR_RUC`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=20 ;
 
 --
 -- Volcar la base de datos para la tabla `proveedor`
@@ -643,7 +650,8 @@ INSERT INTO `proveedor` (`COD_PROVEEDOR`, `PROVEEDOR_NOMBRE`, `PROVEEDOR_RUC`, `
 (14, 'CASA GRUTTER', '80000101-9', 'MERCADO DE ABASTO', '555011', 'LUIS GRUTTER', 'grutter@grutter.com', 0),
 (15, 'CASA RICA  SA', '8000111-4', 'ESPANA CASI BRASILIA', '021660770', 'LUIS GIMENEZ', 'casa@rica.com.py', 0),
 (16, 'SUPERMERCADO STOCK', '80001002-1', 'RCA ARGENTINA CASI PILAR', '021444001', 'LIZ ARCE', 'stock@stock.com', 0),
-(18, 'CERVEPAR', '80000001-9', 'YPANE', '901001', 'ELIANA FERREIRA', 'cervepar@cervepar.com', 0);
+(18, 'CERVEPAR', '80000001-9', 'YPANE', '901001', 'ELIANA FERREIRA', 'cervepar@cervepar.com', 0),
+(19, 'PARESA', '80016533-9', 'ACCESO SUR', '901900', 'LUIS', 'coca@coca.com.py', 0);
 
 -- --------------------------------------------------------
 
@@ -746,7 +754,8 @@ INSERT INTO `stock` (`COD_PRODUCTO`, `SALDO_STOCK`, `STOCK_FECHA_ACTUALIZA`) VAL
 (58, '1.00', '2014-08-16'),
 (61, '4.00', '2014-08-16'),
 (63, '0.00', '2014-08-06'),
-(64, '0.00', '2014-08-09');
+(64, '0.00', '2014-08-09'),
+(65, '24.00', '2014-08-16');
 
 -- --------------------------------------------------------
 

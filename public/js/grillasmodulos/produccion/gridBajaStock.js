@@ -95,7 +95,9 @@ function cargarGrillaRegistro() {
 	       		"width" : 80,
 	       		"align":"right",
 	       		"sortable" : false,
-	       		"hidden" : false
+	       		"hidden" : false,
+	       		formatter: 'number',
+                        formatoptions:{thousandsSeparator: ".", decimalPlaces: 2}
        		},
        	  {
 	       		"title" : false,

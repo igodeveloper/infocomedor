@@ -52,7 +52,7 @@ function cargarGrillaRegistro() {
                 width: "auto",
                 pager: '#paginadorRegistro',
                 autowidth: false,
-                rowNum: 10,
+                rowNum: 20,
                 rowList: [10, 20, 30],
                 colModel: [
                    

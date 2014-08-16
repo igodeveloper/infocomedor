@@ -210,12 +210,12 @@ function obtenerJsonFormulario() {
 		$('#cantidadbaja-input').attr("required", "required");
 		error = 1;
         }
-        if($('#observacionbaja-input').attr("value") == null || $('#observacionbaja-input').attr("value").length == 0){
+    if($('#observacionbaja-input').attr("value") == null || $('#observacionbaja-input').attr("value").length == 0){
 		mensaje+= ' | Debe ingresar una observacion | ';
 		$('#observacionbaja-input').attr("required", "required");
 		error = 1;
-        }        
-	if($('#cantidadactual-input').attr("value") < $('#cantidadbaja-input').attr("value")){
+    }        
+	if(parseFloat($('#cantidadactual-input').attr("value")) < parseFloat($('#cantidadbaja-input').attr("value"))){
 		mensaje+= ' | El valor ingresado es mayor al existen,verifique | ';
 		$('#cantidadbaja-input').attr("required", "required");
 		error = 1;
@@ -225,6 +225,7 @@ function obtenerJsonFormulario() {
 		return null;            
     }else {
 		//LOS CAMPOS DEBEN LLAMARSE IGUAL QUE EN gridTipoInsumo.js
+        console.log($('#cantidadactual-input').attr("value"),$('#cantidadbaja-input').attr("value"));
                 jsonObject.cod_baja_stock = $('#cod_baja_stock-hidden').attr("value");
                 jsonObject.cod_producto = $('#productostock-select option:selected').val();
                 jsonObject.cod_producto = $('#productostock-select option:selected').val();
