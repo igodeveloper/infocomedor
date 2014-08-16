@@ -712,5 +712,15 @@ public function modaleditarAction() {
         echo json_encode($arrResult);
         
      }
+
+     public function getcontrolfiscalAction(){
+        $this->_helper->viewRenderer->setNoRender ( true );
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $select = $db->select()
+                 ->from(array('C' => 'CONTROL_FISCAL'), array('C.NRO_CONTROL_FISCAL'))
+                 ->where("C.COD_CONTROL_FISCAL = ?", 1);
+        $result = $db->fetchAll($select);
+        echo json_encode(array("result" => $result[0]['NRO_CONTROL_FISCAL']));
+     }
   
 }

@@ -119,6 +119,8 @@ $().ready(function() {
     
     
     $("#nuevoCompra").click(function() {
+        // console.log("hola");
+        // getcontrolfiscal();
         verificarCaja();
     // $("#gbox_grillaComprasModal").show();
     // $("#gbox_grillaDetalleFactura").hide();
@@ -162,6 +164,7 @@ $().ready(function() {
         }
     });
 
+
     $.getJSON(table+"/clientedata", function(data) {
         var nombreCliente = [];
         var rucCliente = [];
@@ -199,6 +202,15 @@ $().ready(function() {
 
 }); // cerramos el ready de js
 
+function getcontrolfiscal(){
+
+    $.getJSON(table+"/getcontrolfiscal", function(data) {
+        console.log(data.result);
+        $("#controlfiscal-modal_3").attr('value',data.result);
+        $("#controlfiscal-modal_3").attr('disabled',true);
+    });
+
+}
 function formatearFechas(){
         $("#FechaFactura-modal").datepicker();
         $("#FechaVencimiento-modal").datepicker();
@@ -1193,7 +1205,9 @@ function levantamodal(){
         formatearFechas();
         jQuery("#grillaComprasModal").setColProp('KAR_CANT_FACTURAR',{editable:false});
         jQuery("#grillaComprasModal").setColProp('KAR_PRECIO_FACTURAR',{editable:false});
+        getcontrolfiscal();
         $('#modalEditar').show();
+
 }
 
 function selectFormaPago(formaPago) {
