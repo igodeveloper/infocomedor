@@ -130,7 +130,7 @@ function cargarGrillaRegistro() {
 	       		"id" : "observacion_mov",
 	       		"search" : false,
 	       		"remove" : false,
-	       		"width" : 280,
+	       		"width" : 200,
 	       		"align":"left",
 	       		"sortable" : false,
 	       		"hidden" : false
@@ -146,6 +146,18 @@ function cargarGrillaRegistro() {
 	       		"align":"left",
 	       		"sortable" : false,
 	       		"hidden" : true
+       		},
+       	  {
+	       		"title" : false,
+	       		"name" : "estado",
+	       		"label" : "ESTADO",
+	       		"id" : "estado",
+	       		"search" : false,
+	       		"remove" : false,
+	       		"width" : 50,
+	       		"align":"left",
+	       		"sortable" : false,
+	       		"hidden" : false
        		}]            
     }).navGrid('#paginadorRegistro',{
         add:false,
@@ -159,7 +171,7 @@ function cargarGrillaRegistro() {
 	$("#grillaRegistro").jqGrid('navButtonAdd','#paginadorRegistro',{
 		buttonicon :'ui-icon-trash',
 		caption: "",
-		title: "Eliminar fila seleccionada",
+		title: "Anular Fila Seleccionada",
 		onClickButton : function (){
 			borrar();	//Funcion de borrar
 		}
@@ -170,28 +182,32 @@ function cargarGrillaRegistro() {
  */
 function borrar(){
 	var id = $("#grillaRegistro").jqGrid('getGridParam','selrow');
-	id = $("#grillaRegistro").jqGrid('getCell', id, 'cod_baja_stock');
+	var cod_baja_stock = $("#grillaRegistro").jqGrid('getCell', id, 'cod_baja_stock');
+        var desc_estado = $("#grillaRegistro").jqGrid('getCell', id, 'estado');
 	if( id == false ){
-		alert("Para eliminar un registro debe seleccionarlo previamente.");
+		alert("Para anular un registro debe seleccionarlo previamente.");
 	}else{
 //		if(!confirm("¿Esta seguro de que desea eliminar el registro seleccionado?"))
 //			return;
-
+            if(desc_estado == 'Anulado'){
+                mostarVentana("warning-block-title","El registro ya se encuentra anulado!!"); 
+                return;
+            } 
 		$.ajax({
-	        url: table+'/eliminar',
+	        url: table+'/anulacion',
 	        type: 'post',
-	        data: {"id":id},
+	        data: {"id":cod_baja_stock},
 	        dataType: 'json',
 	        async : false,
 	        success: function(data){
 	        	if(data.result == "ERROR"){
 	                    if(data.mensaje == 23000) {
-	                    	mostarVentana("warning-registro","No se puede eliminar el Registro por que esta siendo utilizado");
+	                    	mostarVentana("warning-registro","No se puede anular el Registro por que esta siendo utilizado");
 				        } else {
 //				        	mostarVentana("warning-block-title","Ha ocurrido un error");
 					    }
 				} else {
-					mostarVentana("success-block-title","Los datos han sido eliminados exitosamente");
+					mostarVentana("success-block-title","Los datos han sido anulados exitosamente");
 				    $("#grillaRegistro").trigger("reloadGrid");
 				}
 	        },
@@ -202,6 +218,44 @@ function borrar(){
 	    });
 	}
 	return false;
+}
+function mostarVentana(box,mensaje){
+	$("#success-block").hide();
+	$("#info-block-listado").hide();
+	if(box == "warning") {
+		$("#warning-message").text(mensaje);
+		$("#warning-block").show();
+		setTimeout("ocultarWarningBlock()",5000);
+	} else if(box == "warning-block-title") {
+		$("#warning-message-title").text(mensaje);
+		$("#warning-block-title").show();
+		setTimeout("ocultarWarningBlockTitle()",5000);
+	} else if(box == "success-block-title") {
+//		console.log('entro');
+		$("#success-message-title").text(mensaje);
+		$("#success-block-title").show();
+		setTimeout("ocultarSuccessBlockTitle()",5000);
+	} else if(box == "warning-registro") {
+		$("#warning-message").text(mensaje);
+		$("#warning-block").show();
+		setTimeout("ocultarWarningRegistroBlock()",5000);
+	}  else if(box == "info") {
+		$("#info-message").text(mensaje);
+		$("#info-block-listado").show(500);
+		setTimeout("ocultarInfoClean()",5000);
+	} else if(box == "error"){
+		$("#error-block").text(mensaje);
+		$("#error-block").show(500);
+		setTimeout("ocultarErrorBlock()",5000);
+	} else if(box == "error-registro-listado"){
+		$("#error-block-registro-listado").text(mensaje);
+		$("#error-block-registro-listado").show(500);
+		setTimeout("ocultarErrorBlockList()",5000);
+	} else if(box == "error-modal"){
+		$("#error-block-modal").text(mensaje);
+		$("#error-block-modal").show(500);
+		setTimeout("ocultarErrorBlockModal()",5000);
+	}
 }
 /**
  * M�todo que carga la funcionalidad de Edici�n de filas de la tabla visual del registro

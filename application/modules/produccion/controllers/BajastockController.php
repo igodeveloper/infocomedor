@@ -51,7 +51,8 @@ class Produccion_BajaStockController extends Zend_Controller_Action
                             'B.fecha_hora_baja',
                             'U.desc_unidad_medida',
                             'B.observacion_mov',
-                            'B.cod_baja_stock'
+                            'B.cod_baja_stock',
+                            'B.estado'
                            ))
                 ->join(array('P' => 'producto'), 'B.cod_producto = P.cod_producto')
                 ->join(array('U' => 'unidad_medida'), 'U.cod_unidad_medida = P.cod_unidad_medida')
@@ -70,6 +71,9 @@ class Produccion_BajaStockController extends Zend_Controller_Action
         $this->_paginator->setCurrentPageNumber($page);
         $pagina ['rows'] = array();
         foreach ($this->_paginator as $item) {          
+            $estado = 'Activo';
+            if($item['estado'] == 'A')
+                $estado = 'Anulado';
             $arrayDatos ['cell'] = array(
                 null,
                 $item['cod_producto'],
@@ -78,7 +82,8 @@ class Produccion_BajaStockController extends Zend_Controller_Action
                 $item['desc_unidad_medida'],
                 $item['fecha_hora_baja'],                
                 $item['observacion_mov'],
-                $item['cod_baja_stock']   
+                $item['cod_baja_stock'],
+                $estado
                     
             );
             $arrayDatos ['columns'] = array(
@@ -89,7 +94,8 @@ class Produccion_BajaStockController extends Zend_Controller_Action
                 "desc_unidad_medida",
                 "fecha_hora_baja",                
                 "observacion_mov",
-                "cod_baja_stock"
+                "cod_baja_stock",
+                'estado'
             );
             array_push($pagina ['rows'], $arrayDatos);
         }
@@ -155,21 +161,26 @@ class Produccion_BajaStockController extends Zend_Controller_Action
         echo $this->_helper->json($pagina);
     }
 
-    public function eliminarAction(){
+    public function anulacionAction(){        
         $this->_helper->viewRenderer->setNoRender ( true );
         $id = $this->getRequest ()->getParam ( "id" );
-                $parametrosNamespace = new Zend_Session_Namespace ( 'parametros' );
+        $parametrosNamespace = new Zend_Session_Namespace ( 'parametros' );
         try{
-                    $db = Zend_Db_Table::getDefaultAdapter();
-                    $db->beginTransaction();
-                    $servCon = new Application_Model_DataService('Application_Model_DbTable_BajaStock');
-                    $servCon->deleteRowById(array("cod_baja_stock"=>$id));
-                    $db->commit();
+            $db = Zend_Db_Table::getDefaultAdapter();
+            $db->beginTransaction();
+            //$servCon = new Application_Model_DataService('Application_Model_DbTable_Movcaja');
+            //$servCon->deleteRowById(array("cod_mov_caja"=>$id));
+            $data_update = array(                    
+                'estado'=>'A',                 
+            );
+            $where ="cod_baja_stock = ".$id;                                               
+            $update_pago = $db->update('baja_stock',$data_update,$where);                    
+            $db->commit();
             echo json_encode(array("result" => "EXITO"));
         }catch( Exception $e ) {
             echo json_encode(array("result" => "ERROR","mensaje"=>$e->getCode()));
-            $db->rollBack();
-        }
+                    $db->rollBack();
+        }        
     }
 
     public function guardarAction(){
