@@ -289,6 +289,74 @@ class Caja_MovcajaController extends Zend_Controller_Action
 		$db->rollBack();
 	}
     }
+        public function saldocajadataAction()
+	{
+//		$this->_helper->layout->disableLayout();
+		$this->_helper->viewRenderer->setNoRender(true);
+		$result = '';
+		$parametrosNamespace = new Zend_Session_Namespace ( 'parametros' );
+		$cod_usuario = $parametrosNamespace->cod_usuario;
+		$jsonResultado = json_encode(array("resultado" => 'cerrado'));	
+                $json_rowData = $this->getRequest ()->getParam ( "parametros" );
+                $rowData = json_decode($json_rowData); 
+                $monto = $rowData->monto;
+		try {
+			$db = Zend_Db_Table::getDefaultAdapter();
+			$select = $db->select()
+					->from(array('C' => 'usuario'), 
+						   array('C.cod_usuario',
+                                                        'C.nombre_apellido',
+                                                        'D.fecha_hora_apertura',
+                                                        'D.cod_caja',
+                                                        'D.monto_caja_apertura'))
+					->join(array('D' => 'caja'), 'D.cod_usuario_caja = C.cod_usuario')
+					->where("fecha_hora_cierre is null and cod_usuario_caja = ".$cod_usuario);	
+			$result = $db->fetchAll($select);
+//die($select);			
+                        $cod_caja = 0;
+			foreach ($result as $arr) {
+                            $cod_caja = $arr["cod_caja"];
+                            $monto_caja_apertura = $arr["monto_caja_apertura"];
+			}
+		} catch (Exception $e) {
+				$jsonResultado = json_encode(array("resultado" => 'error'));
+		}
+                
+                try {
+                    $db = Zend_Db_Table::getDefaultAdapter();
+                    $select = $db->select()
+                                    ->from(array('a' => 'caja'), 
+                                               array('a.monto_caja_apertura',
+                                                    'sum(b.monto_mov) as movimientos',
+                                                    'b.tipo_factura_mov',
+                                                    'b.tipo_mov'))
+                                    ->join(array('b' => 'mov_caja'), 'a.cod_caja = b.cod_caja')
+                                    ->where("a.cod_caja = $cod_caja and b.tipo_mov = 'EFECTIVO'
+                                        and b.estado <> 'A'")
+                            ->group('monto_caja_apertura')
+                            ->group('tipo_factura_mov')
+                            ->group('tipo_mov');	
+//die($select);			
+                    $result = $db->fetchAll($select);
+                    $efectivo_compra = 0;
+                    $efectivo_venta = 0;
+                    $apertura_caja = $monto_caja_apertura;
+                    foreach ($result as $arr) {
+                        if($arr["tipo_factura_mov"] == 'C')
+                            $efectivo_compra = $arr["tipo_factura_mov"];
+                        if($arr["tipo_factura_mov"] == 'V')
+                            $efectivo_venta = $arr["tipo_factura_mov"];                            
+                    }
+                    $saldo = ($efectivo_venta + $apertura_caja)-($efectivo_compra + $monto);
+                    
+                    $jsonResultado = json_encode(array(
+                            "saldo" => $saldo,
+                            "resultado" => 'EXITO'));                           
+		} catch (Exception $e) {
+				$jsonResultado = json_encode(array("resultado" => 'error'));
+		}                
+		echo $jsonResultado;
+	}    
 	public function cajaabiertadataAction()
 	{
 //		$this->_helper->layout->disableLayout();

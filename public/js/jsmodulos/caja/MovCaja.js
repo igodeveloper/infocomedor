@@ -54,11 +54,42 @@ $().ready(function() {
 
 	$('#guardar').click(function() {
 //		 if(!confirm("Esta seguro de que desea almacenar los datos?"))
-//				return;
-		 var data = obtenerJsonFormulario();
-		if(data != null){
-			enviarParametrosRegistro(data);
-		}
+//		
+//			return;
+            //var result = saldoCaja();
+            
+            var saldo = 0;
+            var jsonObject = new Object();
+            jsonObject.monto = $('#montomov-modal').attr("value");	
+            var dataString = JSON.stringify(jsonObject);
+    //	alert('Unidad Medida');
+            $.ajax({
+            url: table+'/saldocajadata',
+            type: 'post',
+            dataType: 'json',
+            data: {"parametros":dataString},
+            async : false,
+            success: function(respuesta){              
+                    if(respuesta.resultado == 'error'){
+                            mostarVentana("error-title",mostrarError("OcurrioError"));
+                    }else if(respuesta.saldo <= 0){
+                        mostarVentana("warning-registro","No tiene saldo suficiente en su caja!!");
+                        return 0;
+                    }
+                    saldo = JSON.stringify(respuesta.saldo);
+                    //return saldo;
+            },
+            error: function(event, request, settings){
+             //   $.unblockUI();
+                     alert(mostrarError("OcurrioError"));
+            }
+        });	            
+            if(saldo > 0){
+                var data = obtenerJsonFormulario();
+               if(data != null){
+                       enviarParametrosRegistro(data);
+               }
+            }
 	 });
 
 
@@ -249,7 +280,7 @@ function ocultarSuccessBlockTitle(){
 }
 
 function ocultarWarningRegistroBlock(){
-	$("#warning-block-registro").hide(500);
+	$("#warning-block").hide(500);
 }
 
 function mostarVentana(box,mensaje){
@@ -392,7 +423,33 @@ function obtenerJsonBuscar(){
 	var dataString = JSON.stringify(jsonObject);
 	return dataString;
 }
-
+function saldoCaja(){
+        var jsonObject = new Object();
+        jsonObject.monto = $('#montomov-modal').attr("value");	
+        var dataString = JSON.stringify(jsonObject);
+//	alert('Unidad Medida');
+	$.ajax({
+        url: table+'/saldocajadata',
+        type: 'post',
+        dataType: 'json',
+        data: {"parametros":dataString},
+        async : false,
+        success: function(respuesta){              
+        	if(respuesta.resultado == 'error'){
+        		mostarVentana("error-title",mostrarError("OcurrioError"));
+        	}else if(respuesta.saldo <= 0){
+                    mostarVentana("warning-registro","No tiene saldo suficiente en su caja!!");
+                    return 0;
+        	}
+                var saldo = JSON.stringify(respuesta.saldo);
+                return saldo;
+        },
+        error: function(event, request, settings){
+         //   $.unblockUI();
+        	 alert(mostrarError("OcurrioError"));
+        }
+    });	
+}
 function cajaAbierta(){
 	
 //	alert('Unidad Medida');

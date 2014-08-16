@@ -56,6 +56,7 @@ class Caja_CajaController extends Zend_Controller_Action
                 ->order('C.cod_caja desc'); 
         //if($parametrosNamespace->PERMISO != 1)
             $select->where('C.cod_usuario_caja = '.$cod_usuario);
+//die($select);            
         $result = $db->fetchAll($select);
         $this->view->headScript()->appendFile($this->view->baseUrl() . '/js/bootstrap.js');
         $this->view->headScript()->appendFile($this->view->baseUrl() . '/js/gridCaja.js');
