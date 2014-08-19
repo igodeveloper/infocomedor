@@ -504,6 +504,7 @@ public function guardarAction() {
 
 
                 }
+                $aumenta_ctrl_fiscal=self::aumentacontrolfiscal();
                 $db->commit();
                 //imprime factura
                 $var_nombrearchivo = 'factura';
@@ -722,5 +723,25 @@ public function modaleditarAction() {
         $result = $db->fetchAll($select);
         echo json_encode(array("result" => $result[0]['NRO_CONTROL_FISCAL']));
      }
-  
+
+     public function aumentacontrolfiscal(){
+         $this->_helper->viewRenderer->setNoRender ( true );
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $select = $db->select()
+                 ->from(array('C' => 'CONTROL_FISCAL'), array('C.NRO_CONTROL_FISCAL'))
+                 ->where("C.COD_CONTROL_FISCAL = ?", 1);
+        $result = $db->fetchAll($select);
+        // print_r($result);
+        $control_fiscal = (int)($result[0]['NRO_CONTROL_FISCAL']+1);
+        $largo = 7-strlen($control_fiscal) ;
+        $control_fiscal= str_pad($control_fiscal, 7, "0", STR_PAD_LEFT);
+
+                    $data = array(
+                        'NRO_CONTROL_FISCAL' => $control_fiscal
+                    );  
+                    $where = "COD_CONTROL_FISCAL = " . 1;
+                    $upd = $db->update('CONTROL_FISCAL', $data, $where);
+         return true;
+     }
+    
 }

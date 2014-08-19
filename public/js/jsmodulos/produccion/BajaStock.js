@@ -225,7 +225,7 @@ function obtenerJsonFormulario() {
 		return null;            
     }else {
 		//LOS CAMPOS DEBEN LLAMARSE IGUAL QUE EN gridTipoInsumo.js
-        console.log($('#cantidadactual-input').attr("value"),$('#cantidadbaja-input').attr("value"));
+        // console.log($('#cantidadactual-input').attr("value"),$('#cantidadbaja-input').attr("value"));
                 jsonObject.cod_baja_stock = $('#cod_baja_stock-hidden').attr("value");
                 jsonObject.cod_producto = $('#productostock-select option:selected').val();
                 jsonObject.cod_producto = $('#productostock-select option:selected').val();
